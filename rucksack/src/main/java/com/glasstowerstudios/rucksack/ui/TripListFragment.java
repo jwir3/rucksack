@@ -15,7 +15,7 @@ public class TripListFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View createdView = inflater.inflate(R.layout.fragment_trip_list, null);
+    View createdView = inflater.inflate(R.layout.fragment_trip_list, container, false);
     return createdView;
   }
 }
