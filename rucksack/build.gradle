@@ -1,3 +1,15 @@
+buildscript {
+  repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/groups/staging" }
+  }
+
+  dependencies {
+    classpath ("com.glasstowerstudios.gruel:gruel:${project.GRUEL_VERSION}")
+  }
+}
+
+
 apply plugin: 'com.android.application'
 
 android {
@@ -8,8 +20,8 @@ android {
     applicationId "com.glasstowerstudios.rucksack"
     minSdkVersion 14
     targetSdkVersion 23
-    versionCode 1
-    versionName "1.0"
+    versionCode project.RUCKSACK_VERSION_CODE as int
+    versionName project.RUCKSACK_VERSION_NAME
   }
   buildTypes {
     release {
@@ -17,6 +29,14 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+}
+
+apply plugin: 'gruel'
+
+gruel {
+  archiveName "%appName%", "%version%", "%buildType%", "%commitHash%"
+  version android.defaultConfig.versionName
+  commitHash gitSha()
 }
 
 dependencies {
