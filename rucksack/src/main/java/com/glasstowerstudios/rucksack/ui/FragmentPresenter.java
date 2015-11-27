@@ -20,6 +20,8 @@ import static android.support.v4.app.Fragment.instantiate;
  */
 public class FragmentPresenter {
 
+  private static final String LOGTAG = FragmentPresenter.class.getSimpleName();
+
   static Animations DEFAULT_ANIMATIONS = new Animations(R.anim.slide_in_right,
                                                         R.anim.slide_out_left,
                                                         android.R.anim.slide_in_left,

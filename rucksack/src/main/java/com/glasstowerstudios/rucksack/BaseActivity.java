@@ -1,5 +1,6 @@
 package com.glasstowerstudios.rucksack;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,14 +19,21 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- *
+ * Base activity class that all {@link Activity}s within Rucksack should derive from. Provides basic
+ * {@link Fragment} handling logic, as well as a navigation drawer.
  */
 public abstract class BaseActivity extends AppCompatActivity
-  implements NavigationView.OnNavigationItemSelectedListener {
+  implements NavigationView.OnNavigationItemSelectedListener,
+             FragmentManager.OnBackStackChangedListener {
+  private static final String LOGTAG = BaseActivity.class.getSimpleName();
+
   private FragmentPresenter mFragmentPresenter;
 
   @Bind(R.id.toolbar)
   protected Toolbar mToolbar;
+
+  @Bind(R.id.drawer_layout) protected DrawerLayout mDrawerLayout;
+  ActionBarDrawerToggle mDrawerToggle;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -38,15 +46,20 @@ public abstract class BaseActivity extends AppCompatActivity
     mFragmentPresenter = new FragmentPresenter(this, getSupportFragmentManager());
 
     setSupportActionBar(mToolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setHomeButtonEnabled(true);
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-      this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
-    toggle.syncState();
+    mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                                              R.string.navigation_drawer_open,
+                                              R.string.navigation_drawer_close);
+    mDrawerLayout.setDrawerListener(mDrawerToggle);
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
+
+    mDrawerToggle.syncState();
+
+    getSupportFragmentManager().addOnBackStackChangedListener(this);
   }
 
   /**
@@ -65,7 +78,6 @@ public abstract class BaseActivity extends AppCompatActivity
   public void showNonRootFragment(Class<? extends Fragment> aType, Bundle aArguments) {
     showFragment(aType, aArguments, true);
   }
-
 
   /**
    * Show a {@link Fragment} within the application.
@@ -91,7 +103,6 @@ public abstract class BaseActivity extends AppCompatActivity
     mFragmentPresenter.showFragmentAnimated(aType, aArguments, aAddToBackStack,
                                             getFragmentContainerID());
   }
-
 
   /**
    * Show a {@link Fragment} within the application by replacing another {@link Fragment} already on
@@ -153,6 +164,33 @@ public abstract class BaseActivity extends AppCompatActivity
    */
   public abstract int getFragmentContainerID();
 
+  /**
+   * Retrieves a reference to the currently displayed {@link Fragment}, if one exists.
+   *
+   * @return The currently displayed {@link Fragment} in the
+   *         {@link android.support.v4.app.FragmentManager}, if one is currently being displayed;
+   *         null, otherwise.
+   */
+  public Fragment getCurrentlyDisplayedFragment() {
+    return getSupportFragmentManager().findFragmentById(getFragmentContainerID());
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        if (shouldNavDrawerBeOpenedOnHomePress()) {
+          openNavigationDrawer();
+          return true;
+        } else {
+          getSupportFragmentManager().popBackStack();
+          return true;
+        }
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
   @SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
@@ -167,17 +205,48 @@ public abstract class BaseActivity extends AppCompatActivity
     return true;
   }
 
+  /**
+   * Ensures that the correct navigation drawer icon is set. For non-root fragments, this is a back
+   * arrow. For all other fragments, this is a hamburger icon.
+   */
+  private void ensureNavigationDrawerIconSet() {
+    if (!shouldNavDrawerBeOpenedOnHomePress()) {
+      mDrawerToggle.setDrawerIndicatorEnabled(false);
+    } else {
+      mDrawerToggle.setDrawerIndicatorEnabled(true);
+    }
+  }
+
+  /**
+   * Determines if the navigation drawer should be opened when the home app bar button is pressed.
+   *
+   * @return true, if this is the only fragment (or activity), and thus the navigation drawer should
+   *         be presented to the user when they tap the home button; false, otherwise.
+   */
+  protected boolean shouldNavDrawerBeOpenedOnHomePress() {
+    if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Opens the navigation drawer.
+   */
+  public void openNavigationDrawer() {
+    mDrawerLayout.openDrawer(GravityCompat.START);
+  }
+
+  /**
+   * Closes the navigation drawer.
+   */
+  public void closeNavigationDrawer() {
+    mDrawerLayout.closeDrawer(GravityCompat.START);
+  }
+
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
-//    if (id == R.id.action_settings) {
-//      return true;
-//    }
-
-    return super.onOptionsItemSelected(item);
+  public void onBackStackChanged() {
+    ensureNavigationDrawerIconSet();
   }
 }
