@@ -1,4 +1,4 @@
-package com.glasstowerstudios.rucksack.ui;
+package com.glasstowerstudios.rucksack.ui.base;
 
 import android.content.Context;
 import android.os.Bundle;

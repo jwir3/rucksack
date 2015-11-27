@@ -1,4 +1,4 @@
-package com.glasstowerstudios.rucksack;
+package com.glasstowerstudios.rucksack.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,7 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.glasstowerstudios.rucksack.ui.FragmentPresenter;
+import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.ui.base.FragmentPresenter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

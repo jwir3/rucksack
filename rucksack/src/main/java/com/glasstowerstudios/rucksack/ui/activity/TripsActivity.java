@@ -1,4 +1,4 @@
-package com.glasstowerstudios.rucksack;
+package com.glasstowerstudios.rucksack.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,7 +8,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.View;
 
-import com.glasstowerstudios.rucksack.ui.TripListFragment;
+import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.ui.fragment.AddTripFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.TripListFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

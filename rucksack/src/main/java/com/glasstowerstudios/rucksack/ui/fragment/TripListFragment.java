@@ -1,4 +1,4 @@
-package com.glasstowerstudios.rucksack.ui;
+package com.glasstowerstudios.rucksack.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.TripsActivity;
+import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 
 /**
  * A listing of trips within the system.

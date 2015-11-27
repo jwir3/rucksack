@@ -1,4 +1,4 @@
-package com.glasstowerstudios.rucksack;
+package com.glasstowerstudios.rucksack.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
+
 
 /**
  * A {@link Fragment} displayed when the user decides to add a new trip to the system. This will
  * prompt the user for the basic information about the trip and place the new trip in the
- * {@link com.glasstowerstudios.rucksack.ui.TripListFragment}.
+ * {@link TripListFragment}.
  */
 public class AddTripFragment extends Fragment {
 
