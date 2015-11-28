@@ -33,6 +33,8 @@ public class TripsActivity extends BaseActivity {
 
   @Override
   public void onBackPressed() {
+    dismissKeyboardIfOpen();
+
     FragmentManager fragMan = getSupportFragmentManager();
     if (fragMan.getBackStackEntryCount() >= 1) {
       fragMan.popBackStack();

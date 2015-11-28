@@ -17,6 +17,8 @@ import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
  */
 public class TripListFragment extends Fragment {
 
+  private static final String LOGTAG = TripListFragment.class.getSimpleName();
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

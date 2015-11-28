@@ -7,12 +7,18 @@ import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -23,6 +29,9 @@ import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 public class AddTripFragment extends Fragment {
 
   private static final String LOGTAG = AddTripFragment.class.getSimpleName();
+
+  @Bind(R.id.destinationInput)
+  protected EditText mDestinationInput;
 
   public AddTripFragment() {
     // Required empty public constructor
@@ -48,7 +57,10 @@ public class AddTripFragment extends Fragment {
     setHasOptionsMenu(true);
 
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_add_trip, container, false);
+    View v = inflater.inflate(R.layout.fragment_add_trip, container, false);
+    ButterKnife.bind(this, v);
+
+    return v;
   }
 
   @Override
@@ -66,4 +78,22 @@ public class AddTripFragment extends Fragment {
     baseAct.lockNavigationDrawer();
   }
 
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch(item.getItemId()) {
+      case R.id.confirm:
+        Trip trip = createTripFromInput();
+        trip.save();
+        TripsActivity act = (TripsActivity) getActivity();
+        act.onBackPressed();
+        return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
+  private Trip createTripFromInput() {
+    String destName = mDestinationInput.getText().toString();
+    return new Trip(destName);
+  }
 }

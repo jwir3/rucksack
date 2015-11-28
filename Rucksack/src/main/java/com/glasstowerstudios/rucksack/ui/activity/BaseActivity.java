@@ -1,6 +1,7 @@
 package com.glasstowerstudios.rucksack.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.ui.base.FragmentPresenter;
@@ -257,5 +260,16 @@ public abstract class BaseActivity extends AppCompatActivity
 
   public void unlockNavigationDrawer() {
     mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+  }
+
+  /**
+   * Closes the soft keyboard if it's currently open.
+   */
+  public void dismissKeyboardIfOpen() {
+    View view = this.getCurrentFocus();
+    if (view != null) {
+      InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
   }
 }
