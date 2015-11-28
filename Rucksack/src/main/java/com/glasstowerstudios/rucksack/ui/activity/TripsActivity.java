@@ -67,7 +67,6 @@ public class TripsActivity extends BaseActivity {
     this.showFragment(AddTripFragment.class, new Bundle(), true);
   }
 
-
   @Override
   public int getFragmentContainerID() {
     return R.id.trips_activity_root;

@@ -250,4 +250,12 @@ public abstract class BaseActivity extends AppCompatActivity
   public void onBackStackChanged() {
     ensureNavigationDrawerIconSet();
   }
+
+  public void lockNavigationDrawer() {
+    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+  }
+
+  public void unlockNavigationDrawer() {
+    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+  }
 }

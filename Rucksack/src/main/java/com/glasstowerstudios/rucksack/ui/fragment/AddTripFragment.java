@@ -1,5 +1,6 @@
 package com.glasstowerstudios.rucksack.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 
 
@@ -44,4 +46,13 @@ public class AddTripFragment extends Fragment {
     // Inflate the layout for this fragment
     return inflater.inflate(R.layout.fragment_add_trip, container, false);
   }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    Activity act = getActivity();
+    BaseActivity baseAct = (BaseActivity) act;
+    baseAct.lockNavigationDrawer();
+  }
+
 }
