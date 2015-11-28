@@ -14,4 +14,6 @@
     <string name="about_rucksack">About Rucksack</string>
     <string name="help">Help</string>
     <string name="accept">Accept</string>
+    <string name="dateSeparator">-</string>
+    <string name="unknown">Unknown</string>
 </resources>

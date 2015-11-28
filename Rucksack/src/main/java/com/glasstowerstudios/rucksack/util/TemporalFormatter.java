@@ -1,5 +1,7 @@
 package com.glasstowerstudios.rucksack.util;
 
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
@@ -23,5 +25,12 @@ public class TemporalFormatter {
       .appendSeparator(", ")
       .appendHours()
       .appendSuffix(" hour", " hours")
+      .toFormatter();
+
+  public static final DateTimeFormatter TRIP_DATES_FORMATTER =
+    new DateTimeFormatterBuilder()
+      .appendMonthOfYearShortText()
+      .appendDayOfMonth(1)
+      .appendYear(4, 4)
       .toFormatter();
 }

@@ -16,6 +16,7 @@ import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
+import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
 
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class TripRecyclerFragment
     mRecyclerView.setLayoutManager(layoutManager);
 
     mAdapter = new TripRecyclerAdapter(getTrips());
+    mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
     mRecyclerView.setAdapter(mAdapter);
 
     mSwipeRefreshLayout.setOnRefreshListener(this);
