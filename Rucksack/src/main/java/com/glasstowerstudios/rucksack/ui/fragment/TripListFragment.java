@@ -3,6 +3,7 @@ package com.glasstowerstudios.rucksack.ui.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,9 @@ import butterknife.ButterKnife;
 /**
  * A listing of trips within the system.
  */
-public class TripListFragment extends Fragment {
+public class TripListFragment
+  extends Fragment
+  implements SwipeRefreshLayout.OnRefreshListener {
 
   private static final String LOGTAG = TripListFragment.class.getSimpleName();
 
@@ -34,6 +37,9 @@ public class TripListFragment extends Fragment {
 
   @Bind(R.id.empty_view)
   protected View mEmptyView;
+
+  @Bind(R.id.trips_swipe_refresh)
+  protected SwipeRefreshLayout mSwipeRefreshLayout;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,7 @@ public class TripListFragment extends Fragment {
     BaseActivity baseAct = (BaseActivity) act;
     baseAct.unlockNavigationDrawer();
 
-    refresh();
+    onRefresh();
   }
 
   @Override
@@ -67,23 +73,8 @@ public class TripListFragment extends Fragment {
     mAdapter = new TripRecyclerAdapter(getTrips());
     mRecyclerView.setAdapter(mAdapter);
 
-    // sample code used to add a trip every 5 seconds
-//    new Thread(new Runnable() {
-//      @Override
-//      public void run() {
-//        while (true) {
-//          try {
-//            Thread.sleep(5000);
-//          } catch (InterruptedException e) {
-//            e.printStackTrace();
-//          }
-//
-//          Trip t = new Trip("Dummy Trip " + new Random(System.currentTimeMillis()).nextInt());
-//          t.save();
-//        }
-//      }
-//    }).start();
-
+    mSwipeRefreshLayout.setOnRefreshListener(this);
+    
     return createdView;
   }
 
@@ -93,7 +84,10 @@ public class TripListFragment extends Fragment {
     return trips;
   }
 
-  private void refresh() {
+  @Override
+  public void onRefresh() {
+    mSwipeRefreshLayout.setRefreshing(true);
+
     List<Trip> trips = getTrips();
 
     if (trips.size() > 0) {
@@ -105,5 +99,7 @@ public class TripListFragment extends Fragment {
     }
 
     mAdapter.setTrips(trips);
+
+    mSwipeRefreshLayout.setRefreshing(false);
   }
 }
