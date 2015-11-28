@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -41,10 +43,19 @@ public class AddTripFragment extends Fragment {
     appBar.setDisplayHomeAsUpEnabled(true);
     appBar.setDisplayShowHomeEnabled(false);
 
+    appBar.setTitle(R.string.addTrip);
+
     setHasOptionsMenu(true);
 
     // Inflate the layout for this fragment
     return inflater.inflate(R.layout.fragment_add_trip, container, false);
+  }
+
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    super.onCreateOptionsMenu(menu, inflater);
+
+    inflater.inflate(R.menu.add_trip, menu);
   }
 
   @Override

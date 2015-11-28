@@ -3,6 +3,7 @@ package com.glasstowerstudios.rucksack.ui.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,9 @@ public class TripListFragment extends Fragment {
 
     TripsActivity act = (TripsActivity) getContext();
     act.enableFloatingActionButton();
+
+    ActionBar appBar = act.getSupportActionBar();
+    appBar.setTitle(R.string.trips);
 
     return createdView;
   }
