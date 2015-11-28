@@ -69,4 +69,5 @@ dependencies {
   compile 'com.google.code.gson:gson:2.5'
   compile 'joda-time:joda-time:2.9.1'
   compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+  compile 'com.android.support:recyclerview-v7:23.1.1'
 }

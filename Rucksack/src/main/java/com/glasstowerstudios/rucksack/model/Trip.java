@@ -7,6 +7,8 @@ import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+import java.util.List;
+
 /**
  * A data model representing a travel experience a user can take.
  */
@@ -75,5 +77,15 @@ public class Trip extends BaseModel {
 
   private Period getDuration() {
     return new Period(mStartDate, mEndDate);
+  }
+
+  /**
+   * Convenience method for retrieving all {@link Trip} objects in the database.
+   *  Equivalent to {@link BaseModel#getAll(Trip.class)}.
+   *
+   * @return A {@link List} of all {@link Trip} objects in the database.
+   */
+  public static List<Trip> getAll() {
+    return BaseModel.getAll(Trip.class);
   }
 }
