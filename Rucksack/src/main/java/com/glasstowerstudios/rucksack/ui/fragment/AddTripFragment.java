@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * A {@link Fragment} displayed when the user decides to add a new trip to the system. This will
  * prompt the user for the basic information about the trip and place the new trip in the
- * {@link TripListFragment}.
+ * {@link TripRecyclerFragment}.
  */
 public class AddTripFragment extends Fragment {
 

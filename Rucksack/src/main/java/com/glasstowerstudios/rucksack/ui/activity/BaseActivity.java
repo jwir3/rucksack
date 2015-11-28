@@ -201,7 +201,8 @@ public abstract class BaseActivity extends AppCompatActivity
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
-    if (id == R.id.nav_trip_list) {
+    if (id == R.id.nav_trips) {
+
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

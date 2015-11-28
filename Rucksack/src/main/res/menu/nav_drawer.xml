@@ -5,7 +5,7 @@
         android:id="@+id/nav_main_actions"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/nav_trip_list"
+            android:id="@+id/nav_trips"
             android:icon="@android:drawable/ic_menu_mapmode"
             android:title="@string/trips" />
     </group>

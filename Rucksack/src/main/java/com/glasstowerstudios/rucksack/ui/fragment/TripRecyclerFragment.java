@@ -25,11 +25,11 @@ import butterknife.ButterKnife;
 /**
  * A listing of trips within the system.
  */
-public class TripListFragment
+public class TripRecyclerFragment
   extends Fragment
   implements SwipeRefreshLayout.OnRefreshListener {
 
-  private static final String LOGTAG = TripListFragment.class.getSimpleName();
+  private static final String LOGTAG = TripRecyclerFragment.class.getSimpleName();
 
   @Bind(R.id.trip_recycler_view)
   protected RecyclerView mRecyclerView;
@@ -58,7 +58,7 @@ public class TripListFragment
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View createdView = inflater.inflate(R.layout.fragment_trip_list, container, false);
+    View createdView = inflater.inflate(R.layout.fragment_trip_recycler, container, false);
     ButterKnife.bind(this, createdView);
 
     TripsActivity act = (TripsActivity) getContext();
@@ -74,7 +74,7 @@ public class TripListFragment
     mRecyclerView.setAdapter(mAdapter);
 
     mSwipeRefreshLayout.setOnRefreshListener(this);
-    
+
     return createdView;
   }
 
