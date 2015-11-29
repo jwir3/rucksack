@@ -18,10 +18,10 @@ public class Trip extends BaseModel {
   @Column(name = "destination_name")
   private String mDestinationName;
 
-//  @Column(name = "start_date")
+  @Column(name = "start_date")
   private DateTime mStartDate;
 
-//  @Column(name = "end_date")
+  @Column(name = "end_date")
   private DateTime mEndDate;
 
   public Trip() {

@@ -17,6 +17,8 @@ import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 
+import org.joda.time.DateTime;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -94,6 +96,8 @@ public class AddTripFragment extends Fragment {
 
   private Trip createTripFromInput() {
     String destName = mDestinationInput.getText().toString();
-    return new Trip(destName);
+    DateTime startDate = new DateTime(2016, 4, 1, 16, 0);
+    DateTime endDate = new DateTime(2016, 4, 5, 16, 0);
+    return new Trip(destName, startDate, endDate);
   }
 }

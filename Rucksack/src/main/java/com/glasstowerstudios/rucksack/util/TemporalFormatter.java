@@ -30,7 +30,9 @@ public class TemporalFormatter {
   public static final DateTimeFormatter TRIP_DATES_FORMATTER =
     new DateTimeFormatterBuilder()
       .appendMonthOfYearShortText()
+      .appendLiteral(" ")
       .appendDayOfMonth(1)
+      .appendLiteral(", ")
       .appendYear(4, 4)
       .toFormatter();
 }
