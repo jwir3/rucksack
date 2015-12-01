@@ -16,4 +16,7 @@
     <string name="accept">Accept</string>
     <string name="dateSeparator">-</string>
     <string name="unknown">Unknown</string>
+    <string name="destination">Destination</string>
+    <string name="start_date_description">Trip Start Date</string>
+    <string name="end_date_description">Trip End Date</string>
 </resources>
