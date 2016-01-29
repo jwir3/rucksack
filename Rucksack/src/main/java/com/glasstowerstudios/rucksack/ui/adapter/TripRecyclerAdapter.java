@@ -94,5 +94,10 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
     mTrips = trips;
     notifyDataSetChanged();
   }
+
+  public void remove(int position) {
+    mTrips.remove(position);
+    notifyDataSetChanged();
+  }
 }
 

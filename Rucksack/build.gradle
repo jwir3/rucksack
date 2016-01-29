@@ -29,7 +29,7 @@ android {
 
   defaultConfig {
     applicationId "com.glasstowerstudios.rucksack"
-    minSdkVersion 14
+    minSdkVersion 15
     targetSdkVersion 23
     versionCode project.RUCKSACK_VERSION_CODE as int
     versionName project.RUCKSACK_VERSION_NAME
@@ -70,4 +70,5 @@ dependencies {
   compile 'joda-time:joda-time:2.9.1'
   compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
   compile 'com.android.support:recyclerview-v7:23.1.1'
+  compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
 }

@@ -1,6 +1,7 @@
 package com.glasstowerstudios.rucksack.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +18,10 @@ import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
+import com.hudomju.swipe.OnItemClickListener;
+import com.hudomju.swipe.SwipeToDismissTouchListener;
+import com.hudomju.swipe.SwipeableItemClickListener;
+import com.hudomju.swipe.adapter.RecyclerViewAdapter;
 
 import java.util.List;
 
@@ -75,6 +80,35 @@ public class TripRecyclerFragment
     mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
     mRecyclerView.setAdapter(mAdapter);
 
+    final SwipeToDismissTouchListener<RecyclerViewAdapter> touchListener =
+      new SwipeToDismissTouchListener<>(
+        new RecyclerViewAdapter(mRecyclerView),
+        new SwipeToDismissTouchListener.DismissCallbacks<RecyclerViewAdapter>() {
+          @Override
+          public boolean canDismiss(int position) {
+            return true;
+          }
+
+          @Override
+          public void onDismiss(RecyclerViewAdapter view, int position) {
+            mAdapter.remove(position);
+          }
+        });
+
+    mRecyclerView.setOnTouchListener(touchListener);
+    mRecyclerView.setOnScrollListener((RecyclerView.OnScrollListener)touchListener.makeScrollListener());
+    mRecyclerView.addOnItemTouchListener(new FixSwipeableItemClickListener(getContext(),
+                                           new OnItemClickListener() {
+                                             @Override
+                                             public void onItemClick(View view, int position) {
+                                               if (view.getId() == R.id.txt_delete) {
+                                                 touchListener.processPendingDismisses();
+                                               } else if (view.getId() == R.id.txt_undo) {
+                                                 touchListener.undoPendingDismiss();
+                                               }
+                                             }
+                                           }));
+
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
     return createdView;
@@ -103,5 +137,16 @@ public class TripRecyclerFragment
     mAdapter.setTrips(trips);
 
     mSwipeRefreshLayout.setRefreshing(false);
+  }
+
+  private static class FixSwipeableItemClickListener extends SwipeableItemClickListener {
+
+    public FixSwipeableItemClickListener(Context context, OnItemClickListener listener) {
+      super(context, listener);
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
   }
 }
