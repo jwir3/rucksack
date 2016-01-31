@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Reds -->
+    <color name="colorPrimary">#ff5722</color>
+    <color name="colorPrimaryDark">#f44336</color>
+    <color name="statusBarColor">#c53e13</color>
+
+    <!-- Yellows -->
+    <color name="colorAccent">#ffab40</color>
+    <color name="roti">#D2A74C</color>
+
+    <!-- Blues -->
+    <color name="palitinateBlue">#2118d1</color>
+
+    <!-- Grays -->
+    <color name="concrete">#d1d1d1</color>
+    <color name="silverSand">#bbbbbb</color>
+    <color name="dove_gray">#757575</color>
+</resources>

@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Rucksack</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="no_trips_right_now">Shoot! There aren\'t any trips planned right now. Maybe add a new one?</string>
+    <string name="action_settings">Settings</string>
+    <string name="default_user_full_name">Rucksack User</string>
+    <string name="sign_in">Sign in to personalize</string>
+    <string name="trips">Trips</string>
+    <string name="addTrip">Add Trip</string>
+    <string name="help_settings">Help/Settings</string>
+    <string name="settings">Settings</string>
+    <string name="about_rucksack">About Rucksack</string>
+    <string name="help">Help</string>
+    <string name="accept">Accept</string>
+    <string name="dateSeparator">-</string>
+    <string name="unknown">Unknown</string>
+    <string name="destination">Destination</string>
+    <string name="start_date_description">Trip Start Date</string>
+    <string name="end_date_description">Trip End Date</string>
+    <string name="trip_removed">Trip Removed</string>
+    <string name="undo">Undo</string>
+</resources>

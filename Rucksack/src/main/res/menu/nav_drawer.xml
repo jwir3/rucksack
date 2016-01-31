@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/nav_main_actions"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_trips"
+            android:icon="@android:drawable/ic_menu_mapmode"
+            android:title="@string/trips" />
+    </group>
+
+    <group android:id="@+id/nav_help_settings"
+        android:checkableBehavior="none">
+        <!--<item-->
+            <!--android:id="@+id/nav_settings"-->
+            <!--android:icon="@android:drawable/ic_menu_preferences"-->
+            <!--android:title="@string/settings"/>-->
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="@string/about_rucksack" />
+    </group>
+</menu>
