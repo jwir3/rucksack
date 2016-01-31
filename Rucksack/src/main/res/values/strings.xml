@@ -21,4 +21,5 @@
     <string name="end_date_description">Trip End Date</string>
     <string name="trip_removed">Trip Removed</string>
     <string name="undo">Undo</string>
+    <string name="items">Packable Items</string>
 </resources>
