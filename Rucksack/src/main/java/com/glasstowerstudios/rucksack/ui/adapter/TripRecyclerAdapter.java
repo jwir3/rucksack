@@ -96,7 +96,9 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
   }
 
   public void remove(int position) {
+    Trip t = mTrips.get(position);
     mTrips.remove(position);
+    t.delete();
     notifyDataSetChanged();
   }
 }

@@ -92,6 +92,9 @@ public class TripRecyclerFragment
           @Override
           public void onDismiss(RecyclerViewAdapter view, int position) {
             mAdapter.remove(position);
+
+            // Check to see if we should display the empty view.
+            refreshTripVisibility();
           }
         });
 
@@ -125,8 +128,15 @@ public class TripRecyclerFragment
     mSwipeRefreshLayout.setRefreshing(true);
 
     List<Trip> trips = getTrips();
+    mAdapter.setTrips(trips);
 
-    if (trips.size() > 0) {
+    refreshTripVisibility();
+
+    mSwipeRefreshLayout.setRefreshing(false);
+  }
+
+  private void refreshTripVisibility() {
+    if (mAdapter.getItemCount() > 0) {
       mRecyclerView.setVisibility(View.VISIBLE);
       mEmptyView.setVisibility(View.GONE);
     } else {
@@ -134,9 +144,6 @@ public class TripRecyclerFragment
       mEmptyView.setVisibility(View.VISIBLE);
     }
 
-    mAdapter.setTrips(trips);
-
-    mSwipeRefreshLayout.setRefreshing(false);
   }
 
   private static class FixSwipeableItemClickListener extends SwipeableItemClickListener {
