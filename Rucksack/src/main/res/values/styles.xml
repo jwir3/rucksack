@@ -15,6 +15,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="BaseLayout">
+        <item name="android:background">@color/earlyDawn</item>
+    </style>
+
     <style name="Form" />
     <style name="Form.Input">
         <item name="android:layout_marginTop">10dp</item>
@@ -29,4 +33,30 @@
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
+    <style name="Card" parent="CardView">
+        <item name="android:background">@android:color/white</item>
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="android:paddingLeft">@dimen/card_padding</item>
+        <item name="android:paddingRight">@dimen/card_padding</item>
+        <item name="android:paddingTop">@dimen/card_padding</item>
+        <item name="android:paddingBottom">@dimen/card_padding</item>
+    </style>
+
+    <!-- Styles for Packable Items List -->
+    <style name="PackableItemsCard" parent="Card">
+        <item name="android:layout_marginBottom">@dimen/packable_items_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/packable_items_vertical_margin</item>
+        <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/packable_items_horizontal_margin</item>
+    </style>
+    <style name="PackableItemsAddItem" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/packable_items_horizontal_margin</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
 </resources>

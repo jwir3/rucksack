@@ -10,4 +10,13 @@
 
     <dimen name="form_input_icon_size">30dp</dimen>
     <dimen name="list_item_height">80dp</dimen>
+
+    <!-- Dimensions for cards -->
+    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_padding">10dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+
+    <!-- Special Dimensions for packable items list -->
+    <dimen name="packable_items_vertical_margin">8dp</dimen>
+    <dimen name="packable_items_horizontal_margin">8dp</dimen>
 </resources>

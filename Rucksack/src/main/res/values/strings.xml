@@ -22,4 +22,5 @@
     <string name="trip_removed">Trip Removed</string>
     <string name="undo">Undo</string>
     <string name="items">Packable Items</string>
+    <string name="add_item">Add Item…</string>
 </resources>
