@@ -45,6 +45,8 @@
 
     <!-- Styles for Packable Items List -->
     <style name="PackableItemsCard" parent="Card">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
         <item name="android:layout_marginBottom">@dimen/packable_items_vertical_margin</item>
         <item name="android:layout_marginTop">@dimen/packable_items_vertical_margin</item>
         <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
@@ -58,6 +60,12 @@
         <item name="android:imeOptions">actionDone</item>
         <item name="android:inputType">textCapWords</item>
         <item name="android:singleLine">true</item>
+    </style>
+    <style name="PackableItemsListItem">
+        <item name="android:layout_marginTop">@dimen/packable_items_vertical_margin</item>
+        <item name="android:layout_marginBottom">@dimen/packable_items_vertical_margin</item>
+        <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/packable_items_horizontal_margin</item>
     </style>
 
 </resources>

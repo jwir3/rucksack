@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
@@ -22,6 +23,7 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
   public static class PackItemViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.pack_item_name_textview) protected TextView mPackItemNameTextView;
+    @Bind(R.id.pack_item_delete_button) protected ImageButton mPackItemDeleteButton;
 
     public PackItemViewHolder(View view) {
       super(view);
@@ -53,8 +55,15 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
 
   // Replace the contents of a view (invoked by the layout manager)
   @Override
-  public void onBindViewHolder(PackItemRecyclerAdapter.PackItemViewHolder holder, int position) {
+  public void onBindViewHolder(final PackItemRecyclerAdapter.PackItemViewHolder holder,
+                               int position) {
     holder.mPackItemNameTextView.setText(mItems.get(position).getName());
+    holder.mPackItemDeleteButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        remove(holder.getAdapterPosition());
+      }
+    });
   }
 
   @Override
