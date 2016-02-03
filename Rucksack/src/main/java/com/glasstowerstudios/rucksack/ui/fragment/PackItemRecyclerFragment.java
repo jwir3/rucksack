@@ -57,6 +57,9 @@ public class PackItemRecyclerFragment
   @Bind(R.id.add_item_edittext)
   protected EditText mAddItemInput;
 
+  @Bind(R.id.empty_view)
+  protected View mEmptyView;
+
   private PackItemRecyclerAdapter mAdapter;
 
 
@@ -92,6 +95,15 @@ public class PackItemRecyclerFragment
     List<PackItem> items = getItems();
     mAdapter = new PackItemRecyclerAdapter(items);
 
+    RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+      @Override
+      public void onChanged() {
+        refreshVisibility();
+      }
+    };
+
+    mAdapter.registerAdapterDataObserver(observer);
+
     mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
     mRecyclerView.setAdapter(mAdapter);
 
@@ -120,6 +132,9 @@ public class PackItemRecyclerFragment
           newItem.save();
           mAdapter.add(newItem);
           v.setText("");
+
+          refreshVisibility();
+
           return true;
         }
 
@@ -145,6 +160,8 @@ public class PackItemRecyclerFragment
       Log.d(LOGTAG, "Item: " + nextItem.getName());
     }
     mAdapter.setItems(items);
+
+    refreshVisibility();
 
     mSwipeRefreshLayout.setRefreshing(false);
   }
@@ -182,5 +199,16 @@ public class PackItemRecyclerFragment
     }
 
     super.onActivityResult(requestCode, resultCode, data);
+  }
+
+  private void refreshVisibility() {
+    if (mAdapter.getItemCount() > 0) {
+      mRecyclerView.setVisibility(View.VISIBLE);
+      mEmptyView.setVisibility(View.GONE);
+    } else {
+      mRecyclerView.setVisibility(View.GONE);
+      mEmptyView.setVisibility(View.VISIBLE);
+    }
+
   }
 }
