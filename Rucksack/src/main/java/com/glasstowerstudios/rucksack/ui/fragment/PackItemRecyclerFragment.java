@@ -11,13 +11,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.model.BaseModel;
 import com.glasstowerstudios.rucksack.model.PackItem;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
@@ -33,11 +38,12 @@ import butterknife.ButterKnife;
 /**
  *
  */
-public class PackItemRecylerFragment
+public class PackItemRecyclerFragment
   extends Fragment
   implements SwipeRefreshLayout.OnRefreshListener {
 
   private static final int REQUEST_CODE = 1234;
+  private static final String LOGTAG = PackItemRecyclerFragment.class.getSimpleName();
 
   @Bind(R.id.pack_item_recycler_view)
   protected RecyclerView mRecyclerView;
@@ -75,20 +81,17 @@ public class PackItemRecylerFragment
     ButterKnife.bind(this, createdView);
 
     TripsActivity act = (TripsActivity) getContext();
-//    act.enableFloatingActionButton();
     act.disableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();
-    appBar.setTitle("Packable Items");
+    appBar.setTitle(R.string.packable_items);
 
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(layoutManager);
 
-    List<PackItem> tempItems = new ArrayList<>();
-    tempItems.add(new PackItem("Hello"));
-    tempItems.add(new PackItem("World"));
+    List<PackItem> items = getItems();
+    mAdapter = new PackItemRecyclerAdapter(items);
 
-    mAdapter = new PackItemRecyclerAdapter(tempItems);
     mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
     mRecyclerView.setAdapter(mAdapter);
 
@@ -109,21 +112,39 @@ public class PackItemRecylerFragment
       });
     }
 
+    mAddItemInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+          PackItem newItem = new PackItem(v.getText().toString());
+          newItem.save();
+          mAdapter.add(newItem);
+          v.setText("");
+          return true;
+        }
+
+        return false;
+      }
+    });
+
     return createdView;
   }
 
-//  private List<PackItem> getItems() {
-//    // Get all items from the database.
-//    List<Trip> trips = Trip.getAll();
-//    return trips;
-//  }
+  private List<PackItem> getItems() {
+    // Get all items from the database.
+    List<PackItem> items = BaseModel.getAll(PackItem.class);
+    return items;
+  }
 
   @Override
   public void onRefresh() {
     mSwipeRefreshLayout.setRefreshing(true);
 
-//    List<Trip> trips = getTrips();
-//    mAdapter.setTrips(trips);
+    List<PackItem> items = getItems();
+    for (PackItem nextItem : items) {
+      Log.d(LOGTAG, "Item: " + nextItem.getName());
+    }
+    mAdapter.setItems(items);
 
     mSwipeRefreshLayout.setRefreshing(false);
   }
@@ -137,6 +158,7 @@ public class PackItemRecylerFragment
     intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
     intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak item description");
+    intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
     startActivityForResult(intent, REQUEST_CODE);
   }
 
@@ -146,9 +168,15 @@ public class PackItemRecylerFragment
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-      String[] inputData = data.getStringArrayExtra(RecognizerIntent.EXTRA_RESULTS);
+      ArrayList<String> inputData = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
       StringBuilder inputBuilder = new StringBuilder();
-      inputBuilder.append(inputData);
+      for (int i = 0; i < inputData.size(); i++) {
+        inputBuilder.append(inputData.get(i));
+
+        if (i < inputData.size() - 1) {
+          inputBuilder.append(" ");
+        }
+      }
 
       mAddItemInput.setText(inputBuilder.toString());
     }

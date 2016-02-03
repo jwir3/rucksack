@@ -9,13 +9,14 @@ import android.widget.TextView;
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.PackItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- *
+ * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackItem} objects.
  */
 public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecyclerAdapter.PackItemViewHolder> {
   public static class PackItemViewHolder extends RecyclerView.ViewHolder {
@@ -31,7 +32,11 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
   private List<PackItem> mItems;
 
   public PackItemRecyclerAdapter(List<PackItem> items) {
-    mItems = items;
+    if (items != null) {
+      mItems = items;
+    } else {
+      mItems = new ArrayList<>();
+    }
   }
 
   // Create new views (invoked by the layout manager)
@@ -66,7 +71,7 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
     notifyDataSetChanged();
   }
 
-  public void setTrips(List<PackItem> packItems) {
+  public void setItems(List<PackItem> packItems) {
     mItems = packItems;
     notifyDataSetChanged();
   }
