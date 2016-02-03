@@ -18,6 +18,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.ui.base.FragmentPresenter;
+import com.glasstowerstudios.rucksack.ui.fragment.PackItemRecyclerFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.TripRecyclerFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -202,7 +204,9 @@ public abstract class BaseActivity extends AppCompatActivity
     int id = item.getItemId();
 
     if (id == R.id.nav_trips) {
-
+      showRootFragment(TripRecyclerFragment.class, null);
+    } else if (id == R.id.nav_items) {
+      showNonRootFragment(PackItemRecyclerFragment.class, null);
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

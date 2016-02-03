@@ -12,6 +12,9 @@ public class PackItem extends BaseModel {
   @Column(name = "itemName")
   private String mItemName;
 
+  public PackItem() {
+  }
+
   public PackItem(String aItemName) {
     mItemName = aItemName;
   }

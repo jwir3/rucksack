@@ -6,8 +6,12 @@
         android:checkableBehavior="none">
         <item
             android:id="@+id/nav_trips"
-            android:icon="@android:drawable/ic_menu_mapmode"
+            android:icon="@drawable/ic_menu_trips"
             android:title="@string/trips" />
+        <item
+            android:id="@+id/nav_items"
+            android:icon="@drawable/ic_menu_items"
+            android:title="@string/items" />
     </group>
 
     <group android:id="@+id/nav_help_settings"

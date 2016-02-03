@@ -21,4 +21,8 @@
     <string name="end_date_description">Trip End Date</string>
     <string name="trip_removed">Trip Removed</string>
     <string name="undo">Undo</string>
+    <string name="items">Packable Items</string>
+    <string name="add_item">Add Item…</string>
+    <string name="packable_items">Packable Items</string>
+    <string name="no_packable_items">No packable items available. Add some using the input above.</string>
 </resources>

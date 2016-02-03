@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/BaseLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -21,6 +21,7 @@
 
         <LinearLayout
             android:id="@+id/empty_view"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"

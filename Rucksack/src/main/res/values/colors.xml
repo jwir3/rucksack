@@ -4,6 +4,8 @@
     <color name="colorPrimary">#ff5722</color>
     <color name="colorPrimaryDark">#f44336</color>
     <color name="statusBarColor">#c53e13</color>
+    <color name="hintOfRed">#fafafa</color>
+    <color name="earlyDawn">#FFF9e6</color>
 
     <!-- Yellows -->
     <color name="colorAccent">#ffab40</color>
