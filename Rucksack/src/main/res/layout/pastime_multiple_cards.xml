@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rucksack="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.glasstowerstudios.rucksack.ui.view.PastimeCard
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rucksack:pastimeName="Fishing"
+        rucksack:pastimeIcon="@drawable/ic_pastime_fishing"
+        rucksack:pastimeColor="@color/colorAccent"
+    />
+    <com.glasstowerstudios.rucksack.ui.view.PastimeCard
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rucksack:pastimeName="Athletics"
+        rucksack:pastimeIcon="@drawable/ic_pastime_athletics"
+        rucksack:pastimeColor="@color/colorAccent"
+    />
+
+</LinearLayout>
