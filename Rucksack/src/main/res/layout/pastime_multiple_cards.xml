@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This is a a dummy layout used to test what the PastimeCard views will look like. -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rucksack="http://schemas.android.com/apk/res-auto"
@@ -17,7 +18,7 @@
     <com.glasstowerstudios.rucksack.ui.view.PastimeCard
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        rucksack:pastimeName="Athletics"
+        rucksack:pastimeName="WeightLifting"
         rucksack:pastimeIcon="@drawable/ic_pastime_athletics"
         rucksack:pastimeColor="@color/colorAccent"
     />
