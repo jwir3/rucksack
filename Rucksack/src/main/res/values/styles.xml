@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -67,5 +66,4 @@
         <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/packable_items_horizontal_margin</item>
     </style>
-
 </resources>
