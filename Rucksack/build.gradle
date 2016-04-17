@@ -6,10 +6,12 @@ buildscript {
 
   dependencies {
     classpath ("com.glasstowerstudios.gruel:gruel:${project.GRUEL_VERSION}")
+    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
   }
 }
 
 
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 
 android {
