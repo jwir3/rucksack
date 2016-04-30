@@ -36,7 +36,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- *
+ * A {@link Fragment} containing a {@link RecyclerView} of {@link PackItem} objects.
  */
 public class PackItemRecyclerFragment
   extends Fragment

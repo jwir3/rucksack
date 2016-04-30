@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PastimeCard">
+        <attr name="pastimeName" format="string" />
+        <attr name="pastimeIcon" format="reference"/>
+        <attr name="pastimeColor" format="reference" />
+    </declare-styleable>
+</resources>
