@@ -3,12 +3,10 @@ package com.glasstowerstudios.rucksack.model;
 import android.os.Build;
 
 import com.glasstowerstudios.rucksack.BuildConfig;
-import com.glasstowerstudios.rucksack.util.DataStub;
 import com.glasstowerstudios.rucksack.util.RucksackGsonHelper;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,22 +18,14 @@ import java.util.TimeZone;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class TripTest {
+public class TripTest extends JsonDataTest<Trip> {
 
-  private String mJson;
   private Trip mTrip;
 
   @Before
   public void setUp() throws Exception {
-    mJson = DataStub.readFile("trip.json");
-    Assert.assertNotNull(mJson);
-
-    mTrip = RucksackGsonHelper.getGson().fromJson(mJson, Trip.class);
-  }
-
-  @After
-  public void tearDown() throws Exception {
-
+    init(Trip.class);
+    mTrip = getData();
   }
 
   @Test
@@ -63,6 +53,6 @@ public class TripTest {
   @Test
   public void testTripSerializedCorrectly() {
     String jsonData = RucksackGsonHelper.getGson().toJson(mTrip);
-    Assert.assertEquals(mJson.replaceAll("\\s", ""), jsonData);
+    Assert.assertEquals(getJson().replaceAll("\\s", ""), jsonData);
   }
 }
