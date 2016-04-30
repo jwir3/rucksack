@@ -25,6 +25,7 @@ public class Trip extends BaseModel {
   private DateTime mEndDate;
 
   public Trip() {
+    super();
   }
 
   public Trip(String destinationName, DateTime startDate, DateTime endDate) {

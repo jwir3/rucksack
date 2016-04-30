@@ -27,7 +27,6 @@ public class TripTest {
 
   @Before
   public void setUp() throws Exception {
-
     mJson = DataStub.readFile("trip.json");
     Assert.assertNotNull(mJson);
 

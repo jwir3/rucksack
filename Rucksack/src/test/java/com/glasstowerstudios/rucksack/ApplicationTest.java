@@ -13,7 +13,9 @@ import org.robolectric.annotation.Config;
  *
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@Config(constants = BuildConfig.class,
+        sdk = Build.VERSION_CODES.LOLLIPOP,
+        application = RucksackApplication.class)
 public class ApplicationTest extends ApplicationTestCase<RucksackApplication> {
   public ApplicationTest() {
     super(RucksackApplication.class);

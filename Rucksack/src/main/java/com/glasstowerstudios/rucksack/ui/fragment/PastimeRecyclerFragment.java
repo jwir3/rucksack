@@ -13,13 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
+import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +47,8 @@ public class PastimeRecyclerFragment
 
   private PastimeRecyclerAdapter mAdapter;
 
+  @Inject Gson mGson;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,6 +68,8 @@ public class PastimeRecyclerFragment
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View createdView = inflater.inflate(R.layout.fragment_pastime_recycler, container, false);
     ButterKnife.bind(this, createdView);
+
+    Injector.INSTANCE.getApplicationComponent().inject(this);
 
     TripsActivity act = (TripsActivity) getContext();
     act.disableFloatingActionButton();
@@ -95,9 +102,6 @@ public class PastimeRecyclerFragment
     mSwipeRefreshLayout.setRefreshing(true);
 
     List<Pastime> pastimes = initPastimes();
-    for (Pastime nextPastime : pastimes) {
-      Log.d(LOGTAG, "Pastime: " + nextPastime.getName());
-    }
 
     mAdapter.setItems(pastimes);
 
@@ -118,16 +122,22 @@ public class PastimeRecyclerFragment
 
   // TODO: Remove this method in favor of a one-time data initialization.
   private List<Pastime> initPastimes() {
-    Pastime work = new Pastime("Work", R.drawable.ic_pastime_work);
-    Pastime diving = new Pastime("Diving", R.drawable.ic_pastime_diving);
-    Pastime dining = new Pastime("Dining", R.drawable.ic_pastime_dining);
-    Pastime athletics = new Pastime("Athletics", R.drawable.ic_pastime_athletics);
+    List<Pastime> allPastimes = Pastime.getAll();
 
-    ArrayList<Pastime> pastimes = new ArrayList<>();
-    pastimes.add(work);
-    pastimes.add(dining);
-    pastimes.add(diving);
-    pastimes.add(athletics);
-    return pastimes;
+    if (allPastimes.isEmpty()) {
+      Log.d(LOGTAG, "Pastimes database has no entries.");
+      Pastime work = new Pastime("Work", R.drawable.ic_pastime_work);
+      work.save();
+      Pastime diving = new Pastime("Diving", R.drawable.ic_pastime_diving);
+      diving.save();
+      Pastime dining = new Pastime("Dining", R.drawable.ic_pastime_dining);
+      dining.save();
+      Pastime athletics = new Pastime("Athletics", R.drawable.ic_pastime_athletics);
+      athletics.save();
+
+      allPastimes = Pastime.getAll();
+    }
+
+    return allPastimes;
   }
 }

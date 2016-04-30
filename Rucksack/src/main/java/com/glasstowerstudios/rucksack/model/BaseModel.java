@@ -11,6 +11,10 @@ import java.util.List;
  */
 public class BaseModel extends Model {
 
+  public BaseModel() {
+    super();
+  }
+
   /**
    * Find an existing {@link BaseModel} by its database id.
    *
