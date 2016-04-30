@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,8 +70,7 @@ public class PastimeRecyclerFragment
     ActionBar appBar = act.getSupportActionBar();
     appBar.setTitle(R.string.pastimes);
 
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(layoutManager);
+    mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
     mAdapter = new PastimeRecyclerAdapter();
 
@@ -119,10 +118,16 @@ public class PastimeRecyclerFragment
 
   // TODO: Remove this method in favor of a one-time data initialization.
   private List<Pastime> initPastimes() {
-    Pastime p = new Pastime("Work", R.drawable.ic_pastime_work);
+    Pastime work = new Pastime("Work", R.drawable.ic_pastime_work);
+    Pastime diving = new Pastime("Diving", R.drawable.ic_pastime_diving);
+    Pastime dining = new Pastime("Dining", R.drawable.ic_pastime_dining);
+    Pastime athletics = new Pastime("Athletics", R.drawable.ic_pastime_athletics);
 
     ArrayList<Pastime> pastimes = new ArrayList<>();
-    pastimes.add(p);
+    pastimes.add(work);
+    pastimes.add(dining);
+    pastimes.add(diving);
+    pastimes.add(athletics);
     return pastimes;
   }
 }
