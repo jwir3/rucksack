@@ -41,9 +41,7 @@
         <item name="android:paddingTop">@dimen/card_padding</item>
         <item name="android:paddingBottom">@dimen/card_padding</item>
     </style>
-
-    <!-- Styles for Packable Items List -->
-    <style name="PackableItemsCard" parent="Card">
+    <style name="RecyclerCard" parent="Card">
         <item name="android:background">@android:color/white</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
         <item name="android:layout_marginBottom">@dimen/packable_items_vertical_margin</item>
@@ -51,6 +49,7 @@
         <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/packable_items_horizontal_margin</item>
     </style>
+    <!-- Styles for Packable Items List -->
     <style name="PackableItemsAddItem" parent="Widget.AppCompat.EditText">
         <item name="android:layout_centerVertical">true</item>
         <item name="android:background">@null</item>

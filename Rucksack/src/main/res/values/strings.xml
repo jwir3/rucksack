@@ -25,4 +25,6 @@
     <string name="add_item">Add Item…</string>
     <string name="packable_items">Packable Items</string>
     <string name="no_packable_items">No packable items available. Add some using the input above.</string>
+    <string name="no_pastimes_now">No pastimes loaded. You may need to reinstall the application or create new pastimes.</string>
+    <string name="pastimes">Pastimes</string>
 </resources>

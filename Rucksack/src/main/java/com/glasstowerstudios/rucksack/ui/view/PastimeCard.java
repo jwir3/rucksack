@@ -93,5 +93,7 @@ public class PastimeCard extends RelativeLayout {
 //    Drawable background = getResources().getDrawable(R.drawable.pastime_card_background);
 //    background.setColorFilter(new PorterDuffColorFilter(mColor, PorterDuff.Mode.SRC));
 //    setBackgroundDrawable(background);
+
+    setClickable(true);
   }
 }
