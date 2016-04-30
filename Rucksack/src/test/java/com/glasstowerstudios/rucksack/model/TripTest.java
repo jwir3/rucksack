@@ -1,5 +1,8 @@
 package com.glasstowerstudios.rucksack.model;
 
+import android.os.Build;
+
+import com.glasstowerstudios.rucksack.BuildConfig;
 import com.glasstowerstudios.rucksack.util.DataStub;
 import com.glasstowerstudios.rucksack.util.RucksackGsonHelper;
 
@@ -9,9 +12,14 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.TimeZone;
 
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class TripTest {
 
   private String mJson;

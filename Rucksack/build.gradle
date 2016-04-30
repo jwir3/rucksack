@@ -76,4 +76,6 @@ dependencies {
   compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
   compile 'com.android.support:cardview-v7:23.1.1'
   compile 'me.grantland:autofittextview:0.2.1'
+
+  testCompile "org.robolectric:robolectric:3.0"
 }

@@ -12,6 +12,7 @@ import com.google.gson.JsonSerializer;
 
 import org.joda.time.DateTime;
 
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.Date;
 
@@ -50,9 +51,10 @@ public class RucksackGsonHelper {
    *         objects.
    */
   public static final Gson getGson() {
-    GsonBuilder builder = new GsonBuilder();
-    builder.setFieldNamingStrategy(new LowerMFieldNamingStrategy());
-    builder.registerTypeAdapter(DateTime.class, new DateTimeTypeConverter());
-    return builder.create();
+    return new GsonBuilder()
+      .setFieldNamingStrategy(new LowerMFieldNamingStrategy())
+      .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter())
+      .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+      .create();
   }
 }
