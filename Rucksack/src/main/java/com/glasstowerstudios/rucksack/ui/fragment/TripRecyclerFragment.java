@@ -39,6 +39,7 @@ public class TripRecyclerFragment
 
   @Bind(R.id.trip_recycler_view)
   protected RecyclerView mRecyclerView;
+
   private TripRecyclerAdapter mAdapter;
 
   @Bind(R.id.empty_view)

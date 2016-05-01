@@ -18,6 +18,10 @@
         <item name="android:background">@color/earlyDawn</item>
     </style>
 
+    <style name="TripLayout" parent="BaseLayout">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
     <style name="Form" />
     <style name="Form.Input">
         <item name="android:layout_marginTop">10dp</item>
