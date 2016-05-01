@@ -66,7 +66,7 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
     holder.mPastimeNameTextView.setText(pastime.getName());
 
     Context c = holder.mPastimeIconImageView.getContext();
-    Drawable pastimeIcon = c.getResources().getDrawable(pastime.getIconId());
+    Drawable pastimeIcon = pastime.getIcon(c);
     holder.mPastimeIconImageView.setImageDrawable(pastimeIcon);
   }
 

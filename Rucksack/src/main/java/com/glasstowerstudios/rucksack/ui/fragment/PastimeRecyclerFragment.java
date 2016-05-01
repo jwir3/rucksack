@@ -126,13 +126,13 @@ public class PastimeRecyclerFragment
 
     if (allPastimes.isEmpty()) {
       Log.d(LOGTAG, "Pastimes database has no entries.");
-      Pastime work = new Pastime("Work", R.drawable.ic_pastime_work);
+      Pastime work = new Pastime("Work", "ic_pastime_work");
       work.save();
-      Pastime diving = new Pastime("Diving", R.drawable.ic_pastime_diving);
+      Pastime diving = new Pastime("Diving", "ic_pastime_diving");
       diving.save();
-      Pastime dining = new Pastime("Dining", R.drawable.ic_pastime_dining);
+      Pastime dining = new Pastime("Dining", "ic_pastime_dining");
       dining.save();
-      Pastime athletics = new Pastime("Athletics", R.drawable.ic_pastime_athletics);
+      Pastime athletics = new Pastime("Athletics", "ic_pastime_athletics");
       athletics.save();
 
       allPastimes = Pastime.getAll();
