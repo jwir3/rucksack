@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
 
 /**
  * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackItem} objects.
@@ -77,15 +78,19 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
 
   public void add(Pastime pastime) {
     add(pastime, mPastimes.size());
+    sortPastimesByName();
+    notifyDataSetChanged();
   }
 
   public void add(Pastime pastime, int position) {
     mPastimes.add(position, pastime);
+    sortPastimesByName();
     notifyDataSetChanged();
   }
 
   public void setItems(List<Pastime> pastimes) {
     mPastimes = pastimes;
+    sortPastimesByName();
     notifyDataSetChanged();
   }
 
@@ -93,6 +98,11 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
     Pastime p = mPastimes.get(position);
     mPastimes.remove(position);
     p.delete();
+    sortPastimesByName();
     notifyDataSetChanged();
+  }
+
+  private void sortPastimesByName() {
+    mPastimes = Observable.from(mPastimes).toSortedList().toBlocking().first();
   }
 }
