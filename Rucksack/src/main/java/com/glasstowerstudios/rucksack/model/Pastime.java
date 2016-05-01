@@ -15,7 +15,7 @@ import java.util.List;
  * relationship with packable items, and a many-to-many relationship with {@link Trip}s.
  */
 @Table(name = "pastimes")
-public class Pastime extends BaseModel {
+public class Pastime extends BaseModel implements Comparable<Pastime> {
 
   @Column(name = "pastimeName")
   private String name;
@@ -64,5 +64,10 @@ public class Pastime extends BaseModel {
    */
   public static List<Pastime> getAll() {
     return BaseModel.getAll(Pastime.class);
+  }
+
+  @Override
+  public int compareTo(Pastime another) {
+    return getName().compareTo(another.getName());
   }
 }
