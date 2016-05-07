@@ -27,4 +27,8 @@
     <string name="no_packable_items">No packable items available. Add some using the input above.</string>
     <string name="no_pastimes_now">No pastimes loaded. You may need to reinstall the application or create new pastimes.</string>
     <string name="pastimes">Pastimes</string>
+    <string name="pastime_name">Name</string>
+
+    <!-- This is the prefix that all built-in pastime icons use for naming -->
+    <string name="pastime_icon_prefix">ic_pastime_</string>
 </resources>

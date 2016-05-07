@@ -69,4 +69,9 @@
         <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/packable_items_horizontal_margin</item>
     </style>
+    <style name="IconDropDown" parent="Base.Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:layout_width">@dimen/dropdown_icon_size</item>
+        <item name="android:layout_height">@dimen/dropdown_icon_size</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
 </resources>
