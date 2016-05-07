@@ -8,6 +8,7 @@ buildscript {
   dependencies {
     classpath ("com.glasstowerstudios.gruel:gruel:${project.GRUEL_VERSION}")
     classpath 'com.github.JakeWharton:sdk-manager-plugin:220bf7a'
+    classpath 'me.tatarka:gradle-retrolambda:3.2.5'
   }
 }
 
@@ -16,6 +17,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
   compileSdkVersion 23
@@ -39,6 +41,12 @@ android {
     versionCode project.RUCKSACK_VERSION_CODE as int
     versionName project.RUCKSACK_VERSION_NAME
   }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
   buildTypes {
     release {
       if (project.hasProperty("GTS_RELEASE_STORE_FILE")) {
