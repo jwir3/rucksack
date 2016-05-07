@@ -2,7 +2,9 @@ package com.glasstowerstudios.rucksack.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,21 +20,27 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.ui.base.FragmentPresenter;
-import com.glasstowerstudios.rucksack.ui.fragment.PackItemRecyclerFragment;
-import com.glasstowerstudios.rucksack.ui.fragment.PastimeRecyclerFragment;
-import com.glasstowerstudios.rucksack.ui.fragment.TripRecyclerFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Base activity class that all {@link Activity}s within Rucksack should derive from. Provides basic
  * {@link Fragment} handling logic, as well as a navigation drawer.
+ *
+ * Note: Only {@link Activity}s that should be shown in the navigation drawer should derive from
+ *       this class. If the UI for a given item should not be shown in the navigation drawer, it is
+ *       probably better represented as a {@link Fragment} underneath some other
+ *       {@link BaseActivity}. Similarly, if something _should_ appear in the navigation drawer,
+ *       then it is likely a top-level functionality of the application, and should have a {@link
+ *       BaseActivity} implementation.
  */
 public abstract class BaseActivity extends AppCompatActivity
   implements NavigationView.OnNavigationItemSelectedListener,
-             FragmentManager.OnBackStackChangedListener {
+  FragmentManager.OnBackStackChangedListener {
   private static final String LOGTAG = BaseActivity.class.getSimpleName();
+  public static final String TITLE_KEY = "Title";
 
   private FragmentPresenter mFragmentPresenter;
 
@@ -42,9 +50,24 @@ public abstract class BaseActivity extends AppCompatActivity
   @Bind(R.id.drawer_layout) protected DrawerLayout mDrawerLayout;
   ActionBarDrawerToggle mDrawerToggle;
 
+  @Bind(R.id.fab) protected FloatingActionButton mFloatingActionButton;
+
+  public static Intent newIntent(Class<? extends BaseActivity> actClass, Context context,
+                                 String title) {
+    Bundle b = new Bundle();
+    b.putString(TITLE_KEY, title);
+
+    Intent i = new Intent(context, actClass);
+    i.putExtras(b);
+
+    return i;
+  }
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    setupActivityTitle();
 
     setContentView(R.layout.activity_base);
 
@@ -53,8 +76,16 @@ public abstract class BaseActivity extends AppCompatActivity
     mFragmentPresenter = new FragmentPresenter(this, getSupportFragmentManager());
 
     setSupportActionBar(mToolbar);
+
+    Bundle extras = getIntent().getExtras();
+    String title = getTitle().toString();
+    if (extras != null) {
+      title = extras.getString(TITLE_KEY);
+    }
+
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setHomeButtonEnabled(true);
+    getSupportActionBar().setTitle(title);
 
     mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                                               R.string.navigation_drawer_open,
@@ -171,12 +202,19 @@ public abstract class BaseActivity extends AppCompatActivity
    */
   public abstract int getFragmentContainerID();
 
+  @OnClick(R.id.fab)
+  public abstract void onFloatingActionButtonClick(View view);
+
+  /**
+   * Call {@link Activity#setTitle} on a string representing this {@link BaseActivity}.
+   */
+  protected abstract void setupActivityTitle();
+
   /**
    * Retrieves a reference to the currently displayed {@link Fragment}, if one exists.
    *
-   * @return The currently displayed {@link Fragment} in the
-   *         {@link android.support.v4.app.FragmentManager}, if one is currently being displayed;
-   *         null, otherwise.
+   * @return The currently displayed {@link Fragment} in the {@link android.support.v4.app.FragmentManager},
+   * if one is currently being displayed; null, otherwise.
    */
   public Fragment getCurrentlyDisplayedFragment() {
     return getSupportFragmentManager().findFragmentById(getFragmentContainerID());
@@ -204,17 +242,45 @@ public abstract class BaseActivity extends AppCompatActivity
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
-    if (id == R.id.nav_trips) {
-      showRootFragment(TripRecyclerFragment.class, null);
-    } else if (id == R.id.nav_items) {
-      showNonRootFragment(PackItemRecyclerFragment.class, null);
-    } else if (id == R.id.nav_pastimes) {
-      showNonRootFragment(PastimeRecyclerFragment.class, null);
+    if (getNavItemId() != id) {
+      if (id == R.id.nav_trips) {
+        startActivity(newIntent(TripsActivity.class, this, getString(R.string.trips)));
+      } else if (id == R.id.nav_items) {
+        startActivity(
+          newIntent(PackableItemsActivity.class, this, getString(R.string.packable_items)));
+      } else if (id == R.id.nav_pastimes) {
+        startActivity(newIntent(PastimesActivity.class, this, getString(R.string.pastimes)));
+      }
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
     return true;
+  }
+
+  /**
+   * Retrieve the id of the nav drawer menu item representing this {@link BaseActivity}.
+   *
+   * @return An integer id of the nav drawer item representing this {@link BaseActivity}.
+   */
+  protected abstract int getNavItemId();
+
+  @Override
+  public void onBackPressed() {
+    dismissKeyboardIfOpen();
+
+    FragmentManager fragMan = getSupportFragmentManager();
+    if (fragMan.getBackStackEntryCount() >= 1) {
+      fragMan.popBackStack();
+      return;
+    }
+
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    if (drawer.isDrawerOpen(GravityCompat.START)) {
+      drawer.closeDrawer(GravityCompat.START);
+    } else {
+      super.onBackPressed();
+    }
   }
 
   /**
@@ -233,7 +299,7 @@ public abstract class BaseActivity extends AppCompatActivity
    * Determines if the navigation drawer should be opened when the home app bar button is pressed.
    *
    * @return true, if this is the only fragment (or activity), and thus the navigation drawer should
-   *         be presented to the user when they tap the home button; false, otherwise.
+   * be presented to the user when they tap the home button; false, otherwise.
    */
   protected boolean shouldNavDrawerBeOpenedOnHomePress() {
     if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -276,8 +342,16 @@ public abstract class BaseActivity extends AppCompatActivity
   public void dismissKeyboardIfOpen() {
     View view = this.getCurrentFocus();
     if (view != null) {
-      InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+      InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
       imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+  }
+
+  public void disableFloatingActionButton() {
+    mFloatingActionButton.setVisibility(View.GONE);
+  }
+
+  public void enableFloatingActionButton() {
+    mFloatingActionButton.setVisibility(View.VISIBLE);
   }
 }

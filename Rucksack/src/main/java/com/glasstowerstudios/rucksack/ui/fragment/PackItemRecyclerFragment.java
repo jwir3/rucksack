@@ -25,7 +25,6 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.BaseModel;
 import com.glasstowerstudios.rucksack.model.PackItem;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
-import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.PackItemRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
 
@@ -83,7 +82,7 @@ public class PackItemRecyclerFragment
     View createdView = inflater.inflate(R.layout.fragment_packitem_recycler, container, false);
     ButterKnife.bind(this, createdView);
 
-    TripsActivity act = (TripsActivity) getContext();
+    BaseActivity act = (BaseActivity) getContext();
     act.disableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();

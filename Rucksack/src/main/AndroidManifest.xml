@@ -21,6 +21,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.activity.PastimesActivity"
+            android:label="Pastimes"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.activity.PackableItemsActivity"
+            android:label="Packable Items"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data android:name="AA_DB_NAME" android:value="rucksack.db" />
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
         <meta-data android:name="AA_MODELS" android:value="com.glasstowerstudios.rucksack.model" />
