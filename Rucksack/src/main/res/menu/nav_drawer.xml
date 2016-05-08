@@ -15,7 +15,7 @@
         <item
             android:id="@+id/nav_pastimes"
             android:icon="@drawable/ic_menu_pastimes"
-            android:title="Pastimes" />
+            android:title="@string/pastimes" />
     </group>
 
     <group android:id="@+id/nav_help_settings"

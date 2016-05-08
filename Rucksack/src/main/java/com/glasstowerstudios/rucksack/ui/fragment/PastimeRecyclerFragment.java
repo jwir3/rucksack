@@ -16,7 +16,6 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
-import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
 import com.google.gson.Gson;
 
@@ -71,8 +70,8 @@ public class PastimeRecyclerFragment
 
     Injector.INSTANCE.getApplicationComponent().inject(this);
 
-    TripsActivity act = (TripsActivity) getContext();
-    act.disableFloatingActionButton();
+    BaseActivity act = (BaseActivity) getContext();
+    act.enableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();
     appBar.setTitle(R.string.pastimes);
