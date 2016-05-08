@@ -114,7 +114,7 @@ public class AddTripFragment
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
 
-    inflater.inflate(R.menu.add_trip, menu);
+    inflater.inflate(R.menu.submit_action_menu, menu);
   }
 
   @Override

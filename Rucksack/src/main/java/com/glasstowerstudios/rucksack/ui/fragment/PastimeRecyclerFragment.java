@@ -71,6 +71,7 @@ public class PastimeRecyclerFragment
     Injector.INSTANCE.getApplicationComponent().inject(this);
 
     BaseActivity act = (BaseActivity) getContext();
+    act.enableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();
     appBar.setTitle(R.string.pastimes);
