@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:id="@+id/innerRelativeLayout">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/rucksack_logo_description"
+            android:id="@+id/rucksackLogo"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/ic_launcher"/>
+        <TextView
+            style="@style/CenteredHeadlineText"
+            android:text="@string/app_name"
+            android:id="@+id/rucksackTitle"
+            android:layout_below="@+id/rucksackLogo"/>
+        <TextView
+            style="@style/CenteredTitleText"
+            android:id="@+id/rucksackVersion"
+            android:layout_below="@+id/rucksackTitle" />
+        <TextView
+            style="@style/CenteredParagraphText"
+            android:text="@string/app_description"
+            android:id="@+id/rucksackDescription"
+            android:layout_below="@+id/rucksackVersion" />
+    </RelativeLayout>
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_marginTop="@dimen/section_spacing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/developed_by"
+        android:id="@+id/developedByTitle"
+        android:layout_below="@+id/innerRelativeLayout"
+        android:layout_alignLeft="@+id/innerRelativeLayout"
+        android:layout_alignStart="@+id/innerRelativeLayout" />
+    <ScrollView
+        android:layout_marginTop="@dimen/paragraph_spacing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/developersScrollView"
+        android:layout_below="@+id/developedByTitle"
+        android:layout_alignLeft="@+id/developedByTitle"
+        android:layout_alignStart="@+id/developedByTitle">
+
+        <!-- Add your name and email address here as you add code to our repository. -->
+        <TextView
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/scott_johnson" />
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/section_spacing"
+        android:paddingBottom="@dimen/section_spacing">
+        <Button
+            style="@style/MinimalistButton"
+            android:text="@string/report_a_bug"
+            android:id="@+id/bugButton"/>
+        <Button
+            style="@style/MinimalistButton"
+            android:text="@string/rate_on_google_play"
+            android:id="@+id/rateButton"
+            android:layout_below="@+id/bugButton" />
+        <Button
+            style="@style/MinimalistButton"
+            android:text="@string/view_release_notes"
+            android:id="@+id/releaseNotesButton"
+            android:layout_below="@+id/rateButton" />
+    </RelativeLayout>
+</RelativeLayout>

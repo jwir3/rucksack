@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.ui.base.FragmentPresenter;
+import com.glasstowerstudios.rucksack.ui.fragment.AboutDialogFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -250,6 +252,9 @@ public abstract class BaseActivity extends AppCompatActivity
           newIntent(PackableItemsActivity.class, this, getString(R.string.packable_items)));
       } else if (id == R.id.nav_pastimes) {
         startActivity(newIntent(PastimesActivity.class, this, getString(R.string.pastimes)));
+      } else if (id == R.id.nav_about) {
+          DialogFragment newFragment = new AboutDialogFragment();
+          newFragment.show(getSupportFragmentManager(), "about");
       }
     }
 

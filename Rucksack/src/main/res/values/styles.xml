@@ -74,4 +74,26 @@
         <item name="android:layout_height">@dimen/dropdown_icon_size</item>
         <item name="android:layout_margin">5dp</item>
     </style>
+
+    <style name="MinimalistButton" parent="Base.Widget.AppCompat.Button.Small">
+        <item name="android:layout_width">@dimen/button_width_about_dialog</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/paragraph_spacing</item>
+    </style>
+    <style name="CenteredHeadlineText" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+    <style name="CenteredTitleText" parent="TextAppearance.AppCompat.Title">
+    </style>
+    <style name="CenteredParagraphText" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_marginTop">@dimen/paragraph_spacing</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
 </resources>

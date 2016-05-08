@@ -20,4 +20,11 @@
     <!-- Special Dimensions for packable items list -->
     <dimen name="packable_items_vertical_margin">8dp</dimen>
     <dimen name="packable_items_horizontal_margin">8dp</dimen>
+
+    <!-- Spacing of Consecutive Sections -->
+    <dimen name="paragraph_spacing">10dp</dimen>
+    <dimen name="section_spacing">30dp</dimen>
+
+    <!-- Button Sizes -->
+    <dimen name="button_width_about_dialog">200dp</dimen>
 </resources>

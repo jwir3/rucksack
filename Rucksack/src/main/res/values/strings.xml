@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Rucksack</string>
+    <string name="app_description">An open-source travel checklist application made with ♡ in Minnesota.</string>
+    <string name="app_version">v%s</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -31,4 +33,10 @@
 
     <!-- This is the prefix that all built-in pastime icons use for naming -->
     <string name="pastime_icon_prefix">ic_pastime_</string>
+
+    <string name="developed_by">Developed By</string>
+    <string name="report_a_bug">Report a Bug</string>
+    <string name="rate_on_google_play">Rate Rucksack on Google Play</string>
+    <string name="view_release_notes">View Release Notes</string>
+    <string name="rucksack_logo_description">Rucksack Logo</string>
 </resources>
