@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.glasstowerstudios.rucksack" >
 
+
     <application
         android:name="com.glasstowerstudios.rucksack.RucksackApplication"
         android:allowBackup="true"
@@ -35,6 +36,8 @@
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
         <meta-data android:name="AA_MODELS" android:value="com.glasstowerstudios.rucksack.model" />
         <meta-data android:name="AA_SERIALIZERS" android:value="com.glasstowerstudios.rucksack.util.db.DateTimeSerializer" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="1515c8129e5570308f1ef873bf4ea34b4c51dc3b" />
     </application>
-
 </manifest>
