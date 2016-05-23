@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.model.PackItem;
+import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.model.Pastime;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import rx.Observable;
 
 /**
- * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackItem} objects.
+ * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackableItem} objects.
  */
 public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecyclerAdapter.PastimeViewHolder> {
   public static class PastimeViewHolder extends RecyclerView.ViewHolder {

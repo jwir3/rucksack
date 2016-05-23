@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.BaseModel;
-import com.glasstowerstudios.rucksack.model.PackItem;
+import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.PackItemRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
@@ -35,7 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * A {@link Fragment} containing a {@link RecyclerView} of {@link PackItem} objects.
+ * A {@link Fragment} containing a {@link RecyclerView} of {@link PackableItem} objects.
  */
 public class PackItemRecyclerFragment
   extends Fragment
@@ -91,7 +91,7 @@ public class PackItemRecyclerFragment
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(layoutManager);
 
-    List<PackItem> items = getItems();
+    List<PackableItem> items = getItems();
     mAdapter = new PackItemRecyclerAdapter(items);
 
     RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
@@ -127,7 +127,7 @@ public class PackItemRecyclerFragment
       @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-          PackItem newItem = new PackItem(v.getText().toString());
+          PackableItem newItem = new PackableItem(v.getText().toString());
           newItem.save();
           mAdapter.add(newItem);
           v.setText("");
@@ -144,9 +144,9 @@ public class PackItemRecyclerFragment
     return createdView;
   }
 
-  private List<PackItem> getItems() {
+  private List<PackableItem> getItems() {
     // Get all items from the database.
-    List<PackItem> items = BaseModel.getAll(PackItem.class);
+    List<PackableItem> items = BaseModel.getAll(PackableItem.class);
     return items;
   }
 
@@ -154,8 +154,8 @@ public class PackItemRecyclerFragment
   public void onRefresh() {
     mSwipeRefreshLayout.setRefreshing(true);
 
-    List<PackItem> items = getItems();
-    for (PackItem nextItem : items) {
+    List<PackableItem> items = getItems();
+    for (PackableItem nextItem : items) {
       Log.d(LOGTAG, "Item: " + nextItem.getName());
     }
     mAdapter.setItems(items);

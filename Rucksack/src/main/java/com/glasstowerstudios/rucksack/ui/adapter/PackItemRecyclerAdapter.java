@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.model.PackItem;
+import com.glasstowerstudios.rucksack.model.PackableItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackItem} objects.
+ * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackableItem} objects.
  */
 public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecyclerAdapter.PackItemViewHolder> {
   public static class PackItemViewHolder extends RecyclerView.ViewHolder {
@@ -31,9 +31,9 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
     }
   }
 
-  private List<PackItem> mItems;
+  private List<PackableItem> mItems;
 
-  public PackItemRecyclerAdapter(List<PackItem> items) {
+  public PackItemRecyclerAdapter(List<PackableItem> items) {
     if (items != null) {
       mItems = items;
     } else {
@@ -71,22 +71,22 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
     return mItems.size();
   }
 
-  public void add(PackItem item) {
+  public void add(PackableItem item) {
     add(item, mItems.size());
   }
 
-  public void add(PackItem trip, int position) {
+  public void add(PackableItem trip, int position) {
     mItems.add(position, trip);
     notifyDataSetChanged();
   }
 
-  public void setItems(List<PackItem> packItems) {
-    mItems = packItems;
+  public void setItems(List<PackableItem> packableItems) {
+    mItems = packableItems;
     notifyDataSetChanged();
   }
 
   public void remove(int position) {
-    PackItem p = mItems.get(position);
+    PackableItem p = mItems.get(position);
     mItems.remove(position);
     p.delete();
     notifyDataSetChanged();

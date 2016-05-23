@@ -5,14 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.model.PackItem;
+import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.ui.fragment.PackItemRecyclerFragment;
 
 import butterknife.ButterKnife;
 
 /**
  * A top-level menu {@link Activity} that will show fragments having operations related to
- * {@link PackItem}s.
+ * {@link PackableItem}s.
  */
 public class PackableItemsActivity extends BaseActivity {
   @Override
