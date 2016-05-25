@@ -1,4 +1,4 @@
-package com.glasstowerstudios.rucksack.util.db;
+package com.glasstowerstudios.rucksack.util.data;
 
 import com.activeandroid.serializer.TypeSerializer;
 

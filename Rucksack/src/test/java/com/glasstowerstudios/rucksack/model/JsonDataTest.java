@@ -13,7 +13,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public abstract class JsonDataTest<T extends BaseModel> {
+public abstract class JsonDataTest<T> {
   private String mJson;
   private T mData;
 

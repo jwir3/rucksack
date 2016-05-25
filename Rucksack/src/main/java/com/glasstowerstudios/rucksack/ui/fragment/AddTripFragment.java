@@ -16,13 +16,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
+import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,6 +52,8 @@ public class AddTripFragment
   @Bind(R.id.startDateInput) protected EditText mStartDateInput;
   @Bind(R.id.endDateInput) protected EditText mEndDateInput;
 
+  @Inject TripDataProvider mTripDataProvider;
+
   public AddTripFragment() {
     // Required empty public constructor
   }
@@ -55,6 +61,8 @@ public class AddTripFragment
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    Injector.INSTANCE.getApplicationComponent().inject(this);
   }
 
   @Override
@@ -130,7 +138,7 @@ public class AddTripFragment
     switch(item.getItemId()) {
       case R.id.confirm:
         Trip trip = createTripFromInput();
-        trip.save();
+        mTripDataProvider.save(trip);
         TripsActivity act = (TripsActivity) getActivity();
         act.onBackPressed();
         return true;
