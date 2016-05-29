@@ -22,14 +22,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.model.BaseModel;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
-import com.glasstowerstudios.rucksack.ui.adapter.PackItemRecyclerAdapter;
+import com.glasstowerstudios.rucksack.ui.adapter.PackableItemRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
+import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,12 +62,15 @@ public class PackItemRecyclerFragment
   @Bind(R.id.empty_view)
   protected View mEmptyView;
 
-  private PackItemRecyclerAdapter mAdapter;
+  @Inject PackableItemDataProvider mPackableItemDataProvider;
 
+  private PackableItemRecyclerAdapter mAdapter;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    Injector.INSTANCE.getApplicationComponent().inject(this);
   }
 
   @Override
@@ -92,7 +98,7 @@ public class PackItemRecyclerFragment
     mRecyclerView.setLayoutManager(layoutManager);
 
     List<PackableItem> items = getItems();
-    mAdapter = new PackItemRecyclerAdapter(items);
+    mAdapter = new PackableItemRecyclerAdapter(items);
 
     RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
       @Override
@@ -128,7 +134,7 @@ public class PackItemRecyclerFragment
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
           PackableItem newItem = new PackableItem(v.getText().toString());
-          newItem.save();
+          mPackableItemDataProvider.save(newItem);
           mAdapter.add(newItem);
           v.setText("");
 
@@ -145,9 +151,7 @@ public class PackItemRecyclerFragment
   }
 
   private List<PackableItem> getItems() {
-    // Get all items from the database.
-    List<PackableItem> items = BaseModel.getAll(PackableItem.class);
-    return items;
+    return mPackableItemDataProvider.getAll();
   }
 
   @Override

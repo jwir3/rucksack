@@ -1,25 +1,16 @@
 package com.glasstowerstudios.rucksack.model;
 
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-
 /**
  * A physical item that can be packed in preparation for a {@link Trip}.
  */
-@Table(name = "items")
-public class PackableItem extends BaseModel {
+public class PackableItem {
   enum Status {
     NOT_PACKED,
     PACKED
   }
 
-  @Column(name = "itemName")
   private String mItemName;
-
-  @Column(name = "status")
   private Status mStatus;
-
-  @Column(name = "multiplesAllowed")
   private boolean mAllowMultiples = false; // Whether or not "multiples" of this item are allowed in
                                            // a packing list.
 
@@ -44,9 +35,9 @@ public class PackableItem extends BaseModel {
   }
 
   public boolean equals(PackableItem aOther) {
-    if (mAllowMultiples) {
-      return this == aOther;
-    }
+//    if (mAllowMultiples) {
+//      return this == aOther;
+//    }
 
     return mItemName.equals(aOther.getName());
   }
