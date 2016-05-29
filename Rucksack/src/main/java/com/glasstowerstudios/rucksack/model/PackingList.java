@@ -1,7 +1,5 @@
 package com.glasstowerstudios.rucksack.model;
 
-import com.activeandroid.annotation.Column;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,11 +7,8 @@ import java.util.List;
  * A {@link List} of {@link PackableItem}s, with statuses (packed/not-packed). A PackingList object
  * is attached to a {@link Pastime}.
  */
-public class PackingList extends BaseModel {
-  @Column(name = "items")
+public class PackingList {
   private List<PackableItem> mItems;
-
-  @Column(name = "statuses")
   private List<PackableItem.Status> mStatuses;
 
   // Note: this may be null (for the "extra" category of a Trip)
@@ -58,6 +53,10 @@ public class PackingList extends BaseModel {
     }
 
     return null;
+  }
+
+  public int size() {
+    return mItems.size();
   }
 
   public PackableItem remove(int position) {
