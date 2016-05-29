@@ -10,18 +10,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.model.PackItem;
+import com.glasstowerstudios.rucksack.di.Injector;
+import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.model.Pastime;
+import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
 
 /**
- * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackItem} objects.
+ * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackableItem} objects.
  */
 public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecyclerAdapter.PastimeViewHolder> {
   public static class PastimeViewHolder extends RecyclerView.ViewHolder {
@@ -35,17 +39,19 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
     }
   }
 
+  @Inject PastimeDataProvider mPastimeDataProvider;
   private List<Pastime> mPastimes;
 
   public PastimeRecyclerAdapter() {
     this(null);
+    Injector.INSTANCE.getApplicationComponent().inject(this);
   }
 
   public PastimeRecyclerAdapter(List<Pastime> pastimes) {
     if (pastimes != null) {
       setItems(pastimes);
     } else {
-      setItems(new ArrayList<Pastime>());
+      setItems(new ArrayList<>());
     }
   }
 
@@ -97,7 +103,7 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
   public void remove(int position) {
     Pastime p = mPastimes.get(position);
     mPastimes.remove(position);
-    p.delete();
+    mPastimeDataProvider.delete(p);
     sortPastimesByName();
     notifyDataSetChanged();
   }

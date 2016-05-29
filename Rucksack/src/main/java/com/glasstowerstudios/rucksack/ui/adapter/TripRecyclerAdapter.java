@@ -7,13 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
+import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,10 +38,13 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
     }
   }
 
+  @Inject TripDataProvider mTripDataProvider;
+
   private List<Trip> mTrips;
 
   public TripRecyclerAdapter(List<Trip> trips) {
     mTrips = trips;
+    Injector.INSTANCE.getApplicationComponent().inject(this);
   }
 
   // Create new views (invoked by the layout manager)
@@ -98,7 +105,7 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
   public void remove(int position) {
     Trip t = mTrips.get(position);
     mTrips.remove(position);
-    t.delete();
+    mTripDataProvider.delete(t);
     notifyDataSetChanged();
   }
 }

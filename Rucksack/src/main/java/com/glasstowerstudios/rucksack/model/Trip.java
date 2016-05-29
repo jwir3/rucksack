@@ -1,27 +1,16 @@
 package com.glasstowerstudios.rucksack.model;
 
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
-import java.util.List;
-
 /**
  * A data model representing a travel experience a user can take.
  */
-@Table(name = "trips")
-public class Trip extends BaseModel {
-
-  @Column(name = "destination_name")
+public class Trip {
   private String mDestinationName;
-
-  @Column(name = "start_date")
   private DateTime mStartDate;
-
-  @Column(name = "end_date")
   private DateTime mEndDate;
 
   public Trip() {
@@ -80,13 +69,25 @@ public class Trip extends BaseModel {
     return new Period(mStartDate, mEndDate);
   }
 
-  /**
-   * Convenience method for retrieving all {@link Trip} objects in the database.
-   *  Equivalent to {@link BaseModel#getAll(Trip.class)}.
-   *
-   * @return A {@link List} of all {@link Trip} objects in the database.
-   */
-  public static List<Trip> getAll() {
-    return BaseModel.getAll(Trip.class);
+  @Override
+  public boolean equals(Object aOther) {
+    if (!(aOther instanceof Trip)) {
+      return false;
+    }
+
+    Trip otherTrip = (Trip) aOther;
+    return otherTrip.getDestinationName().equals(getDestinationName())
+      && otherTrip.getStartDate().equals(getStartDate())
+      && otherTrip.getEndDate().equals(getEndDate());
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 38;
+    result = 37 * result + (getDestinationName() == null ? 0 : getDestinationName().hashCode());
+    result = 37 * result + (getStartDate() == null ? 0 : getStartDate().hashCode());
+    result = 37 * result + (getEndDate() == null ? 0 : getEndDate().hashCode());
+
+    return result;
   }
 }

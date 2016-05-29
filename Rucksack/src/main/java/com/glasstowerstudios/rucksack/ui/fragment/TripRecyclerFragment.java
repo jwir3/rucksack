@@ -13,17 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
+import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
 import com.hudomju.swipe.OnItemClickListener;
 import com.hudomju.swipe.SwipeToDismissTouchListener;
 import com.hudomju.swipe.SwipeableItemClickListener;
 import com.hudomju.swipe.adapter.RecyclerViewAdapter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,9 +52,13 @@ public class TripRecyclerFragment
   @Bind(R.id.trips_swipe_refresh)
   protected SwipeRefreshLayout mSwipeRefreshLayout;
 
+  @Inject TripDataProvider mTripDataProvider;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    Injector.INSTANCE.getApplicationComponent().inject(this);
   }
 
   @Override
@@ -119,8 +127,7 @@ public class TripRecyclerFragment
   }
 
   private List<Trip> getTrips() {
-    // Get all trips from the database.
-    List<Trip> trips = Trip.getAll();
+    List<Trip> trips = mTripDataProvider.getAll();
     return trips;
   }
 

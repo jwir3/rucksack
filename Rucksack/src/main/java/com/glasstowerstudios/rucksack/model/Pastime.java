@@ -3,8 +3,6 @@ package com.glasstowerstudios.rucksack.model;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.glasstowerstudios.rucksack.R;
 
 import java.lang.reflect.Field;
@@ -19,13 +17,9 @@ import rx.Observable;
  * A Pastime, or activity that can be performed while on a {@link Trip}. Has a one-to-many
  * relationship with packable items, and a many-to-many relationship with {@link Trip}s.
  */
-@Table(name = "pastimes")
-public class Pastime extends BaseModel implements Comparable<Pastime> {
+public class Pastime implements Comparable<Pastime> {
 
-  @Column(name = "pastimeName")
   private String name;
-
-  @Column(name = "pastimeIconResource")
   private String mIconResource;
 
   // Default constructor provided for ActiveAndroid initialization
@@ -59,16 +53,6 @@ public class Pastime extends BaseModel implements Comparable<Pastime> {
   public Drawable getIcon(Context context) {
     int iconId = getIconResourceId(context);
     return context.getResources().getDrawable(iconId);
-  }
-
-  /**
-   * Convenience method for retrieving all {@link Pastime} objects in the database.
-   *  Equivalent to {@link BaseModel#getAll(Pastime.class)}.
-   *
-   * @return A {@link List} of all {@link Pastime} objects in the database.
-   */
-  public static List<Pastime> getAll() {
-    return BaseModel.getAll(Pastime.class);
   }
 
   @Override

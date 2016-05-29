@@ -13,9 +13,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeIconSpinnerAdapter;
+import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,8 +31,11 @@ public class AddPastimeFragment extends Fragment {
   @Bind(R.id.pastime_name_input) EditText mPastimeNameInput;
   @Bind(R.id.pastime_icon_spinner) Spinner mPastimeIconSpinner;
 
+  @Inject PastimeDataProvider mPastimeDataProvider;
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    Injector.INSTANCE.getApplicationComponent().inject(this);
     View v = inflater.inflate(R.layout.fragment_add_pastime, container, false);
 
     ButterKnife.bind(this, v);
@@ -58,7 +65,7 @@ public class AddPastimeFragment extends Fragment {
     switch(item.getItemId()) {
       case R.id.confirm:
         Pastime pastime = createPastimeFromInput();
-        pastime.save();
+        mPastimeDataProvider.save(pastime);
         BaseActivity act = (BaseActivity) getActivity();
         act.onBackPressed();
         return true;

@@ -8,32 +8,40 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.model.PackItem;
+import com.glasstowerstudios.rucksack.di.Injector;
+import com.glasstowerstudios.rucksack.model.PackableItem;
+import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackItem} objects.
+ * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackableItem} objects.
  */
-public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecyclerAdapter.PackItemViewHolder> {
-  public static class PackItemViewHolder extends RecyclerView.ViewHolder {
+public class PackableItemRecyclerAdapter
+  extends RecyclerView.Adapter<PackableItemRecyclerAdapter.PackableItemViewHolder> {
 
+  public static class PackableItemViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.pack_item_name_textview) protected TextView mPackItemNameTextView;
     @Bind(R.id.pack_item_delete_button) protected ImageButton mPackItemDeleteButton;
 
-    public PackItemViewHolder(View view) {
+    public PackableItemViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }
   }
 
-  private List<PackItem> mItems;
+  private List<PackableItem> mItems;
 
-  public PackItemRecyclerAdapter(List<PackItem> items) {
+  @Inject PackableItemDataProvider mPackableItemProvider;
+
+  public PackableItemRecyclerAdapter(List<PackableItem> items) {
+    Injector.INSTANCE.getApplicationComponent().inject(this);
     if (items != null) {
       mItems = items;
     } else {
@@ -43,27 +51,22 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
 
   // Create new views (invoked by the layout manager)
   @Override
-  public PackItemRecyclerAdapter.PackItemViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                       int viewType) {
+  public PackableItemViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
     // create a new view
     View v = LayoutInflater.from(parent.getContext())
                            .inflate(R.layout.pack_item_list_item, parent, false);
 
-    PackItemViewHolder vh = new PackItemViewHolder(v);
+    PackableItemViewHolder vh = new PackableItemViewHolder(v);
     return vh;
   }
 
   // Replace the contents of a view (invoked by the layout manager)
   @Override
-  public void onBindViewHolder(final PackItemRecyclerAdapter.PackItemViewHolder holder,
+  public void onBindViewHolder(final PackableItemViewHolder holder,
                                int position) {
     holder.mPackItemNameTextView.setText(mItems.get(position).getName());
-    holder.mPackItemDeleteButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        remove(holder.getAdapterPosition());
-      }
-    });
+    holder.mPackItemDeleteButton.setOnClickListener(v -> remove(holder.getAdapterPosition()));
   }
 
   @Override
@@ -71,24 +74,24 @@ public class PackItemRecyclerAdapter extends RecyclerView.Adapter<PackItemRecycl
     return mItems.size();
   }
 
-  public void add(PackItem item) {
+  public void add(PackableItem item) {
     add(item, mItems.size());
   }
 
-  public void add(PackItem trip, int position) {
+  public void add(PackableItem trip, int position) {
     mItems.add(position, trip);
     notifyDataSetChanged();
   }
 
-  public void setItems(List<PackItem> packItems) {
-    mItems = packItems;
+  public void setItems(List<PackableItem> packableItems) {
+    mItems = packableItems;
     notifyDataSetChanged();
   }
 
   public void remove(int position) {
-    PackItem p = mItems.get(position);
+    PackableItem p = mItems.get(position);
     mItems.remove(position);
-    p.delete();
+    mPackableItemProvider.saveAll(mItems);
     notifyDataSetChanged();
   }
 }

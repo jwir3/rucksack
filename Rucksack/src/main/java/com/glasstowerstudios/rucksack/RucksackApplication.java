@@ -1,9 +1,12 @@
 package com.glasstowerstudios.rucksack;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.app.Application;
+import android.app.Application;
+
+import com.crashlytics.android.Crashlytics;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -18,7 +21,6 @@ public class RucksackApplication extends Application {
     super.onCreate();
 
     Fabric.with(this, new Crashlytics());
-    ActiveAndroid.initialize(this);
     Injector.INSTANCE.initializeApplicationComponent(this);
   }
 }
