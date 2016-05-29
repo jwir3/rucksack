@@ -17,8 +17,10 @@ import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
+import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,6 +49,7 @@ public class PastimeRecyclerFragment
   private PastimeRecyclerAdapter mAdapter;
 
   @Inject Gson mGson;
+  @Inject PastimeDataProvider mPastimeDataProvider;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -121,20 +124,23 @@ public class PastimeRecyclerFragment
 
   // TODO: Remove this method in favor of a one-time data initialization.
   private List<Pastime> initPastimes() {
-    List<Pastime> allPastimes = Pastime.getAll();
+    List<Pastime> allPastimes = mPastimeDataProvider.getAll();
 
     if (allPastimes.isEmpty()) {
       Log.d(LOGTAG, "Pastimes database has no entries.");
       Pastime work = new Pastime("Work", "ic_pastime_work");
-      work.save();
       Pastime diving = new Pastime("Diving", "ic_pastime_diving");
-      diving.save();
       Pastime dining = new Pastime("Dining", "ic_pastime_dining");
-      dining.save();
       Pastime athletics = new Pastime("Athletics", "ic_pastime_athletics");
-      athletics.save();
 
-      allPastimes = Pastime.getAll();
+      List<Pastime> pastimes = new ArrayList<>();
+      pastimes.add(work);
+      pastimes.add(diving);
+      pastimes.add(dining);
+      pastimes.add(athletics);
+      mPastimeDataProvider.saveAll(pastimes);
+
+      allPastimes = mPastimeDataProvider.getAll();
     }
 
     return allPastimes;
