@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.PackableItem;
-import com.glasstowerstudios.rucksack.ui.fragment.PackItemRecyclerFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.PackableItemRecyclerFragment;
 
 import butterknife.ButterKnife;
 
@@ -21,7 +21,7 @@ public class PackableItemsActivity extends BaseActivity {
 
     ButterKnife.bind(this);
 
-    showRootFragment(PackItemRecyclerFragment.class, null);
+    showRootFragment(PackableItemRecyclerFragment.class, null);
   }
 
   @Override
