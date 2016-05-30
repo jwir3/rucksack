@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,10 +22,12 @@ import butterknife.ButterKnife;
  * A small card object with rounded corners used to select a Pastime within the UI of the app. It
  * contains an icon as well as some text for a description of the Pastime.
  */
-public class PastimeCard extends RelativeLayout {
+public class PastimeCard extends RelativeLayout implements Checkable {
+  private static final String LOGTAG = PastimeCard.class.getSimpleName();
   private String mName;
   private Drawable mIcon;
   private int mColor;
+  private boolean mSelected;
 
   private AttributeSet mAttrs;
   private int mDefStyleAttr;
@@ -53,7 +56,7 @@ public class PastimeCard extends RelativeLayout {
   private void init() {
     Resources res = getContext().getResources();
 
-    inflate(getContext(), R.layout.pastime_card, this);
+    inflate(getContext(), R.layout.pastime_card_internal_layout, this);
 
     ButterKnife.bind(this, this);
 
@@ -90,10 +93,36 @@ public class PastimeCard extends RelativeLayout {
     mPastimeNameView.setText(mName);
 
     // Set the background color
-//    Drawable background = getResources().getDrawable(R.drawable.pastime_card_background);
-//    background.setColorFilter(new PorterDuffColorFilter(mColor, PorterDuff.Mode.SRC));
-//    setBackgroundDrawable(background);
+    Drawable background = getResources().getDrawable(R.drawable.pastime_card_background);
+    setBackgroundDrawable(background);
+  }
 
-    setClickable(true);
+  @Override
+  public void setChecked(boolean checked) {
+    mSelected = checked;
+  }
+
+  @Override
+  public boolean isChecked() {
+    return mSelected;
+  }
+
+  @Override
+  public void toggle() {
+    setChecked(!isChecked());
+  }
+
+  private static final int[] STATE_CHECKABLE = {android.R.attr.state_checked};
+
+  @Override
+  protected int[] onCreateDrawableState(int extraSpace)
+  {
+    int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+
+    if (isChecked()) {
+      mergeDrawableStates(drawableState, STATE_CHECKABLE);
+    }
+
+    return drawableState;
   }
 }

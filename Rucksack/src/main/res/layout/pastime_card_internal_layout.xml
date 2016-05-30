@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pastime_card"
+    android:orientation="vertical"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    android:padding="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="5dp">
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <ImageView
+            android:id="@+id/pastime_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:tint="@color/colorAccent"
+        />
+
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/pastime_name"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8pt"
+            android:layout_below="@id/pastime_icon"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorAccent"
+            autofit:minTextSize="4pt"
+        />
+    </RelativeLayout>
+</RelativeLayout>
