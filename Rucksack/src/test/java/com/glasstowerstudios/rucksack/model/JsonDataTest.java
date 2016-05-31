@@ -11,25 +11,49 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.io.IOException;
+
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public abstract class JsonDataTest<T> {
   private String mJson;
-  private T mData;
+  private T mPrimaryData;
+  private T mSecondaryData;
 
   public void init(Class<T> clazz) throws Exception {
-    String classNameWithUnderscores = clazz.getSimpleName().toLowerCase();
-    mJson = DataStub.readFile(classNameWithUnderscores + ".json");
+    String classNameCamelCase = clazz.getSimpleName().toLowerCase();
+    mJson = DataStub.readFile(classNameCamelCase + ".json");
     Assert.assertNotNull(mJson);
 
-    mData = RucksackGsonHelper.getGson().fromJson(mJson, clazz);
+    String secondaryJson;
+    try {
+      secondaryJson = DataStub.readFile(classNameCamelCase + "_2.json");
+    } catch (IOException e) {
+      // There _is_ no secondary json file. We don't need to do anything other than just know
+      // that there was an error and make sure secondaryJson is null.
+      secondaryJson = null;
+    }
+
+    mPrimaryData = RucksackGsonHelper.getGson().fromJson(mJson, clazz);
+
+    if (secondaryJson != null) {
+      mSecondaryData = RucksackGsonHelper.getGson().fromJson(secondaryJson, clazz);
+    }
   }
 
-  public T getData() {
-    if (mData == null) {
+  public T getPrimaryData() {
+    if (mPrimaryData == null) {
       throw new UnsupportedOperationException("init not called or file input was invalid");
     }
-    return mData;
+    return mPrimaryData;
+  }
+
+  public T getSecondaryData() {
+    if (mSecondaryData == null) {
+      throw new UnsupportedOperationException("init not called or file input was invalid");
+    }
+
+    return mSecondaryData;
   }
 
   public String getJson() {

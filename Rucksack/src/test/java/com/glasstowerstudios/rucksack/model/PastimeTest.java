@@ -19,7 +19,7 @@ public class PastimeTest extends JsonDataTest<Pastime> {
   @Before
   public void setUp() throws Exception {
     init(Pastime.class);
-    mPastime = getData();
+    mPastime = getPrimaryData();
   }
 
   @Test
