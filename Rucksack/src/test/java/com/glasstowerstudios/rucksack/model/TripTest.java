@@ -25,7 +25,7 @@ public class TripTest extends JsonDataTest<Trip> {
   @Before
   public void setUp() throws Exception {
     init(Trip.class);
-    mTrip = getData();
+    mTrip = getPrimaryData();
   }
 
   @Test

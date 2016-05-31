@@ -1,19 +1,25 @@
 package com.glasstowerstudios.rucksack.model;
 
+import android.support.annotation.NonNull;
+
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * A {@link List} of {@link PackableItem}s, with statuses (packed/not-packed). A PackingList object
- * is attached to a {@link Pastime}.
+ * may be attached to a {@link Pastime}.
  */
 public class PackingList {
-  private List<PackableItem> mItems;
-  private List<PackableItem.Status> mStatuses;
+  List<PackableItem> mItems = new LinkedList<>();
 
   // Note: this may be null (for the "extra" category of a Trip)
   private Pastime mPastime;
 
+  // Default constructor provided for Gson
   public PackingList() {
 
   }
@@ -24,7 +30,7 @@ public class PackingList {
 
   public PackingList(List<PackableItem> items, Pastime pastime) {
     this.mPastime = pastime;
-    this.mItems = items;
+    this.addAll(items);
   }
 
   public PackingList(PackableItem[] items) {
@@ -35,67 +41,114 @@ public class PackingList {
     this(Arrays.asList(items), pastime);
   }
 
-  public void add(PackableItem item, PackableItem.Status status) {
-    mItems.add(item);
-    mStatuses.add(status);
+  public void add(int location, PackableItem object) {
+    mItems.add(location, object);
   }
 
-  public void addAll(List<PackableItem> items) {
-    for (PackableItem item : items) {
-      add(item, PackableItem.Status.NOT_PACKED);
-    }
+  public boolean add(PackableItem object) {
+    return mItems.add(object);
   }
 
-  public PackableItem remove(PackableItem item) {
-    int position = mItems.indexOf(item);
-    if (position >= 0) {
-      return remove(position);
-    }
+  public boolean addAll(int location, Collection<? extends PackableItem> collection) {
+    return mItems.addAll(location, collection);
+  }
 
-    return null;
+  public boolean addAll(Collection<? extends PackableItem> collection) {
+    return mItems.addAll(collection);
+  }
+
+  public void clear() {
+    mItems.clear();
+  }
+
+  public boolean contains(Object object) {
+    return mItems.contains(object);
+  }
+
+  public boolean containsAll(Collection<?> collection) {
+    return mItems.containsAll(collection);
+  }
+
+  public PackableItem get(int location) {
+    return mItems.get(location);
+  }
+
+  public int indexOf(Object object) {
+    return mItems.indexOf(object);
+  }
+
+  public boolean isEmpty() {
+    return mItems.isEmpty();
+  }
+
+  @NonNull
+  public Iterator<PackableItem> iterator() {
+    return mItems.iterator();
+  }
+
+  public int lastIndexOf(Object object) {
+    return mItems.lastIndexOf(object);
+  }
+
+  public ListIterator<PackableItem> listIterator() {
+    return mItems.listIterator();
+  }
+
+  @NonNull
+  public ListIterator<PackableItem> listIterator(int location) {
+    return mItems.listIterator(location);
+  }
+
+  public PackableItem remove(int location) {
+    return mItems.remove(location);
+  }
+
+  public boolean remove(Object object) {
+    return mItems.remove(object);
+  }
+
+  public boolean removeAll(Collection<?> collection) {
+    return mItems.removeAll(collection);
+  }
+
+  public boolean retainAll(Collection<?> collection) {
+    return mItems.retainAll(collection);
+  }
+
+  public PackableItem set(int location, PackableItem object) {
+    return mItems.set(location, object);
   }
 
   public int size() {
     return mItems.size();
   }
 
-  public PackableItem remove(int position) {
-    if (position >= 0 && position < mItems.size()) {
-      PackableItem item = mItems.remove(position);
-      mStatuses.remove(position);
+  @NonNull
+  public List<PackableItem> subList(int start, int end) {
+    return mItems.subList(start, end);
+  }
 
-      return item;
+  @NonNull
+  public Object[] toArray() {
+    return mItems.toArray();
+  }
+
+  @NonNull
+  public <T> T[] toArray(T[] array) {
+    return mItems.toArray(array);
+  }
+
+  public PackingList merge(PackingList aOther) {
+    List<PackableItem> mergedList = new LinkedList<>();
+    mergedList.addAll(mItems);
+
+    for (int i = 0; i < aOther.size(); i++) {
+      PackableItem nextItem = aOther.get(i);
+      if (!mergedList.contains(nextItem)) {
+        mergedList.add(nextItem);
+      }
     }
 
-    return null;
-  }
-
-  public void clear() {
-    mItems.clear();
-    mStatuses.clear();
-  }
-
-  public void setStatus(int position, PackableItem.Status status) {
-    if (position >= 0 && position < mItems.size()) {
-      mStatuses.set(position, status);
-    }
-  }
-
-  public void setPacked(PackableItem item) {
-    int position = mItems.indexOf(item);
-    setStatus(position, PackableItem.Status.PACKED);
-  }
-
-  public void setPacked(int position) {
-    setStatus(position, PackableItem.Status.PACKED);
-  }
-
-  public void setNotPacked(PackableItem item) {
-    int position = mItems.indexOf(item);
-    setStatus(position, PackableItem.Status.NOT_PACKED);
-  }
-
-  public void setNotPacked(int position) {
-    setStatus(position, PackableItem.Status.NOT_PACKED);
+    return new PackingList(mergedList);
   }
 }

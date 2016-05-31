@@ -1,6 +1,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:glasstower="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -45,5 +46,33 @@
                 android:id="@+id/pastime_icon_spinner">
             </Spinner>
         </LinearLayout>
+        <RelativeLayout
+            style="@style/Form.Input"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            <TextView
+                style="@style/Form.Input.Section.Title"
+                android:id="@+id/pastime_items_section_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pastime_items"/>
+            <!--<View-->
+                <!--style="@style/Form.Input.Section.Title"-->
+                <!--android:id="@+id/pastime_items_section_title_underline"-->
+                <!--android:layout_below="@id/pastime_items_section_title"-->
+                <!--android:layout_marginTop="0dp"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="@color/dove_gray" />-->
+            <com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView
+                android:id="@+id/pastime_check_items"
+                android:layout_below="@id/pastime_items_section_title"
+                glasstower:allowDeletion="false"
+                glasstower:backgroundColor="@color/hintOfRed"
+                glasstower:selectable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp" />
+        </RelativeLayout>
     </LinearLayout>
 </FrameLayout>

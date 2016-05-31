@@ -128,10 +128,10 @@ public class PastimeRecyclerFragment
 
     if (allPastimes.isEmpty()) {
       Log.d(LOGTAG, "Pastimes database has no entries.");
-      Pastime work = new Pastime("Work", "ic_pastime_work");
-      Pastime diving = new Pastime("Diving", "ic_pastime_diving");
-      Pastime dining = new Pastime("Dining", "ic_pastime_dining");
-      Pastime athletics = new Pastime("Athletics", "ic_pastime_athletics");
+      Pastime work = new Pastime("Work", "ic_pastime_work", new ArrayList<>());
+      Pastime diving = new Pastime("Diving", "ic_pastime_diving", new ArrayList<>());
+      Pastime dining = new Pastime("Dining", "ic_pastime_dining", new ArrayList<>());
+      Pastime athletics = new Pastime("Athletics", "ic_pastime_athletics", new ArrayList<>());
 
       List<Pastime> pastimes = new ArrayList<>();
       pastimes.add(work);

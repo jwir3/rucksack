@@ -21,15 +21,21 @@ public class Pastime implements Comparable<Pastime> {
 
   private String name;
   private String mIconResource;
+  private List<PackableItem> mPackableItems;
 
   // Default constructor provided for ActiveAndroid initialization
   public Pastime() {
 
   }
 
-  public Pastime(String aName, String iconResource) {
+  public Pastime(String aName, String aIconResource) {
+    this(aName, aIconResource, new ArrayList<>());
+  }
+
+  public Pastime(String aName, String iconResource, List<PackableItem> items) {
     name = aName;
     mIconResource = iconResource;
+    mPackableItems = items;
   }
 
   public String getIconResourceName() {

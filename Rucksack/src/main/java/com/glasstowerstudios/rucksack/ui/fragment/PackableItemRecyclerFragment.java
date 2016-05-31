@@ -9,24 +9,19 @@ import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
-import com.glasstowerstudios.rucksack.ui.adapter.PackableItemRecyclerAdapter;
-import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
+import com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
@@ -40,15 +35,16 @@ import butterknife.ButterKnife;
 /**
  * A {@link Fragment} containing a {@link RecyclerView} of {@link PackableItem} objects.
  */
-public class PackItemRecyclerFragment
+public class PackableItemRecyclerFragment
   extends Fragment
   implements SwipeRefreshLayout.OnRefreshListener {
 
   private static final int REQUEST_CODE = 1234;
-  private static final String LOGTAG = PackItemRecyclerFragment.class.getSimpleName();
 
-  @Bind(R.id.pack_item_recycler_view)
-  protected RecyclerView mRecyclerView;
+  @Inject PackableItemDataProvider mPackableItemDataProvider;
+
+  @Bind(R.id.packable_item_recycler_view)
+  protected PackableItemRecyclerView mRecyclerView;
 
   @Bind(R.id.packitems_swipe_refresh)
   protected SwipeRefreshLayout mSwipeRefreshLayout;
@@ -61,10 +57,6 @@ public class PackItemRecyclerFragment
 
   @Bind(R.id.empty_view)
   protected View mEmptyView;
-
-  @Inject PackableItemDataProvider mPackableItemDataProvider;
-
-  private PackableItemRecyclerAdapter mAdapter;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +77,7 @@ public class PackItemRecyclerFragment
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View createdView = inflater.inflate(R.layout.fragment_packitem_recycler, container, false);
+    View createdView = inflater.inflate(R.layout.fragment_packableitem_recycler, container, false);
     ButterKnife.bind(this, createdView);
 
     BaseActivity act = (BaseActivity) getContext();
@@ -93,24 +85,6 @@ public class PackItemRecyclerFragment
 
     ActionBar appBar = act.getSupportActionBar();
     appBar.setTitle(R.string.packable_items);
-
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(layoutManager);
-
-    List<PackableItem> items = getItems();
-    mAdapter = new PackableItemRecyclerAdapter(items);
-
-    RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
-      @Override
-      public void onChanged() {
-        refreshVisibility();
-      }
-    };
-
-    mAdapter.registerAdapterDataObserver(observer);
-
-    mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
-    mRecyclerView.setAdapter(mAdapter);
 
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -121,49 +95,41 @@ public class PackItemRecyclerFragment
     if (activities.size() == 0) {
       mSpeakButton.setEnabled(false);
     } else {
-      mSpeakButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          onSpeakButtonClicked(v);
-        }
-      });
+      mSpeakButton.setOnClickListener(v -> onSpeakButtonClicked(v));
     }
 
-    mAddItemInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-      @Override
-      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-          PackableItem newItem = new PackableItem(v.getText().toString());
-          mPackableItemDataProvider.save(newItem);
-          mAdapter.add(newItem);
-          v.setText("");
+    mAddItemInput.setOnEditorActionListener((v, actionId, event) -> {
+      if (actionId == EditorInfo.IME_ACTION_DONE) {
+        PackableItem newItem = new PackableItem(v.getText().toString());
+        mPackableItemDataProvider.save(newItem);
+        mRecyclerView.addItem(newItem);
+        v.setText("");
 
-          refreshVisibility();
+        refreshVisibility();
 
-          return true;
-        }
-
-        return false;
+        return true;
       }
+
+      return false;
     });
 
-    return createdView;
-  }
+    RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+      @Override
+      public void onChanged() {
+        refreshVisibility();
+      }
+    };
 
-  private List<PackableItem> getItems() {
-    return mPackableItemDataProvider.getAll();
+    mRecyclerView.registerAdapterDataObserver(observer);
+
+    return createdView;
   }
 
   @Override
   public void onRefresh() {
     mSwipeRefreshLayout.setRefreshing(true);
 
-    List<PackableItem> items = getItems();
-    for (PackableItem nextItem : items) {
-      Log.d(LOGTAG, "Item: " + nextItem.getName());
-    }
-    mAdapter.setItems(items);
-
+    mRecyclerView.refresh();
     refreshVisibility();
 
     mSwipeRefreshLayout.setRefreshing(false);
@@ -205,7 +171,7 @@ public class PackItemRecyclerFragment
   }
 
   private void refreshVisibility() {
-    if (mAdapter.getItemCount() > 0) {
+    if (mRecyclerView.getItemCount() > 0) {
       mRecyclerView.setVisibility(View.VISIBLE);
       mEmptyView.setVisibility(View.GONE);
     } else {

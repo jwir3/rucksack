@@ -34,12 +34,19 @@ public class PackableItem {
     return getStatus() == Status.PACKED;
   }
 
-  public boolean equals(PackableItem aOther) {
+  @Override
+  public boolean equals(Object aOther) {
+    if (!(aOther instanceof PackableItem)) {
+      return false;
+    }
+
+    PackableItem item = (PackableItem) aOther;
+
 //    if (mAllowMultiples) {
 //      return this == aOther;
 //    }
 
-    return mItemName.equals(aOther.getName());
+    return mItemName.equals(item.getName());
   }
 
   @Override

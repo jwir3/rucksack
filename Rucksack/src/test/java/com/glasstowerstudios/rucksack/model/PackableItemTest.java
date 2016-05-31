@@ -15,7 +15,7 @@ public class PackableItemTest extends JsonDataTest<PackableItem> {
   @Before
   public void setUp() throws Exception {
     init(PackableItem.class);
-    mItem = getData();
+    mItem = getPrimaryData();
   }
 
   @Test

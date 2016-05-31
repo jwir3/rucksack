@@ -36,6 +36,12 @@
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
+    <style name="Form.Input.Section" />
+    <style name="Form.Input.Section.Title">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
     <style name="Card" parent="CardView">
         <item name="android:background">@android:color/white</item>
         <item name="cardCornerRadius">@dimen/card_corner_radius</item>

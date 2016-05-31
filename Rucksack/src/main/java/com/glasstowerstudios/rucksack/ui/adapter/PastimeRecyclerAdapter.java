@@ -13,6 +13,7 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.model.Pastime;
+import com.glasstowerstudios.rucksack.ui.view.PastimeCard;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
 import java.util.ArrayList;
@@ -59,11 +60,15 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
   @Override
   public PastimeRecyclerAdapter.PastimeViewHolder onCreateViewHolder(ViewGroup parent,
                                                                      int viewType) {
-    // create a new view
-    View v = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.pastime_card, parent, false);
+    PastimeCard card = (PastimeCard) LayoutInflater.from(parent.getContext())
+                                                .inflate(R.layout.pastime_card, parent, false);
 
-    PastimeViewHolder vh = new PastimeViewHolder(v);
+    card.setOnClickListener(v1 -> {
+      PastimeCard cardReference = (PastimeCard) v1;
+      cardReference.toggle();
+    });
+
+    PastimeViewHolder vh = new PastimeViewHolder(card);
     return vh;
   }
 

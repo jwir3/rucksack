@@ -4,7 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
@@ -13,6 +15,7 @@ import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,7 +29,11 @@ import butterknife.ButterKnife;
 public class PackableItemRecyclerAdapter
   extends RecyclerView.Adapter<PackableItemRecyclerAdapter.PackableItemViewHolder> {
 
+  private static final String LOGTAG = PackableItemRecyclerAdapter.class.getSimpleName();
+
   public static class PackableItemViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.packable_item_checkbox) protected CheckBox mPackableItemCheckbox;
+    @Bind(R.id.packable_item_icon) protected ImageView mPackableItemIcon;
     @Bind(R.id.pack_item_name_textview) protected TextView mPackItemNameTextView;
     @Bind(R.id.pack_item_delete_button) protected ImageButton mPackItemDeleteButton;
 
@@ -37,16 +44,25 @@ public class PackableItemRecyclerAdapter
   }
 
   private List<PackableItem> mItems;
+  private List<PackableItem> mSelectedItems = new ArrayList<>();
+  private boolean mShouldAllowDelete = false;
+  private int mBackgroundColor;
+  private boolean mSelectable = false;
 
   @Inject PackableItemDataProvider mPackableItemProvider;
 
-  public PackableItemRecyclerAdapter(List<PackableItem> items) {
+  public PackableItemRecyclerAdapter(List<PackableItem> items, boolean aShouldAllowDelete,
+                                     int aBackgroundColor, boolean aSelectable) {
     Injector.INSTANCE.getApplicationComponent().inject(this);
     if (items != null) {
       mItems = items;
     } else {
       mItems = new ArrayList<>();
     }
+
+    mShouldAllowDelete = aShouldAllowDelete;
+    mBackgroundColor = aBackgroundColor;
+    mSelectable = aSelectable;
   }
 
   // Create new views (invoked by the layout manager)
@@ -55,9 +71,23 @@ public class PackableItemRecyclerAdapter
                                                    int viewType) {
     // create a new view
     View v = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.pack_item_list_item, parent, false);
+                           .inflate(R.layout.packable_item_list_item, parent, false);
 
+    v.setBackgroundColor(mBackgroundColor);
     PackableItemViewHolder vh = new PackableItemViewHolder(v);
+
+    if (!mShouldAllowDelete) {
+      vh.mPackItemDeleteButton.setVisibility(View.GONE);
+    }
+
+    if (!mSelectable) {
+      vh.mPackableItemCheckbox.setVisibility(View.GONE);
+      vh.mPackableItemIcon.setVisibility(View.VISIBLE);
+    } else {
+      vh.mPackableItemCheckbox.setVisibility(View.VISIBLE);
+      vh.mPackableItemIcon.setVisibility(View.GONE);
+    }
+
     return vh;
   }
 
@@ -67,6 +97,15 @@ public class PackableItemRecyclerAdapter
                                int position) {
     holder.mPackItemNameTextView.setText(mItems.get(position).getName());
     holder.mPackItemDeleteButton.setOnClickListener(v -> remove(holder.getAdapterPosition()));
+    holder.mPackableItemCheckbox.setOnCheckedChangeListener(
+      (buttonView, isChecked) -> {
+        PackableItem item = mItems.get(position);
+        if (isChecked) {
+          mSelectedItems.add(item);
+        } else {
+          mSelectedItems.remove(item);
+        }
+      });
   }
 
   @Override
@@ -93,5 +132,15 @@ public class PackableItemRecyclerAdapter
     mItems.remove(position);
     mPackableItemProvider.saveAll(mItems);
     notifyDataSetChanged();
+  }
+
+  /**
+   * Retrieve an immutable {@link List} of the {@link PackableItem}s that a user has selected from
+   * this {@link PackableItemRecyclerAdapter}.
+   *
+   * @return A {@link List} containing the {@link PackableItem}s the user has selected.
+   */
+  public List<PackableItem> getSelectedItems() {
+    return Collections.unmodifiableList(mSelectedItems);
   }
 }
