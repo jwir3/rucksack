@@ -5,4 +5,9 @@
         <attr name="pastimeIcon" format="reference"/>
         <attr name="pastimeColor" format="reference" />
     </declare-styleable>
+    <declare-styleable name="PackableItemRecyclerView">
+        <attr name="allowDeletion" format="boolean" />
+        <attr name="backgroundColor" format="color" />
+        <attr name="selectable" format="boolean" />
+    </declare-styleable>
 </resources>

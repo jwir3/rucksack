@@ -77,7 +77,7 @@ public class PackableItemRecyclerFragment
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View createdView = inflater.inflate(R.layout.fragment_packitem_recycler, container, false);
+    View createdView = inflater.inflate(R.layout.fragment_packableitem_recycler, container, false);
     ButterKnife.bind(this, createdView);
 
     BaseActivity act = (BaseActivity) getContext();

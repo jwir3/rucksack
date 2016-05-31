@@ -4,7 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
@@ -27,6 +29,8 @@ public class PackableItemRecyclerAdapter
   extends RecyclerView.Adapter<PackableItemRecyclerAdapter.PackableItemViewHolder> {
 
   public static class PackableItemViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.packable_item_checkbox) protected CheckBox mPackableItemCheckbox;
+    @Bind(R.id.packable_item_icon) protected ImageView mPackableItemIcon;
     @Bind(R.id.pack_item_name_textview) protected TextView mPackItemNameTextView;
     @Bind(R.id.pack_item_delete_button) protected ImageButton mPackItemDeleteButton;
 
@@ -37,16 +41,24 @@ public class PackableItemRecyclerAdapter
   }
 
   private List<PackableItem> mItems;
+  private boolean mShouldAllowDelete = false;
+  private int mBackgroundColor;
+  private boolean mSelectable = false;
 
   @Inject PackableItemDataProvider mPackableItemProvider;
 
-  public PackableItemRecyclerAdapter(List<PackableItem> items) {
+  public PackableItemRecyclerAdapter(List<PackableItem> items, boolean aShouldAllowDelete,
+                                     int aBackgroundColor, boolean aSelectable) {
     Injector.INSTANCE.getApplicationComponent().inject(this);
     if (items != null) {
       mItems = items;
     } else {
       mItems = new ArrayList<>();
     }
+
+    mShouldAllowDelete = aShouldAllowDelete;
+    mBackgroundColor = aBackgroundColor;
+    mSelectable = aSelectable;
   }
 
   // Create new views (invoked by the layout manager)
@@ -55,9 +67,23 @@ public class PackableItemRecyclerAdapter
                                                    int viewType) {
     // create a new view
     View v = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.pack_item_list_item, parent, false);
+                           .inflate(R.layout.packable_item_list_item, parent, false);
 
+    v.setBackgroundColor(mBackgroundColor);
     PackableItemViewHolder vh = new PackableItemViewHolder(v);
+
+    if (!mShouldAllowDelete) {
+      vh.mPackItemDeleteButton.setVisibility(View.GONE);
+    }
+
+    if (!mSelectable) {
+      vh.mPackableItemCheckbox.setVisibility(View.GONE);
+      vh.mPackableItemIcon.setVisibility(View.VISIBLE);
+    } else {
+      vh.mPackableItemCheckbox.setVisibility(View.VISIBLE);
+      vh.mPackableItemIcon.setVisibility(View.GONE);
+    }
+
     return vh;
   }
 
