@@ -15,6 +15,7 @@ import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,6 +28,8 @@ import butterknife.ButterKnife;
  */
 public class PackableItemRecyclerAdapter
   extends RecyclerView.Adapter<PackableItemRecyclerAdapter.PackableItemViewHolder> {
+
+  private static final String LOGTAG = PackableItemRecyclerAdapter.class.getSimpleName();
 
   public static class PackableItemViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.packable_item_checkbox) protected CheckBox mPackableItemCheckbox;
@@ -41,6 +44,7 @@ public class PackableItemRecyclerAdapter
   }
 
   private List<PackableItem> mItems;
+  private List<PackableItem> mSelectedItems = new ArrayList<>();
   private boolean mShouldAllowDelete = false;
   private int mBackgroundColor;
   private boolean mSelectable = false;
@@ -93,6 +97,15 @@ public class PackableItemRecyclerAdapter
                                int position) {
     holder.mPackItemNameTextView.setText(mItems.get(position).getName());
     holder.mPackItemDeleteButton.setOnClickListener(v -> remove(holder.getAdapterPosition()));
+    holder.mPackableItemCheckbox.setOnCheckedChangeListener(
+      (buttonView, isChecked) -> {
+        PackableItem item = mItems.get(position);
+        if (isChecked) {
+          mSelectedItems.add(item);
+        } else {
+          mSelectedItems.remove(item);
+        }
+      });
   }
 
   @Override
@@ -119,5 +132,15 @@ public class PackableItemRecyclerAdapter
     mItems.remove(position);
     mPackableItemProvider.saveAll(mItems);
     notifyDataSetChanged();
+  }
+
+  /**
+   * Retrieve an immutable {@link List} of the {@link PackableItem}s that a user has selected from
+   * this {@link PackableItemRecyclerAdapter}.
+   *
+   * @return A {@link List} containing the {@link PackableItem}s the user has selected.
+   */
+  public List<PackableItem> getSelectedItems() {
+    return Collections.unmodifiableList(mSelectedItems);
   }
 }

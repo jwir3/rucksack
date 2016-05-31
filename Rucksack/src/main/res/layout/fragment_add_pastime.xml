@@ -65,6 +65,7 @@
                 <!--android:layout_height="1dp"-->
                 <!--android:background="@color/dove_gray" />-->
             <com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView
+                android:id="@+id/pastime_check_items"
                 android:layout_below="@id/pastime_items_section_title"
                 glasstower:allowDeletion="false"
                 glasstower:backgroundColor="@color/hintOfRed"

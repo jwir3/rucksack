@@ -111,6 +111,11 @@ public class PackableItemRecyclerView extends RecyclerView {
       setVisibility(View.GONE);
     }
   }
+
+  public List<PackableItem> getSelectedItems() {
+    return mAdapter.getSelectedItems();
+  }
+
   private List<PackableItem> getItems() {
     return mPackableItemDataProvider.getAll();
   }

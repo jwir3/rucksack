@@ -17,6 +17,7 @@ import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeIconSpinnerAdapter;
+import com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
 import javax.inject.Inject;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 public class AddPastimeFragment extends Fragment {
   @Bind(R.id.pastime_name_input) EditText mPastimeNameInput;
   @Bind(R.id.pastime_icon_spinner) Spinner mPastimeIconSpinner;
+  @Bind(R.id.pastime_check_items) PackableItemRecyclerView mRecyclerView;
 
   @Inject PastimeDataProvider mPastimeDataProvider;
 
@@ -79,7 +81,8 @@ public class AddPastimeFragment extends Fragment {
     Integer pastimeIconResource = (Integer) mPastimeIconSpinner.getSelectedItem();
 
     return new Pastime(pastimeName,
-                       Pastime.getResourceNameForId(pastimeIconResource, getContext()));
+                       Pastime.getResourceNameForId(pastimeIconResource, getContext()),
+                       mRecyclerView.getSelectedItems());
   }
 
 }
