@@ -11,20 +11,20 @@ import org.joda.time.Period;
 public class Trip {
   private String mDestinationName;
   private DateTime mStartDate;
-  private DateTime mEndDate;
+  private int mNightLength;
 
   public Trip() {
     super();
   }
 
-  public Trip(String destinationName, DateTime startDate, DateTime endDate) {
+  public Trip(String destinationName, DateTime startDate, int aNightLength) {
     mDestinationName = destinationName;
     mStartDate = startDate;
-    mEndDate = endDate;
+    mNightLength = aNightLength;
   }
 
   public Trip(String destinationName) {
-    this(destinationName, null, null);
+    this(destinationName, null, 0);
   }
 
   public String getDestinationName() {
@@ -36,7 +36,7 @@ public class Trip {
   }
 
   public DateTime getEndDate() {
-    return mEndDate;
+    return mStartDate.plusDays(mNightLength);
   }
 
   public int getDurationOfYears() {
@@ -66,7 +66,7 @@ public class Trip {
   }
 
   private Period getDuration() {
-    return new Period(mStartDate, mEndDate);
+    return new Period(mStartDate, getEndDate());
   }
 
   @Override
