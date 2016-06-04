@@ -14,6 +14,7 @@ import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.view.PastimeCard;
+import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
 import java.util.ArrayList;
@@ -43,12 +44,20 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
   @Inject PastimeDataProvider mPastimeDataProvider;
   private List<Pastime> mPastimes;
 
-  public PastimeRecyclerAdapter() {
-    this(null);
+  private int mSelectedItem = -1;
+
+  private PastimeSelector.SelectionAttribute mSelectionAttribute =
+    PastimeSelector.SelectionAttribute.NONE;
+
+  public PastimeRecyclerAdapter(PastimeSelector.SelectionAttribute selectability) {
+    this(null, selectability);
     Injector.INSTANCE.getApplicationComponent().inject(this);
   }
 
-  public PastimeRecyclerAdapter(List<Pastime> pastimes) {
+  public PastimeRecyclerAdapter(List<Pastime> pastimes,
+                                PastimeSelector.SelectionAttribute selectability) {
+    mSelectionAttribute = selectability;
+
     if (pastimes != null) {
       setItems(pastimes);
     } else {
@@ -63,23 +72,71 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
     PastimeCard card = (PastimeCard) LayoutInflater.from(parent.getContext())
                                                 .inflate(R.layout.pastime_card, parent, false);
 
-    card.setOnClickListener(v1 -> {
-      PastimeCard cardReference = (PastimeCard) v1;
-      cardReference.toggle();
-    });
-
     PastimeViewHolder vh = new PastimeViewHolder(card);
     return vh;
   }
 
+  private void toggleCardsBasedOnSelectability(View v1, int viewLayoutPosition) {
+    PastimeCard cardReference = (PastimeCard) v1;
+
+    switch (mSelectionAttribute) {
+      case NONE:
+        // Don't need to do anything here.
+        break;
+
+      case SINGLE:
+        if (mSelectedItem > -1) {
+          notifyItemChanged(mSelectedItem);
+        }
+
+        if (viewLayoutPosition == mSelectedItem) {
+          mSelectedItem = -1;
+          notifyItemChanged(viewLayoutPosition);
+        } else {
+
+          mSelectedItem = viewLayoutPosition;
+          notifyItemChanged(mSelectedItem);
+        }
+
+        break;
+
+      case MULTI:
+      default:
+        cardReference.toggle();
+    }
+  }
+
   @Override
   public void onBindViewHolder(PastimeViewHolder holder, int position) {
+    PastimeCard card = (PastimeCard) holder.itemView;
+
+    if (isInSingleSelectionMode()) {
+      ensureOnlyOneItemSelected(card, position);
+    }
+
+    card.setOnClickListener(v1 -> {
+      toggleCardsBasedOnSelectability(v1, holder.getLayoutPosition());
+    });
+
     Pastime pastime = mPastimes.get(position);
     holder.mPastimeNameTextView.setText(pastime.getName());
 
     Context c = holder.mPastimeIconImageView.getContext();
     Drawable pastimeIcon = pastime.getIcon(c);
     holder.mPastimeIconImageView.setImageDrawable(pastimeIcon);
+
+  }
+
+  private void ensureOnlyOneItemSelected(PastimeCard card, int position) {
+    if (mSelectedItem != position) {
+      card.setChecked(false);
+    } else {
+      card.setChecked(true);
+    }
+  }
+
+  private boolean isInSingleSelectionMode() {
+    return mSelectionAttribute == PastimeSelector.SelectionAttribute.SINGLE;
   }
 
   @Override

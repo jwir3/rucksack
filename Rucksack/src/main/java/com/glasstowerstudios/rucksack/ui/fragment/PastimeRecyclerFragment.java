@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
-import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
+import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 import com.google.gson.Gson;
 
@@ -37,16 +36,10 @@ public class PastimeRecyclerFragment
 
   private static final String LOGTAG = PastimeRecyclerFragment.class.getSimpleName();
 
-  @Bind(R.id.pastime_recycler_view)
-  protected RecyclerView mRecyclerView;
+  @Bind(R.id.pastime_selector) PastimeSelector mSelector;
 
   @Bind(R.id.pastime_swipe_refresh)
   protected SwipeRefreshLayout mSwipeRefreshLayout;
-
-  @Bind(R.id.empty_view)
-  protected View mEmptyView;
-
-  private PastimeRecyclerAdapter mAdapter;
 
   @Inject Gson mGson;
   @Inject PastimeDataProvider mPastimeDataProvider;
@@ -79,21 +72,6 @@ public class PastimeRecyclerFragment
     ActionBar appBar = act.getSupportActionBar();
     appBar.setTitle(R.string.pastimes);
 
-    mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-
-    mAdapter = new PastimeRecyclerAdapter();
-
-    RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
-      @Override
-      public void onChanged() {
-        refreshVisibility();
-      }
-    };
-
-    mAdapter.registerAdapterDataObserver(observer);
-
-    mRecyclerView.setAdapter(mAdapter);
-
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
     return createdView;
@@ -104,22 +82,9 @@ public class PastimeRecyclerFragment
     mSwipeRefreshLayout.setRefreshing(true);
 
     List<Pastime> pastimes = initPastimes();
-
-    mAdapter.setItems(pastimes);
-
-    refreshVisibility();
+    mSelector.setPastimes(pastimes);
 
     mSwipeRefreshLayout.setRefreshing(false);
-  }
-
-  private void refreshVisibility() {
-    if (mAdapter.getItemCount() > 0) {
-      mRecyclerView.setVisibility(View.VISIBLE);
-      mEmptyView.setVisibility(View.GONE);
-    } else {
-      mRecyclerView.setVisibility(View.GONE);
-      mEmptyView.setVisibility(View.VISIBLE);
-    }
   }
 
   // TODO: Remove this method in favor of a one-time data initialization.
