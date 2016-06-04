@@ -23,6 +23,7 @@ import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -44,13 +45,11 @@ public class AddTripFragment
   private static final String LOGTAG = AddTripFragment.class.getSimpleName();
 
   private boolean mStartCalendarChooserOpen = false;
-  private boolean mEndCalendarChooserOpen = false;
   private DateTime mChosenStartDate;
-  private DateTime mChosenEndDate;
 
   @Bind(R.id.destinationInput) protected EditText mDestinationInput;
   @Bind(R.id.startDateInput) protected EditText mStartDateInput;
-  @Bind(R.id.endDateInput) protected EditText mEndDateInput;
+  @Bind(R.id.nights_seek_bar) protected DiscreteSeekBar mNightsSeekBar;
 
   @Inject TripDataProvider mTripDataProvider;
 
@@ -98,23 +97,6 @@ public class AddTripFragment
       }
     });
 
-    mEndDateInput.setOnTouchListener(new View.OnTouchListener() {
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-        ((TripsActivity) getActivity()).dismissKeyboardIfOpen();
-        if (!mEndCalendarChooserOpen) {
-          if (mChosenEndDate != null) {
-            openCalendarChooser(mEndDateInput, mChosenEndDate);
-          } else if (mChosenStartDate != null) {
-            openCalendarChooser(mEndDateInput, mChosenStartDate);
-          } else {
-            openCalendarChooser(mEndDateInput, DateTime.now());
-          }
-        }
-        return true;
-      }
-    });
-
     return v;
   }
 
@@ -149,7 +131,8 @@ public class AddTripFragment
 
   private Trip createTripFromInput() {
     String destName = mDestinationInput.getText().toString();
-    return new Trip(destName, mChosenStartDate, mChosenEndDate);
+    int numNights = mNightsSeekBar.getProgress();
+    return new Trip(destName, mChosenStartDate, numNights);
   }
 
   /**
@@ -157,7 +140,7 @@ public class AddTripFragment
    *
    * @param tappedView The {@link View} that was tapped to display the calendar chooser. Must be
    *                   either the startDateInput or endDateInput.
-   * @param dateTime The {@link DateTime} to start the calender chooser out with.
+   * @param dateTime The {@link DateTime} to start the calendar chooser out with.
    */
   public void openCalendarChooser(View tappedView, DateTime dateTime) {
     DatePickerDialog datePicker = new DatePickerDialog(getActivity(), this, dateTime.getYear(),
@@ -165,8 +148,6 @@ public class AddTripFragment
                                                        dateTime.getDayOfMonth());
     if (tappedView.getId() == R.id.startDateInput) {
       mStartCalendarChooserOpen = true;
-    } else {
-      mEndCalendarChooserOpen = true;
     }
 
     datePicker.show();
@@ -181,10 +162,6 @@ public class AddTripFragment
       mStartDateInput.setText(dateTimeFormatted);
       mChosenStartDate = chosenDateTime;
       mStartCalendarChooserOpen = false;
-    } else {
-      mEndDateInput.setText(dateTimeFormatted);
-      mChosenEndDate = chosenDateTime;
-      mEndCalendarChooserOpen = false;
     }
   }
 }
