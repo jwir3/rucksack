@@ -6,9 +6,9 @@ import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.fragment.AddPastimeFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.AddTripFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.PackableItemRecyclerFragment;
-import com.glasstowerstudios.rucksack.ui.fragment.PastimeRecyclerFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.TripRecyclerFragment;
 import com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView;
+import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
 
 import javax.inject.Singleton;
 
@@ -20,8 +20,6 @@ import dagger.Component;
 @Singleton
 @Component(modules={ApplicationModule.class, GsonModule.class, DataProviderModule.class})
 public interface ApplicationComponent {
-  void inject(PastimeRecyclerFragment fragment);
-
   void inject(TripRecyclerAdapter tripRecyclerAdapter);
 
   void inject(AddTripFragment addTripFragment);
@@ -37,4 +35,6 @@ public interface ApplicationComponent {
   void inject(PackableItemRecyclerFragment packableItemRecyclerFragment);
 
   void inject(PackableItemRecyclerView packableItemRecyclerView);
+
+  void inject(PastimeSelector pastimeSelector);
 }

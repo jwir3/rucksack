@@ -10,6 +10,6 @@
         android:id='@+id/pastime_selector'
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        glasstower:selection="single" />
+        glasstower:selection="none" />
 
 </android.support.v4.widget.SwipeRefreshLayout>

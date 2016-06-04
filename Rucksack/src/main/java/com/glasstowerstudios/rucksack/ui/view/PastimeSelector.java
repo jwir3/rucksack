@@ -10,10 +10,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
+import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,9 +28,12 @@ import butterknife.ButterKnife;
  * an empty view.
  */
 public class PastimeSelector extends LinearLayout {
+
   public enum SelectionAttribute {
     NONE, SINGLE, MULTI
   }
+
+  @Inject PastimeDataProvider mPastimeDataProvider;
 
   @Bind(R.id.pastime_recycler_view)
   protected RecyclerView mRecyclerView;
@@ -54,6 +62,10 @@ public class PastimeSelector extends LinearLayout {
     init();
   }
 
+  public void refresh() {
+    setPastimes(populatePastimes());
+  }
+
   public void setPastimes(List<Pastime> pastimes) {
     mAdapter.setItems(pastimes);
     mAdapter.notifyDataSetChanged();
@@ -61,6 +73,8 @@ public class PastimeSelector extends LinearLayout {
 
   private void init() {
     inflate(getContext(), R.layout.pastime_selector, this);
+
+    Injector.INSTANCE.getApplicationComponent().inject(this);
 
     ButterKnife.bind(this);
 
@@ -78,6 +92,8 @@ public class PastimeSelector extends LinearLayout {
     mAdapter.registerAdapterDataObserver(observer);
 
     mRecyclerView.setAdapter(mAdapter);
+
+    refresh();
   }
 
   private void setupSelectionAttributes(AttributeSet attrs, int defStyle) {
@@ -110,4 +126,26 @@ public class PastimeSelector extends LinearLayout {
     }
   }
 
+  // TODO: Remove this method in favor of a one-time data initialization.
+  private List<Pastime> populatePastimes() {
+    List<Pastime> allPastimes = mPastimeDataProvider.getAll();
+
+    if (allPastimes.isEmpty()) {
+      Pastime work = new Pastime("Work", "ic_pastime_work", new ArrayList<>());
+      Pastime diving = new Pastime("Diving", "ic_pastime_diving", new ArrayList<>());
+      Pastime dining = new Pastime("Dining", "ic_pastime_dining", new ArrayList<>());
+      Pastime athletics = new Pastime("Athletics", "ic_pastime_athletics", new ArrayList<>());
+
+      List<Pastime> pastimes = new ArrayList<>();
+      pastimes.add(work);
+      pastimes.add(diving);
+      pastimes.add(dining);
+      pastimes.add(athletics);
+      mPastimeDataProvider.saveAll(pastimes);
+
+      allPastimes = mPastimeDataProvider.getAll();
+    }
+
+    return allPastimes;
+  }
 }
