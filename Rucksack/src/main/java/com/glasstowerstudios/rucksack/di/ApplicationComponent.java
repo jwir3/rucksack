@@ -3,7 +3,7 @@ package com.glasstowerstudios.rucksack.di;
 import com.glasstowerstudios.rucksack.ui.adapter.PackableItemRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
-import com.glasstowerstudios.rucksack.ui.fragment.AddPastimeFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.PastimeDetailFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.AddTripDetailsFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.PackableItemRecyclerFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.TripPastimeSelectionFragment;
@@ -29,7 +29,7 @@ public interface ApplicationComponent {
 
   void inject(PastimeRecyclerAdapter pastimeRecyclerAdapter);
 
-  void inject(AddPastimeFragment addPastimeFragment);
+  void inject(PastimeDetailFragment pastimeDetailFragment);
 
   void inject(PackableItemRecyclerAdapter packableItemRecyclerAdapter);
 

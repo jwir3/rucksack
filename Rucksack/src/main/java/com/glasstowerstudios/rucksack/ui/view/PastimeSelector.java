@@ -13,6 +13,7 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
+import com.glasstowerstudios.rucksack.ui.observer.PastimeSelectionListener;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
 import java.util.ArrayList;
@@ -151,5 +152,13 @@ public class PastimeSelector extends LinearLayout {
     }
 
     return allPastimes;
+  }
+
+  public void addPastimeSelectionListener(PastimeSelectionListener listener) {
+    mAdapter.addPastimeSelectionListener(listener);
+  }
+
+  public void removePastimeSelectionListener(PastimeSelectionListener listener) {
+    mAdapter.removePastimeSelectionListener(listener);
   }
 }

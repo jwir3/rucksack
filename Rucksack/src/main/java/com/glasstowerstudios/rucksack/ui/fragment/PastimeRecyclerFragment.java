@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
+import com.glasstowerstudios.rucksack.ui.activity.PastimesActivity;
+import com.glasstowerstudios.rucksack.ui.observer.PastimeSelectionListener;
 import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
 
 import butterknife.Bind;
@@ -23,7 +25,7 @@ import butterknife.ButterKnife;
  */
 public class PastimeRecyclerFragment
   extends Fragment
-  implements SwipeRefreshLayout.OnRefreshListener {
+  implements SwipeRefreshLayout.OnRefreshListener, PastimeSelectionListener {
 
   private static final String LOGTAG = PastimeRecyclerFragment.class.getSimpleName();
 
@@ -56,11 +58,22 @@ public class PastimeRecyclerFragment
     act.enableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();
-    appBar.setTitle(R.string.pastimes);
+    if (appBar != null) {
+      appBar.setTitle(R.string.pastimes);
+    }
 
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
+    mSelector.addPastimeSelectionListener(this);
+
     return createdView;
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    mSelector.removePastimeSelectionListener(this);
   }
 
   @Override
@@ -70,5 +83,14 @@ public class PastimeRecyclerFragment
     mSelector.refresh();
 
     mSwipeRefreshLayout.setRefreshing(false);
+  }
+
+  @Override
+  public void onPastimeSelected(Pastime pastime) {
+    Bundle args = new Bundle();
+    args.putParcelable(PastimeDetailFragment.PASTIME_KEY, pastime);
+
+    PastimesActivity act = (PastimesActivity) getActivity();
+    act.showFragment(PastimeDetailFragment.class, args, true);
   }
 }

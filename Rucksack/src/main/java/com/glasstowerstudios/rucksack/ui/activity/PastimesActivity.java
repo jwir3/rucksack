@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.Pastime;
-import com.glasstowerstudios.rucksack.ui.fragment.AddPastimeFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.PastimeDetailFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.PastimeRecyclerFragment;
 
 import butterknife.ButterKnife;
@@ -32,7 +32,7 @@ public class PastimesActivity extends BaseActivity {
 
   @Override
   public void onFloatingActionButtonClick(View view) {
-    showNonRootFragment(AddPastimeFragment.class, new Bundle());
+    showNonRootFragment(PastimeDetailFragment.class, new Bundle());
   }
 
   @Override

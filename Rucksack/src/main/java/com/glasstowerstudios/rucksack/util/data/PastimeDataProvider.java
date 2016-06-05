@@ -4,7 +4,6 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.glasstowerstudios.rucksack.model.Pastime;
-import com.glasstowerstudios.rucksack.model.Trip;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -37,9 +36,6 @@ public class PastimeDataProvider {
     return storeProvider.listStore(PASTIME_LIST_STORAGE_KEY, Pastime.class);
   }
 
-  /**
-   * @return A {@link List} of all {@link Trip} objects in the database.
-   */
   public List<Pastime> getAll() {
     StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
     return pastimeStore.getBlocking();
