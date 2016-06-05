@@ -1,6 +1,7 @@
 package com.glasstowerstudios.rucksack.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- *
+ * A {@link RecyclerView.Adapter} that adapts {@link Trip} objects to be presented in a
+ * {@link RecyclerView}. Typically used by the {@link com.glasstowerstudios.rucksack.ui.fragment.TripRecyclerFragment}.
  */
 public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapter.TripViewHolder> {
+  private static final String LOGTAG = TripRecyclerAdapter.class.getSimpleName();
+
   public static class TripViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.trip_destination_name) protected TextView mDestinationName;
@@ -99,6 +103,11 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
 
   public void setTrips(List<Trip> trips) {
     mTrips = trips;
+
+    for (Trip trip : trips) {
+      Log.d(LOGTAG, "***** DEBUG_jwir3: Saw trip: " + trip);
+    }
+
     notifyDataSetChanged();
   }
 

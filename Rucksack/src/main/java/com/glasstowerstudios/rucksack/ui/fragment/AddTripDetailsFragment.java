@@ -6,18 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
-import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
@@ -35,14 +32,14 @@ import butterknife.ButterKnife;
 
 /**
  * A {@link Fragment} displayed when the user decides to add a new trip to the system. This will
- * prompt the user for the basic information about the trip and place the new trip in the
- * {@link TripRecyclerFragment}.
+ * prompt the user for the basic information about the trip and allow the user to navigate to the
+ * {@link TripPastimeSelectionFragment}.
  */
-public class AddTripFragment
+public class AddTripDetailsFragment
   extends Fragment
   implements DatePickerDialog.OnDateSetListener {
 
-  private static final String LOGTAG = AddTripFragment.class.getSimpleName();
+  private static final String LOGTAG = AddTripDetailsFragment.class.getSimpleName();
 
   private boolean mStartCalendarChooserOpen = false;
   private DateTime mChosenStartDate;
@@ -50,10 +47,11 @@ public class AddTripFragment
   @Bind(R.id.destinationInput) protected EditText mDestinationInput;
   @Bind(R.id.startDateInput) protected EditText mStartDateInput;
   @Bind(R.id.nights_seek_bar) protected DiscreteSeekBar mNightsSeekBar;
+  @Bind(R.id.next_select_pastime_button) Button mNextSelectPastimesButton;
 
   @Inject TripDataProvider mTripDataProvider;
 
-  public AddTripFragment() {
+  public AddTripDetailsFragment() {
     // Required empty public constructor
   }
 
@@ -71,10 +69,12 @@ public class AddTripFragment
     act.disableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();
-    appBar.setDisplayHomeAsUpEnabled(true);
-    appBar.setDisplayShowHomeEnabled(false);
+    if (appBar != null) {
+      appBar.setDisplayHomeAsUpEnabled(true);
+      appBar.setDisplayShowHomeEnabled(false);
+      appBar.setTitle(R.string.addTrip);
+    }
 
-    appBar.setTitle(R.string.addTrip);
 
     setHasOptionsMenu(true);
 
@@ -97,14 +97,18 @@ public class AddTripFragment
       }
     });
 
+    mNextSelectPastimesButton.setOnClickListener(v1 -> {
+      Bundle args = new Bundle();
+      String destination = mDestinationInput.getText().toString();
+      args.putString(TripPastimeSelectionFragment.TRIP_DESTINATION, destination);
+      args.putString(TripPastimeSelectionFragment.TRIP_START_DATE, getStartDateAsString());
+      args.putInt(TripPastimeSelectionFragment.TRIP_NUM_NIGHTS, mNightsSeekBar.getProgress());
+
+      BaseActivity tripsActivity = (BaseActivity) getActivity();
+      tripsActivity.showFragment(TripPastimeSelectionFragment.class, args, true);
+    });
+
     return v;
-  }
-
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
-
-    inflater.inflate(R.menu.submit_action_menu, menu);
   }
 
   @Override
@@ -113,26 +117,6 @@ public class AddTripFragment
     Activity act = getActivity();
     BaseActivity baseAct = (BaseActivity) act;
     baseAct.lockNavigationDrawer();
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch(item.getItemId()) {
-      case R.id.confirm:
-        Trip trip = createTripFromInput();
-        mTripDataProvider.save(trip);
-        TripsActivity act = (TripsActivity) getActivity();
-        act.onBackPressed();
-        return true;
-    }
-
-    return super.onOptionsItemSelected(item);
-  }
-
-  private Trip createTripFromInput() {
-    String destName = mDestinationInput.getText().toString();
-    int numNights = mNightsSeekBar.getProgress();
-    return new Trip(destName, mChosenStartDate, numNights);
   }
 
   /**
@@ -163,5 +147,9 @@ public class AddTripFragment
       mChosenStartDate = chosenDateTime;
       mStartCalendarChooserOpen = false;
     }
+  }
+
+  private String getStartDateAsString() {
+    return TemporalFormatter.TRIP_DATES_FORMATTER.print(mChosenStartDate);
   }
 }

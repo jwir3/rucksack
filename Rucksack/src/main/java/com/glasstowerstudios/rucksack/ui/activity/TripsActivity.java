@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.Trip;
-import com.glasstowerstudios.rucksack.ui.fragment.AddTripFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.AddTripDetailsFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.TripRecyclerFragment;
 
 import butterknife.ButterKnife;
@@ -38,7 +38,7 @@ public class TripsActivity extends BaseActivity {
 
   @Override
   public void onFloatingActionButtonClick(View view) {
-    this.showFragment(AddTripFragment.class, new Bundle(), true);
+    this.showFragment(AddTripDetailsFragment.class, new Bundle(), true);
   }
 
   @Override
