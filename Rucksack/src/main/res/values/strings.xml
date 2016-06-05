@@ -43,4 +43,6 @@
     <string name="nights">Nights</string>
     <string name="next_select_pastimes">Next: Select Pastimes</string>
     <string name="select_pastimes">Select Pastimes</string>
+    <string name="pastime_item_selection_empty">Oops! No packable items are available.</string>
+    <string name="delete">Delete</string>
 </resources>

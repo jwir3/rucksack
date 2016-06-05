@@ -13,6 +13,7 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.model.Pastime;
+import com.glasstowerstudios.rucksack.ui.observer.PastimeSelectionListener;
 import com.glasstowerstudios.rucksack.ui.view.PastimeCard;
 import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
@@ -46,6 +47,8 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
   private List<Pastime> mPastimes;
 
   private List<Integer> mSelectedItems;
+
+  private List<PastimeSelectionListener> mPastimeSelectionListeners = new LinkedList<>();
 
   private PastimeSelector.SelectionAttribute mSelectionAttribute =
     PastimeSelector.SelectionAttribute.NONE;
@@ -137,6 +140,7 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
 
     card.setOnClickListener(v1 -> {
       toggleCardsBasedOnSelectability(v1, holder.getLayoutPosition());
+      notifyPastimeSelectionListeners(mPastimes.get(holder.getLayoutPosition()));
     });
 
     Pastime pastime = mPastimes.get(position);
@@ -193,6 +197,20 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
     mPastimeDataProvider.delete(p);
     sortPastimesByName();
     notifyDataSetChanged();
+  }
+
+  public void addPastimeSelectionListener(PastimeSelectionListener listener) {
+    mPastimeSelectionListeners.add(listener);
+  }
+
+  public void removePastimeSelectionListener(PastimeSelectionListener listener) {
+    mPastimeSelectionListeners.remove(listener);
+  }
+
+  private void notifyPastimeSelectionListeners(Pastime pastime) {
+    for (PastimeSelectionListener listener : mPastimeSelectionListeners) {
+      listener.onPastimeSelected(pastime);
+    }
   }
 
   private void sortPastimesByName() {

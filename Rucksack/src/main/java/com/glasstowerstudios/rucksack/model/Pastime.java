@@ -2,6 +2,9 @@ package com.glasstowerstudios.rucksack.model;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.glasstowerstudios.rucksack.R;
 
@@ -17,7 +20,7 @@ import rx.Observable;
  * A Pastime, or activity that can be performed while on a {@link Trip}. Has a one-to-many
  * relationship with packable items, and a many-to-many relationship with {@link Trip}s.
  */
-public class Pastime implements Comparable<Pastime> {
+public class Pastime implements Comparable<Pastime>, Parcelable {
 
   private String name;
   private String mIconResource;
@@ -36,6 +39,11 @@ public class Pastime implements Comparable<Pastime> {
     name = aName;
     mIconResource = iconResource;
     mPackableItems = items;
+  }
+
+  protected Pastime(Parcel in) {
+    name = in.readString();
+    mIconResource = in.readString();
   }
 
   public String getIconResourceName() {
@@ -62,8 +70,15 @@ public class Pastime implements Comparable<Pastime> {
   }
 
   @Override
-  public int compareTo(Pastime another) {
+  public int compareTo(@NonNull Pastime another) {
     return getName().compareTo(another.getName());
+  }
+
+  @Override
+  public boolean equals(Object aOther) {
+    return aOther instanceof Pastime
+           && getName().equals(((Pastime) aOther).getName())
+           && getIconResourceName().equals(((Pastime) aOther).getIconResourceName());
   }
 
   /**
@@ -149,4 +164,27 @@ public class Pastime implements Comparable<Pastime> {
 
     return resourceIdentifiers;
   }
+  
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(name);
+    dest.writeString(mIconResource);
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  public static final Creator<Pastime> CREATOR = new Creator<Pastime>() {
+    @Override
+    public Pastime createFromParcel(Parcel in) {
+      return new Pastime(in);
+    }
+
+    @Override
+    public Pastime[] newArray(int size) {
+      return new Pastime[size];
+    }
+  };
 }

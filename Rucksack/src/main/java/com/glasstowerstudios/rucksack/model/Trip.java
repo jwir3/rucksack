@@ -115,4 +115,8 @@ public class Trip {
 
     return tripStringRepresentation;
   }
+
+  public List<Pastime> getPastimes() {
+    return mPastimes;
+  }
 }
