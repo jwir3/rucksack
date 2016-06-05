@@ -71,6 +71,10 @@ public class PastimeSelector extends LinearLayout {
     mAdapter.notifyDataSetChanged();
   }
 
+  public List<Pastime> getSelectedPastimes() {
+    return mAdapter.getSelectedPastimes();
+  }
+
   private void init() {
     inflate(getContext(), R.layout.pastime_selector, this);
 

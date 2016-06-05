@@ -5,6 +5,10 @@ import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * A data model representing a travel experience a user can take.
  */
@@ -13,18 +17,22 @@ public class Trip {
   private DateTime mStartDate;
   private int mNightLength;
 
+  private List<Pastime> mPastimes = new LinkedList<>();
+
   public Trip() {
     super();
   }
 
-  public Trip(String destinationName, DateTime startDate, int aNightLength) {
+  public Trip(String destinationName, DateTime startDate, int aNightLength,
+              List<Pastime> aPastimes) {
     mDestinationName = destinationName;
     mStartDate = startDate;
     mNightLength = aNightLength;
+    mPastimes = aPastimes;
   }
 
   public Trip(String destinationName) {
-    this(destinationName, null, 0);
+    this(destinationName, null, 0, new ArrayList<>());
   }
 
   public String getDestinationName() {
@@ -89,5 +97,22 @@ public class Trip {
     result = 37 * result + (getEndDate() == null ? 0 : getEndDate().hashCode());
 
     return result;
+  }
+
+  @Override
+  public String toString() {
+    String tripStringRepresentation = "Trip to "
+                                      + getDestinationName()
+                                      + ", starting on "
+                                      + TemporalFormatter.TRIP_DATES_FORMATTER.print(getStartDate())
+                                      + " for "
+                                      + mNightLength
+                                      + " nights, with pastimes:";
+
+    for (Pastime pastime : mPastimes) {
+      tripStringRepresentation = tripStringRepresentation + "\n" + "\t- " + pastime.getName();
+    }
+
+    return tripStringRepresentation;
   }
 }

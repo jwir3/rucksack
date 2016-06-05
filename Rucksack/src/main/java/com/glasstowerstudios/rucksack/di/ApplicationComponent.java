@@ -4,8 +4,9 @@ import com.glasstowerstudios.rucksack.ui.adapter.PackableItemRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.fragment.AddPastimeFragment;
-import com.glasstowerstudios.rucksack.ui.fragment.AddTripFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.AddTripDetailsFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.PackableItemRecyclerFragment;
+import com.glasstowerstudios.rucksack.ui.fragment.TripPastimeSelectionFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.TripRecyclerFragment;
 import com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView;
 import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
@@ -22,7 +23,7 @@ import dagger.Component;
 public interface ApplicationComponent {
   void inject(TripRecyclerAdapter tripRecyclerAdapter);
 
-  void inject(AddTripFragment addTripFragment);
+  void inject(AddTripDetailsFragment addTripDetailsFragment);
 
   void inject(TripRecyclerFragment tripRecyclerFragment);
 
@@ -37,4 +38,6 @@ public interface ApplicationComponent {
   void inject(PackableItemRecyclerView packableItemRecyclerView);
 
   void inject(PastimeSelector pastimeSelector);
+
+  void inject(TripPastimeSelectionFragment tripPastimeSelectionFragment);
 }

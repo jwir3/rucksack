@@ -80,7 +80,9 @@ public class TripRecyclerFragment
     act.enableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();
-    appBar.setTitle(R.string.trips);
+    if (appBar != null) {
+      appBar.setTitle(R.string.trips);
+    }
 
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(layoutManager);
@@ -110,16 +112,13 @@ public class TripRecyclerFragment
     mRecyclerView.setOnTouchListener(touchListener);
     mRecyclerView.setOnScrollListener((RecyclerView.OnScrollListener)touchListener.makeScrollListener());
     mRecyclerView.addOnItemTouchListener(new FixSwipeableItemClickListener(getContext(),
-                                           new OnItemClickListener() {
-                                             @Override
-                                             public void onItemClick(View view, int position) {
-                                               if (view.getId() == R.id.txt_delete) {
-                                                 touchListener.processPendingDismisses();
-                                               } else if (view.getId() == R.id.txt_undo) {
-                                                 touchListener.undoPendingDismiss();
-                                               }
-                                             }
-                                           }));
+                                                                           (view, position) -> {
+                                                                             if (view.getId() == R.id.txt_delete) {
+                                                                               touchListener.processPendingDismisses();
+                                                                             } else if (view.getId() == R.id.txt_undo) {
+                                                                               touchListener.undoPendingDismiss();
+                                                                             }
+                                                                           }));
 
     mSwipeRefreshLayout.setOnRefreshListener(this);
 

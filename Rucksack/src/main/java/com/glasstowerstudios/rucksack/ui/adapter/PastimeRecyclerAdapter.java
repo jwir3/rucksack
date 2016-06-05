@@ -18,6 +18,7 @@ import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,7 +45,7 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
   @Inject PastimeDataProvider mPastimeDataProvider;
   private List<Pastime> mPastimes;
 
-  private int mSelectedItem = -1;
+  private List<Integer> mSelectedItems;
 
   private PastimeSelector.SelectionAttribute mSelectionAttribute =
     PastimeSelector.SelectionAttribute.NONE;
@@ -63,6 +64,8 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
     } else {
       setItems(new ArrayList<>());
     }
+
+    mSelectedItems = new ArrayList<>();
   }
 
   // Create new views (invoked by the layout manager)
@@ -85,25 +88,43 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
         break;
 
       case SINGLE:
-        if (mSelectedItem > -1) {
-          notifyItemChanged(mSelectedItem);
+        if (mSelectedItems.isEmpty()) {
+          mSelectedItems.add(-1);
         }
 
-        if (viewLayoutPosition == mSelectedItem) {
-          mSelectedItem = -1;
+        if (mSelectedItems.get(0) > -1) {
+          notifyItemChanged(mSelectedItems.get(0));
+        }
+
+        if (viewLayoutPosition == mSelectedItems.get(0)) {
+          mSelectedItems.add(0, -1);
           notifyItemChanged(viewLayoutPosition);
         } else {
-
-          mSelectedItem = viewLayoutPosition;
-          notifyItemChanged(mSelectedItem);
+          mSelectedItems.add(0, viewLayoutPosition);
+          notifyItemChanged(mSelectedItems.get(0));
         }
 
         break;
 
       case MULTI:
       default:
+        if (cardReference.isChecked()) {
+          mSelectedItems.remove(viewLayoutPosition);
+        } else {
+          mSelectedItems.add(viewLayoutPosition);
+        }
+
         cardReference.toggle();
     }
+  }
+
+  public List<Pastime> getSelectedPastimes() {
+    List<Pastime> selectedPastimes = new LinkedList<>();
+    for (Integer i : mSelectedItems) {
+      selectedPastimes.add(mPastimes.get(i));
+    }
+
+    return selectedPastimes;
   }
 
   @Override
@@ -128,7 +149,11 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
   }
 
   private void ensureOnlyOneItemSelected(PastimeCard card, int position) {
-    if (mSelectedItem != position) {
+    if (mSelectedItems.isEmpty()) {
+      return;
+    }
+
+    if (mSelectedItems.get(0) != position) {
       card.setChecked(false);
     } else {
       card.setChecked(true);

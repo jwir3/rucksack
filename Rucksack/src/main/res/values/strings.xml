@@ -41,4 +41,6 @@
     <string name="rucksack_logo_description">Rucksack Logo</string>
     <string name="pastime_items">Packable Items</string>
     <string name="nights">Nights</string>
+    <string name="next_select_pastimes">Next: Select Pastimes</string>
+    <string name="select_pastimes">Select Pastimes</string>
 </resources>
