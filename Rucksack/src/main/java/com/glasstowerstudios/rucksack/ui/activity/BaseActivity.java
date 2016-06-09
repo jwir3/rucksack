@@ -26,6 +26,7 @@ import com.glasstowerstudios.rucksack.ui.fragment.AboutDialogFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Base activity class that all {@link Activity}s within Rucksack should derive from. Provides basic
@@ -358,5 +359,10 @@ public abstract class BaseActivity extends AppCompatActivity
 
   public void enableFloatingActionButton() {
     mFloatingActionButton.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
   }
 }

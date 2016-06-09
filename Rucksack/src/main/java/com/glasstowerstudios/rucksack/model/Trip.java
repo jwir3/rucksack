@@ -1,5 +1,9 @@
 package com.glasstowerstudios.rucksack.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 
 import org.joda.time.DateTime;
@@ -12,7 +16,7 @@ import java.util.List;
 /**
  * A data model representing a travel experience a user can take.
  */
-public class Trip {
+public class Trip implements Parcelable {
   private String mDestinationName;
   private DateTime mStartDate;
   private int mNightLength;
@@ -34,6 +38,36 @@ public class Trip {
   public Trip(String destinationName) {
     this(destinationName, null, 0, new ArrayList<>());
   }
+
+  protected Trip(Parcel in) {
+    mDestinationName = in.readString();
+    mNightLength = in.readInt();
+    mPastimes = in.createTypedArrayList(Pastime.CREATOR);
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(mDestinationName);
+    dest.writeInt(mNightLength);
+    dest.writeTypedList(mPastimes);
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+    @Override
+    public Trip createFromParcel(Parcel in) {
+      return new Trip(in);
+    }
+
+    @Override
+    public Trip[] newArray(int size) {
+      return new Trip[size];
+    }
+  };
 
   public String getDestinationName() {
     return mDestinationName;
@@ -116,7 +150,12 @@ public class Trip {
     return tripStringRepresentation;
   }
 
+  @NonNull
   public List<Pastime> getPastimes() {
+    if (mPastimes == null) {
+      mPastimes = new LinkedList<>();
+    }
+
     return mPastimes;
   }
 }

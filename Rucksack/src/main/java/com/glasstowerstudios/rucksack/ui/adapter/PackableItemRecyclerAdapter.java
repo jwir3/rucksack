@@ -15,7 +15,6 @@ import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -95,7 +94,12 @@ public class PackableItemRecyclerAdapter
   @Override
   public void onBindViewHolder(final PackableItemViewHolder holder,
                                int position) {
-    holder.mPackItemNameTextView.setText(mItems.get(position).getName());
+    PackableItem currentItem = mItems.get(position);
+    if (mSelectedItems.contains(currentItem)) {
+      holder.mPackableItemCheckbox.setChecked(true);
+    }
+
+    holder.mPackItemNameTextView.setText(currentItem.getName());
     holder.mPackItemDeleteButton.setOnClickListener(v -> remove(holder.getAdapterPosition()));
     holder.mPackableItemCheckbox.setOnCheckedChangeListener(
       (buttonView, isChecked) -> {
@@ -117,8 +121,16 @@ public class PackableItemRecyclerAdapter
     add(item, mItems.size());
   }
 
-  public void add(PackableItem trip, int position) {
-    mItems.add(position, trip);
+  public void add(PackableItem packableItem, int position) {
+    mItems.add(position, packableItem);
+    notifyDataSetChanged();
+  }
+
+  public void addAll(List<PackableItem> items) {
+    for (PackableItem item : items) {
+      mItems.add(item);
+    }
+
     notifyDataSetChanged();
   }
 
@@ -141,6 +153,10 @@ public class PackableItemRecyclerAdapter
    * @return A {@link List} containing the {@link PackableItem}s the user has selected.
    */
   public List<PackableItem> getSelectedItems() {
-    return Collections.unmodifiableList(mSelectedItems);
+    return mSelectedItems;
+  }
+
+  public void selectItems(List<PackableItem> aItems) {
+    mSelectedItems = aItems;
   }
 }

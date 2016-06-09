@@ -69,6 +69,10 @@ public class Pastime implements Comparable<Pastime>, Parcelable {
     return context.getResources().getDrawable(iconId);
   }
 
+  public List<PackableItem> getPackableItems() {
+    return mPackableItems;
+  }
+
   @Override
   public int compareTo(@NonNull Pastime another) {
     return getName().compareTo(another.getName());
@@ -164,7 +168,7 @@ public class Pastime implements Comparable<Pastime>, Parcelable {
 
     return resourceIdentifiers;
   }
-  
+
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(name);

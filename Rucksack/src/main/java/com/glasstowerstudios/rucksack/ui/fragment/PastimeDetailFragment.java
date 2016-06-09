@@ -2,7 +2,6 @@ package com.glasstowerstudios.rucksack.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +36,7 @@ public class PastimeDetailFragment extends Fragment {
 
   @Bind(R.id.pastime_name_input) EditText mPastimeNameInput;
   @Bind(R.id.pastime_icon_spinner) Spinner mPastimeIconSpinner;
-  @Bind(R.id.pastime_check_items) PackableItemRecyclerView mRecyclerView;
+  @Bind(R.id.pastime_check_items) PackableItemRecyclerView mPackableItemRecyclerView;
 
   private Pastime mPastime;
 
@@ -86,6 +85,10 @@ public class PastimeDetailFragment extends Fragment {
       if (positionOfIcon != -1) {
         mPastimeIconSpinner.setSelection(positionOfIcon);
       }
+
+      if (mPastime.getPackableItems() != null) {
+        mPackableItemRecyclerView.setSelectedItems(mPastime.getPackableItems());
+      }
     }
   }
 
@@ -133,7 +136,7 @@ public class PastimeDetailFragment extends Fragment {
 
     return new Pastime(pastimeName,
                        Pastime.getResourceNameForId(pastimeIconResource, getContext()),
-                       mRecyclerView.getSelectedItems());
+                       mPackableItemRecyclerView.getSelectedItems());
   }
 
   private int getSpinnerPositionOf(int iconResource) {

@@ -20,7 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- *
+ * A {@link RecyclerView} that shows {@link PackableItem}s.
  */
 public class PackableItemRecyclerView extends RecyclerView {
 
@@ -95,6 +95,16 @@ public class PackableItemRecyclerView extends RecyclerView {
 
   public void addItem(PackableItem aItem) {
     mAdapter.add(aItem);
+  }
+
+  public void addItems(List<PackableItem> aItems) {
+    for (PackableItem item : aItems) {
+      mAdapter.add(item);
+    }
+  }
+
+  public void setSelectedItems(List<PackableItem> aItems) {
+    mAdapter.selectItems(aItems);
   }
 
   public int getItemCount() {

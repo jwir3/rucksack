@@ -16,7 +16,6 @@
     <string name="about_rucksack">About Rucksack</string>
     <string name="help">Help</string>
     <string name="accept">Accept</string>
-    <string name="dateSeparator">-</string>
     <string name="unknown">Unknown</string>
     <string name="destination">Destination</string>
     <string name="start_date_description">Trip Start Date</string>
@@ -45,4 +44,6 @@
     <string name="select_pastimes">Select Pastimes</string>
     <string name="pastime_item_selection_empty">Oops! No packable items are available.</string>
     <string name="delete">Delete</string>
+    <string name="packing_list">Packing List</string>
+    <string name="trip_date_range">%1$s - %2$s</string>
 </resources>
