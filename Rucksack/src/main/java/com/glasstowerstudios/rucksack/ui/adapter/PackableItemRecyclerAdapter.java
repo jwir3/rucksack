@@ -16,7 +16,9 @@ import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -168,6 +170,14 @@ public class PackableItemRecyclerAdapter
   }
 
   private void sort() {
+    removeDuplicates();
     Collections.sort(mItems, (lhs, rhs) -> lhs.getName().compareTo(rhs.getName()));
+  }
+
+  private void removeDuplicates() {
+    Set<PackableItem> packableSet = new HashSet<>();
+    packableSet.addAll(mItems);
+    mItems.clear();
+    mItems.addAll(packableSet);
   }
 }
