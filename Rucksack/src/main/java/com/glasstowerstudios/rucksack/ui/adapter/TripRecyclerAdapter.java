@@ -1,7 +1,6 @@
 package com.glasstowerstudios.rucksack.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,14 @@ import android.widget.TextView;
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Trip;
+import com.glasstowerstudios.rucksack.ui.observer.TripSelectionListener;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,11 +31,12 @@ import butterknife.ButterKnife;
 public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapter.TripViewHolder> {
   private static final String LOGTAG = TripRecyclerAdapter.class.getSimpleName();
 
+  private List<TripSelectionListener> mListeners = new LinkedList<>();
+
   public static class TripViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.trip_destination_name) protected TextView mDestinationName;
-    @Bind(R.id.trip_start_date) protected TextView mStartDate;
-    @Bind(R.id.trip_end_date) protected TextView mEndDate;
+    @Bind(R.id.trip_date_range) protected TextView mTripDateRange;
 
     public TripViewHolder(View view) {
       super(view);
@@ -60,6 +62,7 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
                            .inflate(R.layout.trip_list_item, parent, false);
 
     TripViewHolder vh = new TripViewHolder(v);
+
     return vh;
   }
 
@@ -74,17 +77,11 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
     DateTime endDate = mTrips.get(position).getEndDate();
 
     DateTimeFormatter formatter = TemporalFormatter.TRIP_DATES_FORMATTER;
-    if (startDate != null) {
-      holder.mStartDate.setText(formatter.print(startDate));
-    } else {
-      holder.mStartDate.setText(R.string.unknown);
-    }
-
-    if (endDate != null) {
-      holder.mEndDate.setText(formatter.print(endDate));
-    } else {
-      holder.mEndDate.setText(R.string.unknown);
-    }
+    String dateRangeTemplate =
+      String.format(holder.mTripDateRange.getResources().getString(R.string.trip_date_range),
+                    formatter.print(startDate),
+                    formatter.print(endDate));
+    holder.mTripDateRange.setText(dateRangeTemplate);
   }
 
   @Override
@@ -103,11 +100,6 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
 
   public void setTrips(List<Trip> trips) {
     mTrips = trips;
-
-    for (Trip trip : trips) {
-      Log.d(LOGTAG, "***** DEBUG_jwir3: Saw trip: " + trip);
-    }
-
     notifyDataSetChanged();
   }
 
@@ -116,6 +108,28 @@ public class TripRecyclerAdapter extends RecyclerView.Adapter<TripRecyclerAdapte
     mTrips.remove(position);
     mTripDataProvider.delete(t);
     notifyDataSetChanged();
+  }
+
+  public void clearTripSelectionListeners() {
+    mListeners.clear();
+  }
+
+  public void addTripSelectionListener(TripSelectionListener listener) {
+    mListeners.add(listener);
+  }
+
+  public void removeTripSelectionListener(TripSelectionListener listener) {
+    mListeners.remove(listener);
+  }
+
+  public void notifyTripSelectionListeners(int position) {
+    notifyTripSelectionListeners(mTrips.get(position));
+  }
+
+  private void notifyTripSelectionListeners(Trip selectedTrip) {
+    for (TripSelectionListener listener : mListeners) {
+      listener.onTripSelected(selectedTrip);
+    }
   }
 }
 

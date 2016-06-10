@@ -93,6 +93,7 @@ dependencies {
   compile 'au.com.gridstone.rxstore:rxstore:5.0.2'
   compile 'au.com.gridstone.rxstore:converter-gson:5.0.2'
   compile 'org.adw.library:discrete-seekbar:1.0.1'
+  compile 'uk.co.chrisjenx:calligraphy:2.2.0'
 
   // Because RxAndroid releases are few and far between, it is recommended you also
   // explicitly depend on RxJava's latest version for bug fixes and new features.

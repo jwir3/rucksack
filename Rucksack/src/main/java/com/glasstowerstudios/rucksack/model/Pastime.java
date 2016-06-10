@@ -7,12 +7,17 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
+import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
@@ -25,6 +30,8 @@ public class Pastime implements Comparable<Pastime>, Parcelable {
   private String name;
   private String mIconResource;
   private List<PackableItem> mPackableItems;
+
+  @Inject PackableItemDataProvider mPackableItemDataProvider;
 
   // Default constructor provided for ActiveAndroid initialization
   public Pastime() {
@@ -67,6 +74,25 @@ public class Pastime implements Comparable<Pastime>, Parcelable {
   public Drawable getIcon(Context context) {
     int iconId = getIconResourceId(context);
     return context.getResources().getDrawable(iconId);
+  }
+
+  public List<PackableItem> getPackableItems() {
+    removeItemsNotPersisted();
+    return mPackableItems;
+  }
+
+  private void removeItemsNotPersisted() {
+    Injector.INSTANCE.getApplicationComponent().inject(this);
+
+    List<PackableItem> storedItems = mPackableItemDataProvider.getAll();
+    List<PackableItem> removedItems = new LinkedList<>();
+    for (PackableItem item : mPackableItems) {
+      if (!(storedItems.contains(item))) {
+        removedItems.add(item);
+      }
+    }
+
+    mPackableItems.removeAll(removedItems);
   }
 
   @Override
@@ -164,7 +190,7 @@ public class Pastime implements Comparable<Pastime>, Parcelable {
 
     return resourceIdentifiers;
   }
-  
+
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(name);
