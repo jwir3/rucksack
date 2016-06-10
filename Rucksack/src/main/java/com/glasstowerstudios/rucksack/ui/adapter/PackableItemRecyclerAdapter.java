@@ -15,6 +15,7 @@ import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,6 +59,8 @@ public class PackableItemRecyclerAdapter
     } else {
       mItems = new ArrayList<>();
     }
+
+    sort();
 
     mShouldAllowDelete = aShouldAllowDelete;
     mBackgroundColor = aBackgroundColor;
@@ -123,6 +126,7 @@ public class PackableItemRecyclerAdapter
 
   public void add(PackableItem packableItem, int position) {
     mItems.add(position, packableItem);
+    sort();
     notifyDataSetChanged();
   }
 
@@ -131,18 +135,21 @@ public class PackableItemRecyclerAdapter
       mItems.add(item);
     }
 
+    sort();
+
     notifyDataSetChanged();
   }
 
   public void setItems(List<PackableItem> packableItems) {
     mItems = packableItems;
+    sort();
     notifyDataSetChanged();
   }
 
   public void remove(int position) {
-    PackableItem p = mItems.get(position);
     mItems.remove(position);
     mPackableItemProvider.saveAll(mItems);
+    sort();
     notifyDataSetChanged();
   }
 
@@ -158,5 +165,9 @@ public class PackableItemRecyclerAdapter
 
   public void selectItems(List<PackableItem> aItems) {
     mSelectedItems = aItems;
+  }
+
+  private void sort() {
+    Collections.sort(mItems, (lhs, rhs) -> lhs.getName().compareTo(rhs.getName()));
   }
 }

@@ -42,20 +42,11 @@ public class PackableItem {
 
     PackableItem item = (PackableItem) aOther;
 
-//    if (mAllowMultiples) {
-//      return this == aOther;
-//    }
-
     return mItemName.equals(item.getName());
   }
 
   @Override
   public int hashCode() {
-    if (mAllowMultiples) {
-      // Use the default Object implementation if we allow multiples (i.e. instance comparison)
-      return System.identityHashCode(this);
-    }
-
     int result = 37;
     result = 37 * result + (mItemName == null ? 0 : mItemName.hashCode());
     return result;
