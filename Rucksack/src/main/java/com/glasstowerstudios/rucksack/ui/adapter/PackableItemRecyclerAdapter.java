@@ -1,5 +1,7 @@
 package com.glasstowerstudios.rucksack.ui.adapter;
 
+import android.graphics.Paint;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +16,8 @@ import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -33,6 +32,39 @@ public class PackableItemRecyclerAdapter
 
   private static final String LOGTAG = PackableItemRecyclerAdapter.class.getSimpleName();
 
+  private SortedList.Callback<PackableItem> sortCallback = new SortedList.Callback<PackableItem>() {
+    @Override
+    public int compare(PackableItem o1, PackableItem o2) {
+      return o1.compareTo(o2);
+    }
+
+    @Override
+    public void onInserted(int position, int count) {
+    }
+
+    @Override
+    public void onRemoved(int position, int count) {
+    }
+
+    @Override
+    public void onMoved(int fromPosition, int toPosition) {
+    }
+
+    @Override
+    public void onChanged(int position, int count) {
+    }
+
+    @Override
+    public boolean areContentsTheSame(PackableItem oldItem, PackableItem newItem) {
+      return oldItem.compareTo(newItem) == 0;
+    }
+
+    @Override
+    public boolean areItemsTheSame(PackableItem item1, PackableItem item2) {
+      return item1.compareTo(item2) == 0;
+    }
+  };
+
   public static class PackableItemViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.packable_item_checkbox) protected CheckBox mPackableItemCheckbox;
     @Bind(R.id.packable_item_icon) protected ImageView mPackableItemIcon;
@@ -45,8 +77,8 @@ public class PackableItemRecyclerAdapter
     }
   }
 
-  private List<PackableItem> mItems;
-  private List<PackableItem> mSelectedItems = new ArrayList<>();
+  private SortedList<PackableItem> mItems = new SortedList<>(PackableItem.class, sortCallback);
+
   private boolean mShouldAllowDelete = false;
   private int mBackgroundColor;
   private boolean mSelectable = false;
@@ -57,12 +89,8 @@ public class PackableItemRecyclerAdapter
                                      int aBackgroundColor, boolean aSelectable) {
     Injector.INSTANCE.getApplicationComponent().inject(this);
     if (items != null) {
-      mItems = items;
-    } else {
-      mItems = new ArrayList<>();
+      mItems.addAll(items);
     }
-
-    sort();
 
     mShouldAllowDelete = aShouldAllowDelete;
     mBackgroundColor = aBackgroundColor;
@@ -100,20 +128,29 @@ public class PackableItemRecyclerAdapter
   public void onBindViewHolder(final PackableItemViewHolder holder,
                                int position) {
     PackableItem currentItem = mItems.get(position);
-    if (mSelectedItems.contains(currentItem)) {
-      holder.mPackableItemCheckbox.setChecked(true);
-    }
+
+    setupCheckStateForItem(holder, currentItem);
 
     holder.mPackItemNameTextView.setText(currentItem.getName());
-    holder.mPackItemDeleteButton.setOnClickListener(v -> remove(holder.getAdapterPosition()));
+    holder.mPackItemDeleteButton.setOnClickListener(v -> remove(currentItem));
+  }
+
+  private void setupCheckStateForItem(PackableItemViewHolder holder, PackableItem currentItem) {
+    holder.mPackableItemCheckbox.setOnCheckedChangeListener(null);
+    if (currentItem.isPacked()) {
+      holder.mPackableItemCheckbox.setChecked(true);
+      holder.mPackItemNameTextView.setPaintFlags(holder.mPackItemNameTextView.getPaintFlags()
+                                                 | Paint.STRIKE_THRU_TEXT_FLAG);
+    } else {
+      holder.mPackableItemCheckbox.setChecked(false);
+      holder.mPackItemNameTextView.setPaintFlags(holder.mPackItemNameTextView.getPaintFlags()
+                                                 & (~Paint.STRIKE_THRU_TEXT_FLAG));
+    }
+
     holder.mPackableItemCheckbox.setOnCheckedChangeListener(
       (buttonView, isChecked) -> {
-        PackableItem item = mItems.get(position);
-        if (isChecked) {
-          mSelectedItems.add(item);
-        } else {
-          mSelectedItems.remove(item);
-        }
+        PackableItem item = currentItem;
+        selectItem(item, isChecked);
       });
   }
 
@@ -123,13 +160,7 @@ public class PackableItemRecyclerAdapter
   }
 
   public void add(PackableItem item) {
-    add(item, mItems.size());
-  }
-
-  public void add(PackableItem packableItem, int position) {
-    mItems.add(position, packableItem);
-    sort();
-    notifyDataSetChanged();
+    mItems.add(item);
   }
 
   public void addAll(List<PackableItem> items) {
@@ -137,21 +168,17 @@ public class PackableItemRecyclerAdapter
       mItems.add(item);
     }
 
-    sort();
-
     notifyDataSetChanged();
   }
 
   public void setItems(List<PackableItem> packableItems) {
-    mItems = packableItems;
-    sort();
+    mItems.clear();
+    mItems.addAll(packableItems);
     notifyDataSetChanged();
   }
 
-  public void remove(int position) {
-    mItems.remove(position);
-    mPackableItemProvider.saveAll(mItems);
-    sort();
+  public void remove(PackableItem item) {
+    mItems.remove(item);
     notifyDataSetChanged();
   }
 
@@ -162,22 +189,31 @@ public class PackableItemRecyclerAdapter
    * @return A {@link List} containing the {@link PackableItem}s the user has selected.
    */
   public List<PackableItem> getSelectedItems() {
-    return mSelectedItems;
+    List<PackableItem> selectedItems = new LinkedList<>();
+    for (int i = 0; i < mItems.size(); i++) {
+      PackableItem item = mItems.get(i);
+      if (item.isPacked()) {
+        selectedItems.add(item);
+      }
+    }
+
+    return selectedItems;
   }
 
   public void selectItems(List<PackableItem> aItems) {
-    mSelectedItems = aItems;
+    for (PackableItem item : aItems) {
+      int position = mItems.indexOf(item);
+      mItems.get(position).setPacked(true);
+    }
+
+    notifyDataSetChanged();
   }
 
-  private void sort() {
-    removeDuplicates();
-    Collections.sort(mItems, (lhs, rhs) -> lhs.getName().compareTo(rhs.getName()));
-  }
+  public void selectItem(PackableItem item, boolean selected) {
+    mItems.remove(item);
+    item.setPacked(selected);
+    mItems.add(item);
 
-  private void removeDuplicates() {
-    Set<PackableItem> packableSet = new HashSet<>();
-    packableSet.addAll(mItems);
-    mItems.clear();
-    mItems.addAll(packableSet);
+    notifyDataSetChanged();
   }
 }
