@@ -14,14 +14,12 @@ import butterknife.ButterKnife;
  * A top-level menu {@link Activity} that will show fragments having operations related to
  * {@link PackableItem}s.
  */
-public class PackableItemsActivity extends BaseActivity {
+public class PackableItemsActivity extends BaseActivity<PackableItemRecyclerFragment> {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     ButterKnife.bind(this);
-
-    showRootFragment(PackableItemRecyclerFragment.class, null);
   }
 
   @Override

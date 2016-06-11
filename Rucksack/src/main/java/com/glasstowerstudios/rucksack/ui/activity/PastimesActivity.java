@@ -15,14 +15,12 @@ import butterknife.ButterKnife;
  * A top-level menu {@link Activity} that will show fragments having operations related to
  * {@link Pastime}s.
  */
-public class PastimesActivity extends BaseActivity {
+public class PastimesActivity extends BaseActivity<PastimeRecyclerFragment> {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     ButterKnife.bind(this);
-
-    showRootFragment(PastimeRecyclerFragment.class, null);
   }
 
   @Override

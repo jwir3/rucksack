@@ -23,6 +23,9 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.ui.base.FragmentPresenter;
 import com.glasstowerstudios.rucksack.ui.fragment.AboutDialogFragment;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,6 +35,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Base activity class that all {@link Activity}s within Rucksack should derive from. Provides basic
  * {@link Fragment} handling logic, as well as a navigation drawer.
  *
+ * The parameterized type should be used to specify the root {@link Fragment} that will be displayed
+ * if the back stack is empty.
+ *
  * Note: Only {@link Activity}s that should be shown in the navigation drawer should derive from
  *       this class. If the UI for a given item should not be shown in the navigation drawer, it is
  *       probably better represented as a {@link Fragment} underneath some other
@@ -39,7 +45,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  *       then it is likely a top-level functionality of the application, and should have a {@link
  *       BaseActivity} implementation.
  */
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class BaseActivity<T extends Fragment> extends AppCompatActivity
   implements NavigationView.OnNavigationItemSelectedListener,
   FragmentManager.OnBackStackChangedListener {
   private static final String LOGTAG = BaseActivity.class.getSimpleName();
@@ -101,6 +107,10 @@ public abstract class BaseActivity extends AppCompatActivity
     mDrawerToggle.syncState();
 
     getSupportFragmentManager().addOnBackStackChangedListener(this);
+
+    ensureNavigationDrawerIconSet();
+
+    showRootFragmentIfBackstackEmpty();
   }
 
   /**
@@ -364,5 +374,21 @@ public abstract class BaseActivity extends AppCompatActivity
   @Override
   protected void attachBaseContext(Context newBase) {
     super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+  }
+
+  public void showRootFragmentIfBackstackEmpty() {
+    if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+      showRootFragment(getGenericTypeClass(), null);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private Class<? extends Fragment> getGenericTypeClass() {
+    try {
+      Type fragmentClass = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+      return (Class<T>) fragmentClass;
+    } catch (Exception e) {
+      throw new IllegalStateException("Unable to find parameterized type for " + this.getClass().getName());
+    }
   }
 }

@@ -72,8 +72,6 @@ public class PastimeRecyclerFragment
   @Override
   public void onDestroy() {
     super.onDestroy();
-
-    mSelector.removePastimeSelectionListener(this);
   }
 
   @Override

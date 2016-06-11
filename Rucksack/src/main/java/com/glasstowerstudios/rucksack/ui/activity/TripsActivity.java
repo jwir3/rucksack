@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  * A top-level menu {@link Activity} that will show fragments having operations related to
  * {@link Trip}s.
  */
-public class TripsActivity extends BaseActivity {
+public class TripsActivity extends BaseActivity<TripRecyclerFragment> {
 
   private static final String LOGTAG = TripsActivity.class.getSimpleName();
 
@@ -25,8 +25,6 @@ public class TripsActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
 
     ButterKnife.bind(this);
-
-    showRootFragment(TripRecyclerFragment.class, null);
   }
 
   @Override
