@@ -78,7 +78,8 @@ public class Pastime implements Comparable<Pastime>, Parcelable {
 
   public List<PackableItem> getPackableItems() {
     removeItemsNotPersisted();
-    return mPackableItems;
+
+    return new LinkedList<>(mPackableItems);
   }
 
   private void removeItemsNotPersisted() {

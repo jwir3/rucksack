@@ -2,6 +2,7 @@ package com.glasstowerstudios.rucksack.di;
 
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.ui.adapter.PackableItemRecyclerAdapter;
+import com.glasstowerstudios.rucksack.ui.adapter.PackingListAdapter;
 import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.fragment.AddTripDetailsFragment;
@@ -10,6 +11,7 @@ import com.glasstowerstudios.rucksack.ui.fragment.PastimeDetailFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.TripPastimeSelectionFragment;
 import com.glasstowerstudios.rucksack.ui.fragment.TripRecyclerFragment;
 import com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView;
+import com.glasstowerstudios.rucksack.ui.view.PackingListView;
 import com.glasstowerstudios.rucksack.ui.view.PastimeSelector;
 
 import javax.inject.Singleton;
@@ -44,4 +46,8 @@ public interface ApplicationComponent {
   void inject(TripPastimeSelectionFragment tripPastimeSelectionFragment);
 
   void inject(Pastime pastime);
+
+  void inject(PackingListAdapter packingListAdapter);
+
+  void inject(PackingListView packingListView);
 }

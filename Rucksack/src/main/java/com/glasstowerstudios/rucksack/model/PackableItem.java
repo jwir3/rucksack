@@ -3,7 +3,7 @@ package com.glasstowerstudios.rucksack.model;
 /**
  * A physical item that can be packed in preparation for a {@link Trip}.
  */
-public class PackableItem implements Comparable<PackableItem> {
+public class PackableItem {
   enum Status {
     NOT_PACKED,
     PACKED
@@ -60,8 +60,7 @@ public class PackableItem implements Comparable<PackableItem> {
     return result;
   }
 
-  @Override
-  public int compareTo(PackableItem another) {
+  public int compareIncludingPacking(PackableItem another) {
     if (equals(another)) {
       return 0;
     }
@@ -70,6 +69,14 @@ public class PackableItem implements Comparable<PackableItem> {
       return 1;
     } else if (!isPacked() && another.isPacked()) {
       return -1;
+    }
+
+    return getName().compareTo(another.getName());
+  }
+
+  public int compareExcludingPacking(PackableItem another) {
+    if (equals(another)) {
+      return 0;
     }
 
     return getName().compareTo(another.getName());
