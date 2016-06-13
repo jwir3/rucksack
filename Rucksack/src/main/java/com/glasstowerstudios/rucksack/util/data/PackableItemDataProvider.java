@@ -39,22 +39,22 @@ public class PackableItemDataProvider {
   /**
    * @return A {@link List} of all {@link PackableItem} objects in the database.
    */
-  public List<PackableItem> getAll() {
+  public synchronized List<PackableItem> getAll() {
     StoreProvider.ListStore<PackableItem> packItemStore = getListStore();
     return packItemStore.getBlocking();
   }
 
-  public void save(@NonNull PackableItem packItem) {
+  public synchronized void save(@NonNull PackableItem packItem) {
     StoreProvider.ListStore<PackableItem> packItemStore = getListStore();
     packItemStore.addToList(packItem);
   }
 
-  public void saveAll(@NonNull List<PackableItem> packableItems) {
+  public synchronized void saveAll(@NonNull List<PackableItem> packableItems) {
     StoreProvider.ListStore<PackableItem> packItemStore = getListStore();
     packItemStore.put(packableItems);
   }
 
-  public void delete(@NonNull PackableItem packItem) {
+  public synchronized void delete(@NonNull PackableItem packItem) {
     StoreProvider.ListStore<PackableItem> packItemStore = getListStore();
     packItemStore.removeFromList(packItem);
   }

@@ -36,27 +36,27 @@ public class PastimeDataProvider {
     return storeProvider.listStore(PASTIME_LIST_STORAGE_KEY, Pastime.class);
   }
 
-  public List<Pastime> getAll() {
+  public synchronized List<Pastime> getAll() {
     StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
     return pastimeStore.getBlocking();
   }
 
-  public void save(@NonNull Pastime aPastime) {
+  public synchronized void save(@NonNull Pastime aPastime) {
     StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
     pastimeStore.addToList(aPastime);
   }
 
-  public void saveAll(@NonNull List<Pastime> aPastimes) {
+  public synchronized void saveAll(@NonNull List<Pastime> aPastimes) {
     StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
     pastimeStore.put(aPastimes);
   }
 
-  public void delete(@NonNull Pastime aPastime) {
+  public synchronized void delete(@NonNull Pastime aPastime) {
     StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
     pastimeStore.removeFromList(aPastime);
   }
 
-  public void update(Pastime pastime) {
+  public synchronized void update(Pastime pastime) {
     StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
     List<Pastime> pastimes = pastimeStore.getBlocking();
     for (int i = 0; i < pastimes.size(); i++) {

@@ -178,6 +178,5 @@ public class PackableItemRecyclerFragment
       mRecyclerView.setVisibility(View.GONE);
       mEmptyView.setVisibility(View.VISIBLE);
     }
-
   }
 }

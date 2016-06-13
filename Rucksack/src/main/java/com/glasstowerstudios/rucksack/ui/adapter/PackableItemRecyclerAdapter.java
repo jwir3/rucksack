@@ -141,6 +141,7 @@ public class PackableItemRecyclerAdapter
 
   public void remove(PackableItem item) {
     mItems.remove(item);
+    mPackableItemProvider.delete(item);
     notifyDataSetChanged();
   }
 
