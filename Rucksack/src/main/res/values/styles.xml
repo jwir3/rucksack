@@ -15,7 +15,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="BaseLayout">
-        <item name="android:background">@color/earlyDawn</item>
+        <item name="android:background">@color/early_dawn</item>
     </style>
 
     <style name="TripLayout" parent="BaseLayout">

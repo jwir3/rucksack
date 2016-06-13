@@ -68,7 +68,7 @@
                 android:id="@+id/pastime_check_items"
                 android:layout_below="@id/pastime_items_section_title"
                 glasstower:allowDeletion="false"
-                glasstower:backgroundColor="@color/hintOfRed"
+                glasstower:backgroundColor="@color/hint_of_red"
                 glasstower:selectable="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

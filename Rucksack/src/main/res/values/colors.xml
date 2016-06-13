@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+      NOTE: Please use SIP color names in this file, except for items that need to have a
+            specific name (e.g. "colorPrimary").
+    -->
+
     <!-- Reds -->
     <color name="colorPrimary">#ff5722</color>
     <color name="colorPrimaryDark">#f44336</color>
     <color name="statusBarColor">#c53e13</color>
-    <color name="hintOfRed">#fafafa</color>
+    <color name="hint_of_red">#fafafa</color>
 
     <!-- Yellows -->
     <color name="colorAccent">#ffab40</color>
     <color name="roti">#D2A74C</color>
-    <color name="earlyDawn">#FFF9e6</color>
+    <color name="early_dawn">#FFF9e6</color>
 
     <!-- Blues -->
-    <color name="palitinateBlue">#2118d1</color>
+    <color name="palitinate_blue">#2118d1</color>
 
     <!-- Grays -->
     <color name="concrete">#d1d1d1</color>
-    <color name="silverSand">#bbbbbb</color>
+    <color name="silver_sand">#bbbbbb</color>
     <color name="dove_gray">#757575</color>
     <color name="pumice">#c6c6c6</color>
 </resources>
