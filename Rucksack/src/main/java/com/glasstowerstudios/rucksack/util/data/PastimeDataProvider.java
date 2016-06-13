@@ -55,4 +55,19 @@ public class PastimeDataProvider {
     StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
     pastimeStore.removeFromList(aPastime);
   }
+
+  public void update(Pastime pastime) {
+    StoreProvider.ListStore<Pastime> pastimeStore = getListStore();
+    List<Pastime> pastimes = pastimeStore.getBlocking();
+    for (int i = 0; i < pastimes.size(); i++) {
+      Pastime nextPastime = pastimes.get(i);
+      if (nextPastime.getName().equals(pastime.getName())) {
+        pastimes.remove(i);
+        pastimes.add(i-1, pastime);
+        break;
+      }
+    }
+
+    pastimeStore.put(pastimes);
+  }
 }

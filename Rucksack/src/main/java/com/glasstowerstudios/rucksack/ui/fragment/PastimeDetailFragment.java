@@ -108,16 +108,17 @@ public class PastimeDetailFragment extends Fragment {
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     BaseActivity act = (BaseActivity) getActivity();
+    Pastime pastime = createPastimeFromInput();
 
     switch(item.getItemId()) {
       case R.id.confirm:
         if (mPastime != null) {
           // Delete the old pastime first, then.
-          mPastimeDataProvider.delete(mPastime);
+          mPastimeDataProvider.update(pastime);
+        } else {
+          mPastimeDataProvider.save(pastime);
         }
 
-        Pastime pastime = createPastimeFromInput();
-        mPastimeDataProvider.save(pastime);
         act.onBackPressed();
         return true;
 
