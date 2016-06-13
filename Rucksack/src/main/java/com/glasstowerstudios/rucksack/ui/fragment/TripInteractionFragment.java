@@ -12,7 +12,7 @@ import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.model.Pastime;
 import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
-import com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView;
+import com.glasstowerstudios.rucksack.ui.view.PackingListView;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 
 import butterknife.Bind;
@@ -28,7 +28,7 @@ public class TripInteractionFragment extends Fragment {
 
   @Bind(R.id.trip_destination) TextView mTripDestination;
   @Bind(R.id.trip_dates) TextView mTripDates;
-  @Bind(R.id.packable_item_list) PackableItemRecyclerView mPackableItemList;
+  @Bind(R.id.packable_item_list) PackingListView mPackingListView;
 
   private Trip mTrip;
 
@@ -71,7 +71,7 @@ public class TripInteractionFragment extends Fragment {
 
     if (mTrip != null) {
       for (Pastime pastime : mTrip.getPastimes()) {
-        mPackableItemList.addItems(pastime.getPackableItems());
+        mPackingListView.addItems(pastime.getPackableItems());
       }
     }
   }

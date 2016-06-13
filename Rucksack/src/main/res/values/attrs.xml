@@ -7,8 +7,11 @@
     </declare-styleable>
     <declare-styleable name="PackableItemRecyclerView">
         <attr name="allowDeletion" format="boolean" />
-        <attr name="backgroundColor" format="color" />
         <attr name="selectable" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="PackingListView">
+        <attr name="reorganizeAfterSelection" format="boolean" />
+        <attr name="backgroundColor" format="color" />
     </declare-styleable>
     <declare-styleable name="PastimeSelector">
         <attr name="selection" format="enum">

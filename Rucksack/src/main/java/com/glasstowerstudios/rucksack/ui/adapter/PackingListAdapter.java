@@ -1,96 +1,117 @@
 package com.glasstowerstudios.rucksack.ui.adapter;
 
+import android.graphics.Paint;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * A {@link android.support.v7.widget.RecyclerView.Adapter} for {@link PackableItem} objects.
  */
-public class PackableItemRecyclerAdapter
+public class PackingListAdapter
   extends RecyclerView.Adapter<PackableItemRecyclerAdapter.PackableItemViewHolder> {
 
-  private static final String LOGTAG = PackableItemRecyclerAdapter.class.getSimpleName();
+  private Comparator<PackableItem> mPackableItemComparator = new Comparator<PackableItem>() {
+    @Override
+    public int compare(PackableItem lhs, PackableItem rhs) {
+      if (mReorganizeAfterSelection) {
+        return lhs.compareIncludingPacking(rhs);
+      }
 
-  public static class PackableItemViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.packable_item_checkbox) protected CheckBox mPackableItemCheckbox;
-    @Bind(R.id.packable_item_icon) protected ImageView mPackableItemIcon;
-    @Bind(R.id.pack_item_name_textview) protected TextView mPackItemNameTextView;
-    @Bind(R.id.pack_item_delete_button) protected ImageButton mPackItemDeleteButton;
-
-    public PackableItemViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
+      return lhs.compareExcludingPacking(rhs);
     }
-  }
+  };
 
-  private List<PackableItem> mItems = new LinkedList<>();
+  private SortedList.Callback<PackableItem> sortCallback = new SortedList.Callback<PackableItem>() {
+    @Override
+    public int compare(PackableItem o1, PackableItem o2) {
+      return mPackableItemComparator.compare(o1, o2);
+    }
 
-  private boolean mShouldAllowDelete = false;
+    @Override
+    public void onInserted(int position, int count) {
+    }
+
+    @Override
+    public void onRemoved(int position, int count) {
+    }
+
+    @Override
+    public void onMoved(int fromPosition, int toPosition) {
+    }
+
+    @Override
+    public void onChanged(int position, int count) {
+    }
+
+    @Override
+    public boolean areContentsTheSame(PackableItem oldItem, PackableItem newItem) {
+      return (mPackableItemComparator.compare(oldItem, newItem) == 0);
+    }
+
+    @Override
+    public boolean areItemsTheSame(PackableItem item1, PackableItem item2) {
+      return (mPackableItemComparator.compare(item1, item2) == 0);
+    }
+  };
+
+  // XXX_jwir3: This is a _sorted_ list. mItems.contains() uses a binary search, which means that if
+  //            the two items are sorted differently (e.g. one is packed and one is not), it will not
+  //            return what you expect!
+  private SortedList<PackableItem> mItems = new SortedList<>(PackableItem.class, sortCallback);
+
   private int mBackgroundColor;
-  private boolean mSelectable = false;
+  private boolean mReorganizeAfterSelection;
 
   @Inject PackableItemDataProvider mPackableItemProvider;
 
-  public PackableItemRecyclerAdapter(List<PackableItem> items, boolean aShouldAllowDelete,
-                                     int aBackgroundColor, boolean aSelectable) {
+  public PackingListAdapter(List<PackableItem> items, int aBackgroundColor,
+                            boolean aReorganizeAfterSelection) {
     Injector.INSTANCE.getApplicationComponent().inject(this);
     if (items != null) {
       mItems.addAll(items);
     }
 
-    mShouldAllowDelete = aShouldAllowDelete;
     mBackgroundColor = aBackgroundColor;
-    mSelectable = aSelectable;
+    mReorganizeAfterSelection = aReorganizeAfterSelection;
   }
 
   // Create new views (invoked by the layout manager)
   @Override
-  public PackableItemViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+  public PackableItemRecyclerAdapter.PackableItemViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                               int viewType) {
     // create a new view
     View v = LayoutInflater.from(parent.getContext())
                            .inflate(R.layout.packable_item_list_item, parent, false);
 
     v.setBackgroundColor(mBackgroundColor);
-    PackableItemViewHolder vh = new PackableItemViewHolder(v);
+    PackableItemRecyclerAdapter.PackableItemViewHolder vh =
+      new PackableItemRecyclerAdapter.PackableItemViewHolder(v);
 
-    if (!mShouldAllowDelete) {
-      vh.mPackItemDeleteButton.setVisibility(View.GONE);
-    }
+    vh.mPackItemDeleteButton.setVisibility(View.GONE);
 
-    if (!mSelectable) {
-      vh.mPackableItemCheckbox.setVisibility(View.GONE);
-      vh.mPackableItemIcon.setVisibility(View.VISIBLE);
-    } else {
-      vh.mPackableItemCheckbox.setVisibility(View.VISIBLE);
-      vh.mPackableItemIcon.setVisibility(View.GONE);
-    }
+    vh.mPackableItemCheckbox.setVisibility(View.VISIBLE);
+    vh.mPackableItemIcon.setVisibility(View.GONE);
 
     return vh;
   }
 
   // Replace the contents of a view (invoked by the layout manager)
   @Override
-  public void onBindViewHolder(final PackableItemViewHolder holder,
+  public void onBindViewHolder(final PackableItemRecyclerAdapter.PackableItemViewHolder holder,
                                int position) {
     PackableItem currentItem = mItems.get(position);
 
@@ -100,12 +121,21 @@ public class PackableItemRecyclerAdapter
     holder.mPackItemDeleteButton.setOnClickListener(v -> remove(currentItem));
   }
 
-  private void setupCheckStateForItem(PackableItemViewHolder holder, PackableItem currentItem) {
+  private void setupCheckStateForItem(PackableItemRecyclerAdapter.PackableItemViewHolder holder,
+                                      PackableItem currentItem) {
     holder.mPackableItemCheckbox.setOnCheckedChangeListener(null);
     if (currentItem.isPacked()) {
       holder.mPackableItemCheckbox.setChecked(true);
+      if (mReorganizeAfterSelection) {
+        holder.mPackItemNameTextView.setPaintFlags(holder.mPackItemNameTextView.getPaintFlags()
+                                                   | Paint.STRIKE_THRU_TEXT_FLAG);
+      }
     } else {
       holder.mPackableItemCheckbox.setChecked(false);
+      if (mReorganizeAfterSelection) {
+        holder.mPackItemNameTextView.setPaintFlags(holder.mPackItemNameTextView.getPaintFlags()
+                                                   & (~Paint.STRIKE_THRU_TEXT_FLAG));
+      }
     }
 
     holder.mPackableItemCheckbox.setOnCheckedChangeListener(
@@ -173,7 +203,9 @@ public class PackableItemRecyclerAdapter
   }
 
   public void selectItem(PackableItem item, boolean selected) {
+    mItems.remove(item);
     item.setPacked(selected);
+    mItems.add(item);
 
     notifyDataSetChanged();
   }

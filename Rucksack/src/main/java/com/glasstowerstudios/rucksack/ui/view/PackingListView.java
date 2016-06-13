@@ -6,45 +6,44 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
-import com.glasstowerstudios.rucksack.ui.adapter.PackableItemRecyclerAdapter;
+import com.glasstowerstudios.rucksack.ui.adapter.PackingListAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 /**
- * A {@link RecyclerView} that shows {@link PackableItem}s.
+ *
  */
-public class PackableItemRecyclerView extends RecyclerView {
-
+public class PackingListView extends RecyclerView {
   @Inject PackableItemDataProvider mPackableItemDataProvider;
 
   private AttributeSet mAttrs;
   private int mDefStyleAttr;
-  private boolean mAllowDeletion = false;
   private int mBackgroundColor;
-  private PackableItemRecyclerAdapter mAdapter;
-  private boolean mSelectable = false;
+  private PackingListAdapter mAdapter;
+  private boolean mReorganizeAfterSelection = false;
 
-  public PackableItemRecyclerView(Context context) {
+  public PackingListView(Context context) {
     super(context);
     init();
   }
 
-  public PackableItemRecyclerView(Context context, @Nullable AttributeSet attrs) {
+  public PackingListView(Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     mAttrs = attrs;
     init();
   }
 
-  public PackableItemRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+  public PackingListView(Context context, @Nullable AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     mAttrs = attrs;
     mDefStyleAttr = defStyle;
@@ -57,12 +56,8 @@ public class PackableItemRecyclerView extends RecyclerView {
 
     if (mAttrs != null) {
       TypedArray a =
-        getContext().obtainStyledAttributes(mAttrs, R.styleable.PackableItemRecyclerView,
+        getContext().obtainStyledAttributes(mAttrs, R.styleable.PackingListView,
                                             mDefStyleAttr, 0);
-
-      if (a.hasValue(R.styleable.PackableItemRecyclerView_allowDeletion)) {
-        mAllowDeletion = a.getBoolean(R.styleable.PackableItemRecyclerView_allowDeletion, false);
-      }
 
       if (a.hasValue(R.styleable.PackingListView_backgroundColor)) {
         mBackgroundColor = a.getColor(R.styleable.PackingListView_backgroundColor,
@@ -71,8 +66,9 @@ public class PackableItemRecyclerView extends RecyclerView {
         mBackgroundColor = getResources().getColor(android.R.color.white);
       }
 
-      if (a.hasValue(R.styleable.PackableItemRecyclerView_selectable)) {
-        mSelectable = a.getBoolean(R.styleable.PackableItemRecyclerView_selectable, false);
+      if (a.hasValue(R.styleable.PackingListView_reorganizeAfterSelection)) {
+        mReorganizeAfterSelection =
+          a.getBoolean(R.styleable.PackingListView_reorganizeAfterSelection, false);
       }
 
       a.recycle();
@@ -81,16 +77,11 @@ public class PackableItemRecyclerView extends RecyclerView {
     Injector.INSTANCE.getApplicationComponent().inject(this);
 
     List<PackableItem> items = getItems();
-    mAdapter = new PackableItemRecyclerAdapter(items, mAllowDeletion, mBackgroundColor,
-                                               mSelectable);
+    mAdapter = new PackingListAdapter(items, mBackgroundColor, mReorganizeAfterSelection);
 
     addItemDecoration(new DividerItemDecoration(getContext()));
 
     setAdapter(mAdapter);
-  }
-
-  public void registerAdapterDataObserver(AdapterDataObserver aObserver) {
-    mAdapter.registerAdapterDataObserver(aObserver);
   }
 
   public void addItem(PackableItem aItem) {
@@ -98,32 +89,11 @@ public class PackableItemRecyclerView extends RecyclerView {
   }
 
   public void addItems(List<PackableItem> aItems) {
-    for (PackableItem item : aItems) {
+    List<PackableItem> copiedList = new LinkedList<>();
+    Collections.copy(aItems, copiedList);
+    for (PackableItem item : copiedList) {
       mAdapter.add(item);
     }
-  }
-
-  public void setSelectedItems(List<PackableItem> aItems) {
-    mAdapter.selectItems(aItems);
-  }
-
-  public int getItemCount() {
-    return mAdapter.getItemCount();
-  }
-
-  public void refresh() {
-    List<PackableItem> items = getItems();
-    mAdapter.setItems(items);
-
-    if (mAdapter.getItemCount() > 0) {
-      setVisibility(View.VISIBLE);
-    } else {
-      setVisibility(View.GONE);
-    }
-  }
-
-  public List<PackableItem> getSelectedItems() {
-    return mAdapter.getSelectedItems();
   }
 
   private List<PackableItem> getItems() {

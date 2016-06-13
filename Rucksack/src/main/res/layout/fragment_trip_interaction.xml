@@ -32,11 +32,12 @@
             fontPath="fonts/CinzelDecorative-Bold.otf" />
     </RelativeLayout>
 
-    <com.glasstowerstudios.rucksack.ui.view.PackableItemRecyclerView
+    <com.glasstowerstudios.rucksack.ui.view.PackingListView
         android:id="@+id/packable_item_list"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
-        glasstower:selectable="true" />
+        glasstower:reorganizeAfterSelection="true"
+    />
 
 </LinearLayout>
