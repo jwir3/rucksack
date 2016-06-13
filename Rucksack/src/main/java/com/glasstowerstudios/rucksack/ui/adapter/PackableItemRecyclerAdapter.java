@@ -122,6 +122,7 @@ public class PackableItemRecyclerAdapter
 
   public void add(PackableItem item) {
     mItems.add(item);
+    notifyDataSetChanged();
   }
 
   public void addAll(List<PackableItem> items) {
