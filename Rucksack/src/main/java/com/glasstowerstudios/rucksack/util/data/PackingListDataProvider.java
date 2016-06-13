@@ -36,22 +36,22 @@ public class PackingListDataProvider {
     return storeProvider.listStore(PACKING_LIST_LIST_STORAGE_KEY, PackingList.class);
   }
 
-  public List<PackingList> getAll() {
+  public synchronized List<PackingList> getAll() {
     StoreProvider.ListStore<PackingList> packingListStore = getListStore();
     return packingListStore.getBlocking();
   }
 
-  public void save(@NonNull PackingList packingList) {
+  public synchronized void save(@NonNull PackingList packingList) {
     StoreProvider.ListStore<PackingList> packingListStore = getListStore();
     packingListStore.addToList(packingList);
   }
 
-  public void saveAll(@NonNull List<PackingList> packingLists) {
+  public synchronized void saveAll(@NonNull List<PackingList> packingLists) {
     StoreProvider.ListStore<PackingList> packingListStore = getListStore();
     packingListStore.put(packingLists);
   }
 
-  public void delete(@NonNull PackingList packingList) {
+  public synchronized void delete(@NonNull PackingList packingList) {
     StoreProvider.ListStore<PackingList> packingListStore = getListStore();
     packingListStore.removeFromList(packingList);
   }

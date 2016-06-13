@@ -39,17 +39,17 @@ public class TripDataProvider {
   /**
    * @return A {@link List} of all {@link Trip} objects in the database.
    */
-  public List<Trip> getAll() {
+  public synchronized List<Trip> getAll() {
     StoreProvider.ListStore<Trip> tripStore = getListStore();
     return tripStore.getBlocking();
   }
 
-  public void save(@NonNull Trip aTrip) {
+  public synchronized void save(@NonNull Trip aTrip) {
     StoreProvider.ListStore<Trip> tripStore = getListStore();
     tripStore.addToList(aTrip);
   }
 
-  public void delete(@NonNull Trip aTrip) {
+  public synchronized void delete(@NonNull Trip aTrip) {
     StoreProvider.ListStore<Trip> tripStore = getListStore();
     tripStore.removeFromList(aTrip);
   }
