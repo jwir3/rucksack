@@ -16,7 +16,6 @@ import com.glasstowerstudios.rucksack.ui.adapter.PastimeRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.observer.PastimeSelectionListener;
 import com.glasstowerstudios.rucksack.util.data.PastimeDataProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -64,7 +63,7 @@ public class PastimeSelector extends LinearLayout {
   }
 
   public void refresh() {
-    setPastimes(populatePastimes());
+    setPastimes(mPastimeDataProvider.getAll());
   }
 
   public void setPastimes(List<Pastime> pastimes) {
@@ -130,30 +129,7 @@ public class PastimeSelector extends LinearLayout {
       mEmptyView.setVisibility(View.VISIBLE);
     }
   }
-
-  // TODO: Remove this method in favor of a one-time data initialization.
-  private List<Pastime> populatePastimes() {
-    List<Pastime> allPastimes = mPastimeDataProvider.getAll();
-
-    if (allPastimes.isEmpty()) {
-      Pastime work = new Pastime("Work", "ic_pastime_work", new ArrayList<>());
-      Pastime diving = new Pastime("Diving", "ic_pastime_diving", new ArrayList<>());
-      Pastime dining = new Pastime("Dining", "ic_pastime_dining", new ArrayList<>());
-      Pastime athletics = new Pastime("Athletics", "ic_pastime_athletics", new ArrayList<>());
-
-      List<Pastime> pastimes = new ArrayList<>();
-      pastimes.add(work);
-      pastimes.add(diving);
-      pastimes.add(dining);
-      pastimes.add(athletics);
-      mPastimeDataProvider.saveAll(pastimes);
-
-      allPastimes = mPastimeDataProvider.getAll();
-    }
-
-    return allPastimes;
-  }
-
+  
   public void addPastimeSelectionListener(PastimeSelectionListener listener) {
     mAdapter.addPastimeSelectionListener(listener);
   }

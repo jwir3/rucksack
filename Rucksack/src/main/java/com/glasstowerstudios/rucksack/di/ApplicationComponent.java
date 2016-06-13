@@ -20,7 +20,8 @@ import dagger.Component;
  * Dagger {@link Component} containing the main application instance and related modules.
  */
 @Singleton
-@Component(modules={ApplicationModule.class, GsonModule.class, DataProviderModule.class})
+@Component(modules={ApplicationModule.class, GsonModule.class, DataProviderModule.class,
+                    AppPreferencesModule.class})
 public interface ApplicationComponent {
   void inject(TripRecyclerAdapter tripRecyclerAdapter);
 

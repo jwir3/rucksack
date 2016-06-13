@@ -16,12 +16,15 @@ public enum Injector {
   Injector() {}
 
   public ApplicationComponent initializeApplicationComponent(RucksackApplication app) {
-    GsonModule module = new GsonModule();
+    GsonModule gsonModule = new GsonModule();
+    AppPreferencesModule appPreferencesModule = new AppPreferencesModule(app);
+    DataProviderModule dataProviderModule = new DataProviderModule(app, gsonModule.providesGson(),
+                                                                   appPreferencesModule.providesAppPreferences());
     mApplicationComponent = DaggerApplicationComponent.builder()
                                                       .applicationModule(new ApplicationModule(app))
-                                                      .gsonModule(module)
-                                                      .dataProviderModule(new DataProviderModule(app,
-                                                                                                 module.providesGson()))
+                                                      .gsonModule(gsonModule)
+                                                      .dataProviderModule(dataProviderModule)
+                                                      .appPreferencesModule(appPreferencesModule)
                                                       .build();
     return mApplicationComponent;
   }

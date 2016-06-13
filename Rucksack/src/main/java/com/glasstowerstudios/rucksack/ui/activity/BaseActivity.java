@@ -48,7 +48,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity<T extends Fragment> extends AppCompatActivity
   implements NavigationView.OnNavigationItemSelectedListener,
   FragmentManager.OnBackStackChangedListener {
-  private static final String LOGTAG = BaseActivity.class.getSimpleName();
+
   public static final String TITLE_KEY = "Title";
 
   private FragmentPresenter mFragmentPresenter;

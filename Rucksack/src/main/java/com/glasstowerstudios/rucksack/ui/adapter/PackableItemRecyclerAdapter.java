@@ -203,7 +203,9 @@ public class PackableItemRecyclerAdapter
   public void selectItems(List<PackableItem> aItems) {
     for (PackableItem item : aItems) {
       int position = mItems.indexOf(item);
-      mItems.get(position).setPacked(true);
+      if (position >= 0) {
+        mItems.get(position).setPacked(true);
+      }
     }
 
     notifyDataSetChanged();
