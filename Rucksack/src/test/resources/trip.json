@@ -5,11 +5,39 @@
   "pastimes": [
     {
       "name": "Work",
-      "icon_resource": "ic_pastime_work"
+      "icon_resource": "ic_pastime_work",
+      "packable_items": [
+        {
+          "item_name": "Toothbrush",
+          "status": 0
+        },
+        {
+          "item_name": "Swim Trunks",
+          "status": 0
+        },
+        {
+          "item_name": "Floss",
+          "status": 1
+        }
+      ]
     },
     {
-      "name": "Dining",
-      "icon_resource": "ic_pastime_dining"
+      "name": "Athletics",
+      "icon_resource": "ic_pastime_athletics",
+      "packable_items": [
+        {
+          "item_name": "Toothbrush",
+          "status": 0
+        },
+        {
+          "item_name": "Weights",
+          "status": 0
+        },
+        {
+          "item_name": "Floss",
+          "status": 1
+        }
+      ]
     }
   ]
 }

@@ -4,16 +4,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.model.Pastime;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.view.PackingListView;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
+import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,6 +38,8 @@ public class TripInteractionFragment extends Fragment {
 
   private Trip mTrip;
 
+  @Inject TripDataProvider mTripDataProvider;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -40,6 +48,10 @@ public class TripInteractionFragment extends Fragment {
     if (appBar != null) {
       appBar.setTitle(R.string.packing_list);
     }
+
+    Injector.INSTANCE.getApplicationComponent().inject(this);
+
+    setHasOptionsMenu(true);
   }
 
   @Override
@@ -63,16 +75,46 @@ public class TripInteractionFragment extends Fragment {
     return v;
   }
 
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    super.onCreateOptionsMenu(menu, inflater);
+
+    inflater.inflate(R.menu.submit_with_delete, menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    BaseActivity act = (BaseActivity) getActivity();
+
+    switch (item.getItemId()) {
+      case R.id.confirm:
+        saveTrip();
+        act.onBackPressed();
+        return true;
+
+      case R.id.delete:
+        deleteTrip();
+        act.onBackPressed();
+        return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
+  private void saveTrip() {
+    mTripDataProvider.update(mTrip);
+  }
+
+  private void deleteTrip() {
+    mTripDataProvider.delete(mTrip);
+  }
+
   private void populateDataFromArguments() {
     Bundle arguments = getArguments();
     if (arguments != null) {
       mTrip = arguments.getParcelable(TRIP_KEY);
     }
 
-    if (mTrip != null) {
-      for (Pastime pastime : mTrip.getPastimes()) {
-        mPackingListView.addItems(pastime.getPackableItems());
-      }
-    }
+    mPackingListView.addItems(mTrip.getPackingListItems());
   }
 }

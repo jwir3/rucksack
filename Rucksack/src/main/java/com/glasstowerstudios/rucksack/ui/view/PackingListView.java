@@ -8,13 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import com.glasstowerstudios.rucksack.R;
-import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.ui.adapter.PackingListAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,10 +72,10 @@ public class PackingListView extends RecyclerView {
       a.recycle();
     }
 
-    Injector.INSTANCE.getApplicationComponent().inject(this);
-
-    List<PackableItem> items = getItems();
-    mAdapter = new PackingListAdapter(items, mBackgroundColor, mReorganizeAfterSelection);
+//    Injector.INSTANCE.getApplicationComponent().inject(this);
+//
+//    List<PackableItem> items = getItems();
+    mAdapter = new PackingListAdapter(new LinkedList<>(), mBackgroundColor, mReorganizeAfterSelection);
 
     addItemDecoration(new DividerItemDecoration(getContext()));
 
@@ -89,14 +87,6 @@ public class PackingListView extends RecyclerView {
   }
 
   public void addItems(List<PackableItem> aItems) {
-    List<PackableItem> copiedList = new LinkedList<>();
-    Collections.copy(aItems, copiedList);
-    for (PackableItem item : copiedList) {
-      mAdapter.add(item);
-    }
-  }
-
-  private List<PackableItem> getItems() {
-    return mPackableItemDataProvider.getAll();
+    mAdapter.addAll(aItems);
   }
 }

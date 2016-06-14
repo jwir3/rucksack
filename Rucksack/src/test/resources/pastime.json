@@ -1,4 +1,18 @@
 {
   "name": "Work",
-  "icon_resource": "ic_pastime_work"
+  "icon_resource": "ic_pastime_work",
+  "packable_items": [
+    {
+      "item_name": "Toothbrush",
+      "status": 0
+    },
+    {
+      "item_name": "Swim Trunks",
+      "status": 0
+    },
+    {
+      "item_name": "Floss",
+      "status": 1
+    }
+  ]
 }

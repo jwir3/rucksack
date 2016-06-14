@@ -63,7 +63,7 @@ public class PastimeDataProvider {
       Pastime nextPastime = pastimes.get(i);
       if (nextPastime.getName().equals(pastime.getName())) {
         pastimes.remove(i);
-        pastimes.add(i-1, pastime);
+        pastimes.add(i, pastime);
         break;
       }
     }
