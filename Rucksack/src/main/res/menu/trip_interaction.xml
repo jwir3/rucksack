@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/confirm"
+        android:icon="@drawable/ic_action_accept"
+        android:title="@string/accept"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom"
+    />
+    <item
+        android:id="@+id/mark_all_packed"
+        android:title="@string/set_all_packed"
+        android:orderInCategory="2"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/mark_all_unpacked"
+        android:title="@string/set_all_unpacked"
+        android:orderInCategory="3"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_action_trash"
+        android:title="@string/delete"
+        android:orderInCategory="4"
+        app:showAsAction="never" />
+</menu>

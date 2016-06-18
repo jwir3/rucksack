@@ -13,11 +13,15 @@ import android.widget.TextView;
 
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
+import com.glasstowerstudios.rucksack.model.PackableItem;
 import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
+import com.glasstowerstudios.rucksack.ui.observer.PackingListener;
 import com.glasstowerstudios.rucksack.ui.view.PackingListView;
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,7 +32,9 @@ import butterknife.ButterKnife;
  * A {@link Fragment} that allows users to interact with a {@link Trip} they have previously
  * created.
  */
-public class TripInteractionFragment extends Fragment {
+public class TripInteractionFragment
+  extends Fragment
+  implements PackingListener {
 
   public static final String TRIP_KEY = "Trip";
 
@@ -78,8 +84,29 @@ public class TripInteractionFragment extends Fragment {
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
+    inflater.inflate(R.menu.trip_interaction, menu);
 
-    inflater.inflate(R.menu.submit_with_delete, menu);
+    mPackingListView.addPackingListener(this);
+  }
+
+  @Override
+  public void onPrepareOptionsMenu(Menu menu) {
+    super.onPrepareOptionsMenu(menu);
+
+    MenuItem markAllPackedItem = menu.findItem(R.id.mark_all_packed);
+    MenuItem markAllUnpackedItem = menu.findItem(R.id.mark_all_unpacked);
+
+    if (mPackingListView.areAnyItemsPacked()) {
+      markAllUnpackedItem.setVisible(true);
+    } else {
+      markAllUnpackedItem.setVisible(false);
+    }
+
+    if (mPackingListView.areAllItemsPacked()) {
+      markAllPackedItem.setVisible(false);
+    } else {
+      markAllPackedItem.setVisible(true);
+    }
   }
 
   @Override
@@ -96,6 +123,14 @@ public class TripInteractionFragment extends Fragment {
         deleteTrip();
         act.onBackPressed();
         return true;
+
+      case R.id.mark_all_packed:
+        selectAllItems();
+        return true;
+
+      case R.id.mark_all_unpacked:
+        deselectAllItems();
+        return true;
     }
 
     return super.onOptionsItemSelected(item);
@@ -109,6 +144,14 @@ public class TripInteractionFragment extends Fragment {
     mTripDataProvider.delete(mTrip);
   }
 
+  private void selectAllItems() {
+    mPackingListView.selectAllItems();
+  }
+
+  private void deselectAllItems() {
+    mPackingListView.deselectAllItems();
+  }
+
   private void populateDataFromArguments() {
     Bundle arguments = getArguments();
     if (arguments != null) {
@@ -116,5 +159,15 @@ public class TripInteractionFragment extends Fragment {
     }
 
     mPackingListView.addItems(mTrip.getPackingListItems());
+  }
+
+  @Override
+  public void onPackingStatusChanged(PackableItem item) {
+    getActivity().invalidateOptionsMenu();
+  }
+
+  @Override
+  public void onPackingStatusChanged(List<PackableItem> items) {
+    getActivity().invalidateOptionsMenu();
   }
 }

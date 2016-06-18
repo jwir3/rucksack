@@ -46,4 +46,6 @@
     <string name="delete">Delete</string>
     <string name="packing_list">Packing List</string>
     <string name="trip_date_range">%1$s - %2$s</string>
+    <string name="set_all_packed">Mark All Items Packed</string>
+    <string name="set_all_unpacked">Mark All Items Unpacked</string>
 </resources>

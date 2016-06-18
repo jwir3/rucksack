@@ -153,7 +153,7 @@ public class PackingList {
   }
 
   public void addItems(List<PackableItem> aItems) {
-    List<PackableItem> copiedList = new LinkedList<>(aItems);
+    List<PackableItem> copiedList = new LinkedList<>();
 
     // Deep-copy the list
     for (PackableItem item : aItems) {
@@ -162,6 +162,7 @@ public class PackingList {
 
     for (PackableItem item : copiedList) {
       if (!mItems.contains(item)) {
+        item.setPacked(false);
         mItems.add(item);
       }
     }
