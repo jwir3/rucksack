@@ -23,6 +23,8 @@ public class Trip implements Parcelable {
 
   private List<Pastime> mPastimes = new LinkedList<>();
 
+  private PackingList mPackingList = new PackingList();
+
   public Trip() {
     super();
   }
@@ -33,6 +35,8 @@ public class Trip implements Parcelable {
     mStartDate = startDate;
     mNightLength = aNightLength;
     mPastimes = aPastimes;
+
+    createPackingListFromPastimes();
   }
 
   public Trip(String destinationName) {
@@ -43,6 +47,14 @@ public class Trip implements Parcelable {
     mDestinationName = in.readString();
     mNightLength = in.readInt();
     mPastimes = in.createTypedArrayList(Pastime.CREATOR);
+
+    createPackingListFromPastimes();
+  }
+
+  private void createPackingListFromPastimes() {
+    for (Pastime pastime : mPastimes) {
+      mPackingList.addItems(pastime.getPackableItems());
+    }
   }
 
   @Override
@@ -157,5 +169,10 @@ public class Trip implements Parcelable {
     }
 
     return mPastimes;
+  }
+
+  @NonNull
+  public List<PackableItem> getPackingListItems() {
+    return mPackingList.mItems;
   }
 }

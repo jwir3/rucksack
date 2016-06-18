@@ -53,4 +53,19 @@ public class TripDataProvider {
     StoreProvider.ListStore<Trip> tripStore = getListStore();
     tripStore.removeFromList(aTrip);
   }
+
+  public synchronized void update(Trip trip) {
+    StoreProvider.ListStore<Trip> tripStore = getListStore();
+    List<Trip> tripList = tripStore.getBlocking();
+    for (int i = 0; i < tripList.size(); i++) {
+      Trip nextTrip = tripList.get(i);
+      if (nextTrip.equals(trip)) {
+        tripList.remove(i);
+        tripList.add(i, trip);
+        break;
+      }
+    }
+
+    tripStore.put(tripList);
+  }
 }

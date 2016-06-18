@@ -11,8 +11,6 @@ public class PackableItem {
 
   private String mItemName;
   private Status mStatus;
-  private boolean mAllowMultiples = false; // Whether or not "multiples" of this item are allowed in
-                                           // a packing list.
 
   public PackableItem() {
   }

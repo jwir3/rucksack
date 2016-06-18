@@ -151,4 +151,20 @@ public class PackingList {
 
     return new PackingList(mergedList);
   }
+
+  public void addItems(List<PackableItem> aItems) {
+    List<PackableItem> copiedList = new LinkedList<>();
+
+    // Deep-copy the list
+    for (PackableItem item : aItems) {
+      copiedList.add(new PackableItem(item.getName()));
+    }
+
+    for (PackableItem item : copiedList) {
+      if (!mItems.contains(item)) {
+        item.setPacked(false);
+        mItems.add(item);
+      }
+    }
+  }
 }

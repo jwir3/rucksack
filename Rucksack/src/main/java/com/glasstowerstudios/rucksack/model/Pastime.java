@@ -31,7 +31,7 @@ public class Pastime implements Comparable<Pastime>, Parcelable {
   private String mIconResource;
   private List<PackableItem> mPackableItems;
 
-  @Inject PackableItemDataProvider mPackableItemDataProvider;
+  transient @Inject PackableItemDataProvider mPackableItemDataProvider;
 
   // Default constructor provided for ActiveAndroid initialization
   public Pastime() {

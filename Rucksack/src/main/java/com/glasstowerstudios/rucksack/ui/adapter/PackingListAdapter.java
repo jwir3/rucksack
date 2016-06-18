@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.glasstowerstudios.rucksack.R;
 import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.PackableItem;
+import com.glasstowerstudios.rucksack.ui.observer.PackingListener;
 import com.glasstowerstudios.rucksack.util.data.PackableItemDataProvider;
 
 import java.util.Comparator;
@@ -75,6 +76,7 @@ public class PackingListAdapter
 
   private int mBackgroundColor;
   private boolean mReorganizeAfterSelection;
+  private PackingListener mPackingListener;
 
   @Inject PackableItemDataProvider mPackableItemProvider;
 
@@ -203,10 +205,58 @@ public class PackingListAdapter
   }
 
   public void selectItem(PackableItem item, boolean selected) {
+    // We add and then remove the item so it gets re-sorted.
     mItems.remove(item);
     item.setPacked(selected);
     mItems.add(item);
 
+    notifyPackingListenerPackableItemChangedStatus(item);
+
     notifyDataSetChanged();
+  }
+
+  public void selectAllItems() {
+    for (int i = 0; i < mItems.size(); i++) {
+      PackableItem item = mItems.get(i);
+      item.setPacked(true);
+    }
+
+    notifyPackingListenerAllItemsChangedStatus();
+    notifyDataSetChanged();
+  }
+
+  public void deselectAllItems() {
+    for (int i = 0; i < mItems.size(); i++) {
+      PackableItem item = mItems.get(i);
+      item.setPacked(false);
+    }
+
+    notifyPackingListenerAllItemsChangedStatus();
+    notifyDataSetChanged();
+  }
+
+  private void notifyPackingListenerAllItemsChangedStatus() {
+    List<PackableItem> changedItems = new LinkedList<>();
+    for (int i = 0; i < mItems.size(); i++) {
+      changedItems.add(mItems.get(i));
+    }
+
+    mPackingListener.onPackingStatusChanged(changedItems);
+  }
+
+  private void notifyPackingListenerMultipleItemsChangedStatus(List<PackableItem> items) {
+    mPackingListener.onPackingStatusChanged(items);
+  }
+
+  public void setPackingListener(PackingListener listener) {
+    mPackingListener = listener;
+  }
+
+  public void removePackingListener() {
+    mPackingListener = null;
+  }
+
+  private void notifyPackingListenerPackableItemChangedStatus(PackableItem item) {
+    mPackingListener.onPackingStatusChanged(item);
   }
 }
