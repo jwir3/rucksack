@@ -3,10 +3,15 @@ Rucksack
 
 Rucksack is an open source Android application for organizing items you need to take with you on a trip.
 
+Release Notes
+-------------
+* __1.0.0 (Amphisbaena)__
+  * Initial release containing the ability to add packable items, pastimes containing those items, and trips associated with pastimes and items.
+
 Acquisition
 -------------
 You can acquire Rucksack in the following ways:
-* Download from the Google Play Store. The app is currently priced at $1.49 USD. This small sum gives back to our development efforts and helps support those that make the application possible.
+* Download from the Google Play Store. The app is currently priced at $1.49 USD. This small sum gives back to our development efforts and helps support those that make the applicatgion possible.
 * Download the source code and build/install it. You can acquire the source code using the following `git` command:
 ```
 git clone git@gitlab.com/jwir3/rucksack
