@@ -161,13 +161,23 @@ public class TripInteractionFragment
     mPackingListView.addItems(mTrip.getPackingListItems());
   }
 
+  private void verifyPackedStatusOfItem(PackableItem item) {
+    List<PackableItem> items = mTrip.getPackingListItems();
+    int indexInList = items.indexOf(item);
+    items.get(indexInList).setPacked(item.isPacked());
+  }
+
   @Override
   public void onPackingStatusChanged(PackableItem item) {
+    verifyPackedStatusOfItem(item);
     getActivity().invalidateOptionsMenu();
   }
 
   @Override
   public void onPackingStatusChanged(List<PackableItem> items) {
+    for (PackableItem item : items) {
+      verifyPackedStatusOfItem(item);
+    }
     getActivity().invalidateOptionsMenu();
   }
 }

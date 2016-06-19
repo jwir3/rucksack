@@ -216,21 +216,32 @@ public class PackingListAdapter
   }
 
   public void selectAllItems() {
+    // Make a new sorted list so newly added items get re-sorted.
+    SortedList<PackableItem> newItems = new SortedList<PackableItem>(PackableItem.class,
+                                                                     sortCallback);
     for (int i = 0; i < mItems.size(); i++) {
       PackableItem item = mItems.get(i);
       item.setPacked(true);
+      newItems.add(item);
     }
 
+    mItems = newItems;
     notifyPackingListenerAllItemsChangedStatus();
     notifyDataSetChanged();
   }
 
   public void deselectAllItems() {
+    // Make a new sorted list so newly added items get re-sorted.
+    SortedList<PackableItem> newItems = new SortedList<PackableItem>(PackableItem.class,
+                                                                     sortCallback);
+
     for (int i = 0; i < mItems.size(); i++) {
       PackableItem item = mItems.get(i);
       item.setPacked(false);
+      newItems.add(item);
     }
 
+    mItems = newItems;
     notifyPackingListenerAllItemsChangedStatus();
     notifyDataSetChanged();
   }
