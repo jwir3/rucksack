@@ -50,4 +50,7 @@
     <string name="set_all_unpacked">Mark All Items Unpacked</string>
     <string name="license_agreement">License Agreement</string>
     <string name="license_text">You must read and agree to the terms of the <a href="https://gitlab.com/jwir3/rucksack/raw/develop/LICENSE.md">software license agreement for Rucksack</a>. Use of this software indicates acceptance of this agreement, as well as acceptance of any terms of service associated with services provided by this product or its manufacturer.</string>
+    <string name="cannot_rate_yet">Rucksack can only be rated once it is distributed through the Google Play store</string>
+    <string name="url_release_notes">https://gitlab.com/jwir3/rucksack#release-notes</string>
+    <string name="url_new_bug">https://gitlab.com/jwir3/rucksack/issues/new?issue%5Bassignee_id%5D=&amp;issue%5Bmilestone_id%5D=</string>
 </resources>
