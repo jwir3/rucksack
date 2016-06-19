@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:id="@+id/innerRelativeLayout">
+        <TextView
+            style="@style/CenteredHeadlineText"
+            android:text="@string/license_agreement"
+            android:id="@+id/headerText"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:id="@+id/licenseDescription"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
+            android:text="@string/license_text"
+            android:layout_below="@+id/headerText" />
+        <Button
+            android:id="@+id/agree_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="@android:color/white"
+            android:text="I Agree"
+            android:layout_below="@id/licenseDescription"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+    <!--<TextView-->
+        <!--style="@style/TextAppearance.AppCompat.Title"-->
+        <!--android:layout_marginTop="@dimen/section_spacing"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/developed_by"-->
+        <!--android:id="@+id/developedByTitle"-->
+        <!--android:layout_below="@+id/innerRelativeLayout"-->
+        <!--android:layout_alignLeft="@+id/innerRelativeLayout"-->
+        <!--android:layout_alignStart="@+id/innerRelativeLayout" />-->
+
+</RelativeLayout>

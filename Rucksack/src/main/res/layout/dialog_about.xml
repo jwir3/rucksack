@@ -19,16 +19,16 @@
         <TextView
             style="@style/CenteredHeadlineText"
             android:text="@string/app_name"
-            android:id="@+id/rucksackTitle"
+            android:id="@+id/headerText"
             android:layout_below="@+id/rucksackLogo"/>
         <TextView
             style="@style/CenteredTitleText"
             android:id="@+id/rucksackVersion"
-            android:layout_below="@+id/rucksackTitle" />
+            android:layout_below="@+id/headerText" />
         <TextView
             style="@style/CenteredParagraphText"
-            android:text="@string/app_description"
-            android:id="@+id/rucksackDescription"
+            android:text="@string/description"
+            android:id="@+id/licenseDescription"
             android:layout_below="@+id/rucksackVersion" />
     </RelativeLayout>
 

@@ -11,7 +11,7 @@ import com.glasstowerstudios.rucksack.BuildConfig;
  */
 public class AppPreferences {
   private static final String RUCKSACK_PREFERENCES_FILE = "Rucksack.Preferences";
-
+  private static final String AGREED_TO_LICENSE_PREF = "Rucksack.AgreedToLicense";
   public String LAST_APP_VERSION_PREF = "Rucksack.LastVersion";
 
   private SharedPreferences mPreferences;
@@ -37,5 +37,13 @@ public class AppPreferences {
     if (!getLastAppVersion().equals(BuildConfig.VERSION_NAME)) {
       mPreferences.edit().putString(LAST_APP_VERSION_PREF, BuildConfig.VERSION_NAME).apply();
     }
+  }
+
+  public boolean hasAgreedToLicense() {
+    return mPreferences.getBoolean(AGREED_TO_LICENSE_PREF, false);
+  }
+
+  public void setAgreedToLicense(boolean agreedToLicense) {
+    mPreferences.edit().putBoolean(AGREED_TO_LICENSE_PREF, agreedToLicense).apply();
   }
 }

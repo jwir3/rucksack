@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Rucksack</string>
-    <string name="app_description">An open-source travel checklist application made with ♡ in Minnesota.</string>
+    <string name="description">An open-source travel checklist application made with ♡ in Minnesota.</string>
     <string name="app_version">v%s</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,4 +48,6 @@
     <string name="trip_date_range">%1$s - %2$s</string>
     <string name="set_all_packed">Mark All Items Packed</string>
     <string name="set_all_unpacked">Mark All Items Unpacked</string>
+    <string name="license_agreement">License Agreement</string>
+    <string name="license_text">You must read and agree to the terms of the <a href="https://gitlab.com/jwir3/rucksack/raw/develop/LICENSE.md">software license agreement for Rucksack</a>. Use of this software indicates acceptance of this agreement, as well as acceptance of any terms of service associated with services provided by this product or its manufacturer.</string>
 </resources>
