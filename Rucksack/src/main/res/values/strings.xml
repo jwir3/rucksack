@@ -53,4 +53,5 @@
     <string name="cannot_rate_yet">Rucksack can only be rated once it is distributed through the Google Play store</string>
     <string name="url_release_notes">https://gitlab.com/jwir3/rucksack#release-notes</string>
     <string name="url_new_bug">https://gitlab.com/jwir3/rucksack/issues/new?issue%5Bassignee_id%5D=&amp;issue%5Bmilestone_id%5D=</string>
+    <string name="url_manual">https://gitlab.com/jwir3/rucksack/wikis/home</string>
 </resources>

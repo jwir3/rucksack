@@ -3,6 +3,7 @@ package com.glasstowerstudios.rucksack.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -266,6 +267,10 @@ public abstract class BaseActivity<T extends Fragment> extends AppCompatActivity
       } else if (id == R.id.nav_about) {
           DialogFragment newFragment = new AboutDialogFragment();
           newFragment.show(getSupportFragmentManager(), "about");
+      } else if (id == R.id.nav_help) {
+        Intent browserIntent =
+          new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.url_manual)));
+        startActivity(browserIntent);
       }
     }
 
