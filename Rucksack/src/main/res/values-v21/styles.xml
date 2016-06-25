@@ -13,4 +13,17 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/statusBarColor</item>
     </style>
+    <style name="CenteredTitleText" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+    <style name="CenteredParagraphText" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">@dimen/paragraph_spacing</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
 </resources>

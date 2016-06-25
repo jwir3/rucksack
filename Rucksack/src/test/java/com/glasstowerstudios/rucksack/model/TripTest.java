@@ -1,34 +1,34 @@
 package com.glasstowerstudios.rucksack.model;
 
-import com.glasstowerstudios.rucksack.util.DataStub;
+import android.os.Build;
+
+import com.glasstowerstudios.rucksack.BuildConfig;
 import com.glasstowerstudios.rucksack.util.RucksackGsonHelper;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
+import java.util.List;
 import java.util.TimeZone;
 
-public class TripTest {
+import static junit.framework.Assert.assertEquals;
 
-  private String mJson;
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+public class TripTest extends JsonDataTest<Trip> {
+
   private Trip mTrip;
 
   @Before
   public void setUp() throws Exception {
-
-    mJson = DataStub.readFile("trip.json");
-    Assert.assertNotNull(mJson);
-
-    mTrip = RucksackGsonHelper.getGson().fromJson(mJson, Trip.class);
-  }
-
-  @After
-  public void tearDown() throws Exception {
-
+    init(Trip.class);
+    mTrip = getPrimaryData();
   }
 
   @Test
@@ -56,6 +56,14 @@ public class TripTest {
   @Test
   public void testTripSerializedCorrectly() {
     String jsonData = RucksackGsonHelper.getGson().toJson(mTrip);
-    Assert.assertEquals(mJson.replaceAll("\\s", ""), jsonData);
+    Assert.assertEquals(getJson().replaceAll("\\s", ""), jsonData);
+  }
+
+  @Test
+  public void testTripHasTwoPastimesAssociatedWithIt() {
+    List<Pastime> pastimes = mTrip.getPastimes();
+    assertEquals(2, pastimes.size());
+    assertEquals("Work", pastimes.get(0).getName());
+    assertEquals("Dining", pastimes.get(1).getName());
   }
 }

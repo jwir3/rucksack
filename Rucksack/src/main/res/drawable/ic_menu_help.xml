@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Wrap the vector drawable in a layer list so the App Compat library can use it:
+         http://android-developers.blogspot.com/2016/02/android-support-library-232.html -->
+    <item android:drawable="@drawable/ic_menu_help_vector" />
+</layer-list>

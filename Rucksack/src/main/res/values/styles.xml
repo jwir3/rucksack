@@ -15,7 +15,18 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="BaseLayout">
-        <item name="android:background">@color/earlyDawn</item>
+        <item name="android:background">@color/early_dawn</item>
+    </style>
+
+    <style name="TripLayout" parent="BaseLayout">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="ContentContainer" parent="TripLayout">
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
     </style>
 
     <style name="Form" />
@@ -31,6 +42,12 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
+    </style>
+    <style name="Form.Input.Section" />
+    <style name="Form.Input.Section.Title">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
     </style>
     <style name="Card" parent="CardView">
         <item name="android:background">@android:color/white</item>
@@ -64,5 +81,32 @@
         <item name="android:layout_marginBottom">@dimen/packable_items_vertical_margin</item>
         <item name="android:layout_marginLeft">@dimen/packable_items_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/packable_items_horizontal_margin</item>
+    </style>
+    <style name="IconDropDown" parent="Base.Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:layout_width">@dimen/dropdown_icon_size</item>
+        <item name="android:layout_height">@dimen/dropdown_icon_size</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="MinimalistButton" parent="Base.Widget.AppCompat.Button.Small">
+        <item name="android:layout_width">@dimen/button_width_about_dialog</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/paragraph_spacing</item>
+    </style>
+    <style name="CenteredHeadlineText" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+    <style name="CenteredTitleText" parent="TextAppearance.AppCompat.Title">
+    </style>
+    <style name="CenteredParagraphText" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_marginTop">@dimen/paragraph_spacing</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
     </style>
 </resources>

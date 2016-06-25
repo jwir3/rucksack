@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        style="@style/BaseLayout"
+        style="@style/TripLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -17,15 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-        />
+            />
 
         <LinearLayout
             android:id="@+id/empty_view"
             android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:orientation="vertical"
             android:gravity="center">
             <ImageView

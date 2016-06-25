@@ -15,11 +15,15 @@
         <item
             android:id="@+id/nav_pastimes"
             android:icon="@drawable/ic_menu_pastimes"
-            android:title="Pastimes" />
+            android:title="@string/pastimes" />
     </group>
 
     <group android:id="@+id/nav_help_settings"
         android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_menu_help"
+            android:title="@string/help" />
         <!--<item-->
             <!--android:id="@+id/nav_settings"-->
             <!--android:icon="@android:drawable/ic_menu_preferences"-->

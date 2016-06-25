@@ -1,41 +1,85 @@
 package com.glasstowerstudios.rucksack.model;
 
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
 import com.glasstowerstudios.rucksack.util.TemporalFormatter;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * A data model representing a travel experience a user can take.
  */
-@Table(name = "trips")
-public class Trip extends BaseModel {
-
-  @Column(name = "destination_name")
+public class Trip implements Parcelable {
   private String mDestinationName;
-
-  @Column(name = "start_date")
   private DateTime mStartDate;
+  private int mNightLength;
 
-  @Column(name = "end_date")
-  private DateTime mEndDate;
+  private List<Pastime> mPastimes = new LinkedList<>();
+
+  private PackingList mPackingList = new PackingList();
 
   public Trip() {
+    super();
   }
 
-  public Trip(String destinationName, DateTime startDate, DateTime endDate) {
+  public Trip(String destinationName, DateTime startDate, int aNightLength,
+              List<Pastime> aPastimes) {
     mDestinationName = destinationName;
     mStartDate = startDate;
-    mEndDate = endDate;
+    mNightLength = aNightLength;
+    mPastimes = aPastimes;
+
+    createPackingListFromPastimes();
   }
 
   public Trip(String destinationName) {
-    this(destinationName, null, null);
+    this(destinationName, null, 0, new ArrayList<>());
   }
+
+  protected Trip(Parcel in) {
+    mDestinationName = in.readString();
+    mNightLength = in.readInt();
+    mPastimes = in.createTypedArrayList(Pastime.CREATOR);
+
+    createPackingListFromPastimes();
+  }
+
+  private void createPackingListFromPastimes() {
+    for (Pastime pastime : mPastimes) {
+      mPackingList.addItems(pastime.getPackableItems());
+    }
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(mDestinationName);
+    dest.writeInt(mNightLength);
+    dest.writeTypedList(mPastimes);
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+    @Override
+    public Trip createFromParcel(Parcel in) {
+      return new Trip(in);
+    }
+
+    @Override
+    public Trip[] newArray(int size) {
+      return new Trip[size];
+    }
+  };
 
   public String getDestinationName() {
     return mDestinationName;
@@ -46,7 +90,7 @@ public class Trip extends BaseModel {
   }
 
   public DateTime getEndDate() {
-    return mEndDate;
+    return mStartDate.plusDays(mNightLength);
   }
 
   public int getDurationOfYears() {
@@ -76,16 +120,59 @@ public class Trip extends BaseModel {
   }
 
   private Period getDuration() {
-    return new Period(mStartDate, mEndDate);
+    return new Period(mStartDate, getEndDate());
   }
 
-  /**
-   * Convenience method for retrieving all {@link Trip} objects in the database.
-   *  Equivalent to {@link BaseModel#getAll(Trip.class)}.
-   *
-   * @return A {@link List} of all {@link Trip} objects in the database.
-   */
-  public static List<Trip> getAll() {
-    return BaseModel.getAll(Trip.class);
+  @Override
+  public boolean equals(Object aOther) {
+    if (!(aOther instanceof Trip)) {
+      return false;
+    }
+
+    Trip otherTrip = (Trip) aOther;
+    return otherTrip.getDestinationName().equals(getDestinationName())
+      && otherTrip.getStartDate().equals(getStartDate())
+      && otherTrip.getEndDate().equals(getEndDate());
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 38;
+    result = 37 * result + (getDestinationName() == null ? 0 : getDestinationName().hashCode());
+    result = 37 * result + (getStartDate() == null ? 0 : getStartDate().hashCode());
+    result = 37 * result + (getEndDate() == null ? 0 : getEndDate().hashCode());
+
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    String tripStringRepresentation = "Trip to "
+                                      + getDestinationName()
+                                      + ", starting on "
+                                      + TemporalFormatter.TRIP_DATES_FORMATTER.print(getStartDate())
+                                      + " for "
+                                      + mNightLength
+                                      + " nights, with pastimes:";
+
+    for (Pastime pastime : mPastimes) {
+      tripStringRepresentation = tripStringRepresentation + "\n" + "\t- " + pastime.getName();
+    }
+
+    return tripStringRepresentation;
+  }
+
+  @NonNull
+  public List<Pastime> getPastimes() {
+    if (mPastimes == null) {
+      mPastimes = new LinkedList<>();
+    }
+
+    return mPastimes;
+  }
+
+  @NonNull
+  public List<PackableItem> getPackingListItems() {
+    return mPackingList.mItems;
   }
 }

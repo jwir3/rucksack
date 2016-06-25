@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:glasstower="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/colorAccent">
+        <TextView
+            android:id="@+id/trip_destination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/early_dawn"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="18pt"
+            fontPath="fonts/CinzelDecorative-Regular.otf"
+            android:layout_alignParentBottom="true"
+            android:text="Las Vegas, NV"/>
+
+        <TextView
+            android:id="@+id/trip_dates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/early_dawn"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentBottom="true"
+            fontPath="fonts/CinzelDecorative-Bold.otf" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        <TextView
+            android:id="@+id/packable_item_section_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/silver_sand"
+            android:text="@string/packable_items"
+            fontPath="fonts/CinzelDecorative-Regular.otf"
+        />
+        <View
+            android:id="@+id/packable_item_list_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/packable_item_section_title"
+            android:background="@color/silver_sand" />
+
+        <com.glasstowerstudios.rucksack.ui.view.PackingListView
+            android:id="@+id/packable_item_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@id/packable_item_list_separator"
+            android:layout_marginTop="10dp"
+            glasstower:reorganizeAfterSelection="true" />
+    </RelativeLayout>
+
+</LinearLayout>

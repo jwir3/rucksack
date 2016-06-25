@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Rucksack</string>
+    <string name="description">An open-source travel checklist application made with ♡ in Minnesota.</string>
+    <string name="app_version">v%s</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,7 +16,6 @@
     <string name="about_rucksack">About Rucksack</string>
     <string name="help">Help</string>
     <string name="accept">Accept</string>
-    <string name="dateSeparator">-</string>
     <string name="unknown">Unknown</string>
     <string name="destination">Destination</string>
     <string name="start_date_description">Trip Start Date</string>
@@ -27,4 +28,30 @@
     <string name="no_packable_items">No packable items available. Add some using the input above.</string>
     <string name="no_pastimes_now">No pastimes loaded. You may need to reinstall the application or create new pastimes.</string>
     <string name="pastimes">Pastimes</string>
+    <string name="pastime_name">Name</string>
+
+    <!-- This is the prefix that all built-in pastime icons use for naming -->
+    <string name="pastime_icon_prefix">ic_pastime_</string>
+
+    <string name="developed_by">Developed By</string>
+    <string name="report_a_bug">Report a Bug</string>
+    <string name="rate_on_google_play">Rate Rucksack on Google Play</string>
+    <string name="view_release_notes">View Release Notes</string>
+    <string name="rucksack_logo_description">Rucksack Logo</string>
+    <string name="pastime_items">Packable Items</string>
+    <string name="nights">Nights</string>
+    <string name="next_select_pastimes">Next: Select Pastimes</string>
+    <string name="select_pastimes">Select Pastimes</string>
+    <string name="pastime_item_selection_empty">Oops! No packable items are available.</string>
+    <string name="delete">Delete</string>
+    <string name="packing_list">Packing List</string>
+    <string name="trip_date_range">%1$s - %2$s</string>
+    <string name="set_all_packed">Mark All Items Packed</string>
+    <string name="set_all_unpacked">Mark All Items Unpacked</string>
+    <string name="license_agreement">License Agreement</string>
+    <string name="license_text">You must read and agree to the terms of the <a href="https://gitlab.com/jwir3/rucksack/raw/develop/LICENSE.md">software license agreement for Rucksack</a>. Use of this software indicates acceptance of this agreement, as well as acceptance of any terms of service associated with services provided by this product or its manufacturer.</string>
+    <string name="cannot_rate_yet">Rucksack can only be rated once it is distributed through the Google Play store</string>
+    <string name="url_release_notes">https://gitlab.com/jwir3/rucksack#release-notes</string>
+    <string name="url_new_bug">https://gitlab.com/jwir3/rucksack/issues/new?issue%5Bassignee_id%5D=&amp;issue%5Bmilestone_id%5D=</string>
+    <string name="url_manual">https://gitlab.com/jwir3/rucksack/wikis/home</string>
 </resources>

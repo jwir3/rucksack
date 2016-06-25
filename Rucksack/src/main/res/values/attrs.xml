@@ -5,4 +5,19 @@
         <attr name="pastimeIcon" format="reference"/>
         <attr name="pastimeColor" format="reference" />
     </declare-styleable>
+    <declare-styleable name="PackableItemRecyclerView">
+        <attr name="allowDeletion" format="boolean" />
+        <attr name="selectable" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="PackingListView">
+        <attr name="reorganizeAfterSelection" format="boolean" />
+        <attr name="backgroundColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="PastimeSelector">
+        <attr name="selection" format="enum">
+            <enum name="none" value="0" />
+            <enum name="single" value="1" />
+            <enum name="multiple" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

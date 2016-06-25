@@ -13,17 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.glasstowerstudios.rucksack.R;
+import com.glasstowerstudios.rucksack.di.Injector;
 import com.glasstowerstudios.rucksack.model.Trip;
 import com.glasstowerstudios.rucksack.ui.activity.BaseActivity;
 import com.glasstowerstudios.rucksack.ui.activity.TripsActivity;
 import com.glasstowerstudios.rucksack.ui.adapter.TripRecyclerAdapter;
 import com.glasstowerstudios.rucksack.ui.base.DividerItemDecoration;
+import com.glasstowerstudios.rucksack.ui.observer.TripSelectionListener;
+import com.glasstowerstudios.rucksack.util.data.TripDataProvider;
 import com.hudomju.swipe.OnItemClickListener;
 import com.hudomju.swipe.SwipeToDismissTouchListener;
 import com.hudomju.swipe.SwipeableItemClickListener;
 import com.hudomju.swipe.adapter.RecyclerViewAdapter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,12 +38,13 @@ import butterknife.ButterKnife;
  */
 public class TripRecyclerFragment
   extends Fragment
-  implements SwipeRefreshLayout.OnRefreshListener {
+  implements SwipeRefreshLayout.OnRefreshListener, TripSelectionListener {
 
   private static final String LOGTAG = TripRecyclerFragment.class.getSimpleName();
 
   @Bind(R.id.trip_recycler_view)
   protected RecyclerView mRecyclerView;
+
   private TripRecyclerAdapter mAdapter;
 
   @Bind(R.id.empty_view)
@@ -47,9 +53,13 @@ public class TripRecyclerFragment
   @Bind(R.id.trips_swipe_refresh)
   protected SwipeRefreshLayout mSwipeRefreshLayout;
 
+  @Inject TripDataProvider mTripDataProvider;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    Injector.INSTANCE.getApplicationComponent().inject(this);
   }
 
   @Override
@@ -71,12 +81,16 @@ public class TripRecyclerFragment
     act.enableFloatingActionButton();
 
     ActionBar appBar = act.getSupportActionBar();
-    appBar.setTitle(R.string.trips);
+    if (appBar != null) {
+      appBar.setTitle(R.string.trips);
+    }
 
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(layoutManager);
 
     mAdapter = new TripRecyclerAdapter(getTrips());
+    mAdapter.addTripSelectionListener(this);
+
     mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
     mRecyclerView.setAdapter(mAdapter);
 
@@ -101,25 +115,28 @@ public class TripRecyclerFragment
     mRecyclerView.setOnTouchListener(touchListener);
     mRecyclerView.setOnScrollListener((RecyclerView.OnScrollListener)touchListener.makeScrollListener());
     mRecyclerView.addOnItemTouchListener(new FixSwipeableItemClickListener(getContext(),
-                                           new OnItemClickListener() {
-                                             @Override
-                                             public void onItemClick(View view, int position) {
-                                               if (view.getId() == R.id.txt_delete) {
-                                                 touchListener.processPendingDismisses();
-                                               } else if (view.getId() == R.id.txt_undo) {
-                                                 touchListener.undoPendingDismiss();
-                                               }
-                                             }
-                                           }));
-
+                                                                           (view, position) -> {
+                                                                             if (view.getId() == R.id.txt_delete) {
+                                                                               touchListener.processPendingDismisses();
+                                                                             } else if (view.getId() == R.id.txt_undo) {
+                                                                               touchListener.undoPendingDismiss();
+                                                                             } else {
+                                                                               mAdapter.notifyTripSelectionListeners(position);
+                                                                             }
+                                                                           }));
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
     return createdView;
   }
 
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    mAdapter.removeTripSelectionListener(this);
+  }
+
   private List<Trip> getTrips() {
-    // Get all trips from the database.
-    List<Trip> trips = Trip.getAll();
+    List<Trip> trips = mTripDataProvider.getAll();
     return trips;
   }
 
@@ -144,6 +161,16 @@ public class TripRecyclerFragment
       mEmptyView.setVisibility(View.VISIBLE);
     }
 
+  }
+
+  @Override
+  public void onTripSelected(Trip aTrip) {
+    BaseActivity baseAct = (BaseActivity) getActivity();
+
+    Bundle args = new Bundle();
+    args.putParcelable(TripInteractionFragment.TRIP_KEY, aTrip);
+
+    baseAct.showFragment(TripInteractionFragment.class, args, true);
   }
 
   private static class FixSwipeableItemClickListener extends SwipeableItemClickListener {

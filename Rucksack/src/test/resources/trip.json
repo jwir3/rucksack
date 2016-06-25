@@ -1,5 +1,43 @@
 {
   "destination_name": "Paris",
   "start_date": "2015-11-27T13:00:00.000-06:00",
-  "end_date": "2015-11-29T16:00:00.000-06:00"
+  "end_date": "2015-11-29T16:00:00.000-06:00",
+  "pastimes": [
+    {
+      "name": "Work",
+      "icon_resource": "ic_pastime_work",
+      "packable_items": [
+        {
+          "item_name": "Toothbrush",
+          "status": 0
+        },
+        {
+          "item_name": "Swim Trunks",
+          "status": 0
+        },
+        {
+          "item_name": "Floss",
+          "status": 1
+        }
+      ]
+    },
+    {
+      "name": "Athletics",
+      "icon_resource": "ic_pastime_athletics",
+      "packable_items": [
+        {
+          "item_name": "Toothbrush",
+          "status": 0
+        },
+        {
+          "item_name": "Weights",
+          "status": 0
+        },
+        {
+          "item_name": "Floss",
+          "status": 1
+        }
+      ]
+    }
+  ]
 }
