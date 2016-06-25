@@ -112,7 +112,7 @@ public class PastimeRecyclerAdapter extends RecyclerView.Adapter<PastimeRecycler
       case MULTI:
       default:
         if (cardReference.isChecked()) {
-          mSelectedItems.remove(viewLayoutPosition);
+          mSelectedItems.remove(Integer.valueOf(viewLayoutPosition));
         } else {
           mSelectedItems.add(viewLayoutPosition);
         }
