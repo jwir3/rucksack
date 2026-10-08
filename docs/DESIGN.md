@@ -4,6 +4,11 @@
 
 Rucksack is a cross-platform (Android/iOS) travel preparation app designed to simplify packing through modular, activity-based sub-lists called **Pastimes**. This project is a 2026 "resurrection" and modernization of a legacy Java-based Android application.
 
+### a. Core Design Considerations
+The app(s) should use the following colors:
+  Main Background Color: #FFFFF
+  Main Rucksack "Orange": #FFAD1C
+
 ## 2. Core Philosophy
 
 Instead of building static lists for every trip, Rucksack utilizes a relational model:
